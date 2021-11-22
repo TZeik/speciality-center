@@ -10,9 +10,10 @@ public class Cita implements Serializable{
 	 */
 	private static final long serialVersionUID = 6934284300176996654L;
 	private String codigo;
+	private String nombre;
+	private Date fechaNacimiento;
 	private Date fecha;
 	private String finalidad;
-	private String nombre;
 	private String telefono;
 	private String especialidad;
 	private Medico medico;

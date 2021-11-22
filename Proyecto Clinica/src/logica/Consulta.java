@@ -14,14 +14,16 @@ public class Consulta implements Serializable{
 	private String sintomas;
 	private String diagnostico;
 	private Enfermedad enfermedad;
+	private Medico miMedico;
 	
-	public Consulta(String codigo, Date fecha, String sintomas, String diagnostico, Enfermedad enfermedad) {
+	public Consulta(String codigo, Date fecha, String sintomas, String diagnostico, Enfermedad enfermedad, Medico miMedico) {
 		super();
 		this.codigo = codigo;
 		this.fecha = fecha;
 		this.sintomas = sintomas;
 		this.diagnostico = diagnostico;
 		this.enfermedad = enfermedad;
+		this.miMedico = miMedico;
 	}
 
 	public String getCodigo() {
