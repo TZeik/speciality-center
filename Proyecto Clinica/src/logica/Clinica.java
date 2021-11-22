@@ -15,6 +15,8 @@ public class Clinica implements Serializable{
 	private ArrayList<Cita> misCitas;
 	private ArrayList<Enfermedad> misEnfermedades;
 	private ArrayList<Vacuna> misVacunas;
+	private Usuario logedUser;
+	private boolean login =  false;
 	
 	
 	private Clinica() {
@@ -42,5 +44,6 @@ public class Clinica implements Serializable{
 	public static void setSoul(Clinica soul) {
 		Clinica.soul = soul;
 	}
+	
 	
 }
