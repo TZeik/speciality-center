@@ -11,20 +11,27 @@ public class Cita implements Serializable{
 	private static final long serialVersionUID = 6934284300176996654L;
 	private String codigo;
 	private String nombre;
+	private String cedula;
+	private String genero;
 	private Date fechaNacimiento;
 	private Date fecha;
 	private String finalidad;
+	private String direccion;
 	private String telefono;
 	private String especialidad;
 	private Medico medico;
 	
-	public Cita(String codigo, Date fecha, String finalidad, String nombre, String telefono, String especialidad,
-			Medico medico) {
+	public Cita(String codigo, String nombre, String cedula, String genero, Date fechaNacimiento, Date fecha,
+			String finalidad, String direccion, String telefono, String especialidad, Medico medico) {
 		super();
 		this.codigo = codigo;
+		this.nombre = nombre;
+		this.cedula = cedula;
+		this.genero = genero;
+		this.fechaNacimiento = fechaNacimiento;
 		this.fecha = fecha;
 		this.finalidad = finalidad;
-		this.nombre = nombre;
+		this.direccion = direccion;
 		this.telefono = telefono;
 		this.especialidad = especialidad;
 		this.medico = medico;
@@ -36,6 +43,38 @@ public class Cita implements Serializable{
 
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getCedula() {
+		return cedula;
+	}
+
+	public void setCedula(String cedula) {
+		this.cedula = cedula;
+	}
+
+	public String getGenero() {
+		return genero;
+	}
+
+	public void setGenero(String genero) {
+		this.genero = genero;
+	}
+
+	public Date getFechaNacimiento() {
+		return fechaNacimiento;
+	}
+
+	public void setFechaNacimiento(Date fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
 	}
 
 	public Date getFecha() {
@@ -54,12 +93,12 @@ public class Cita implements Serializable{
 		this.finalidad = finalidad;
 	}
 
-	public String getNombre() {
-		return nombre;
+	public String getDireccion() {
+		return direccion;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setDireccion(String direccion) {
+		this.direccion = direccion;
 	}
 
 	public String getTelefono() {
@@ -85,5 +124,6 @@ public class Cita implements Serializable{
 	public void setMedico(Medico medico) {
 		this.medico = medico;
 	}
+	
 
 }
