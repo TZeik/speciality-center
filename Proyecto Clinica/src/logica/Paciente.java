@@ -1,10 +1,15 @@
 package logica;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Paciente {
+public class Paciente implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4750282174471169681L;
 	private String nombre;
 	private String cedula;
 	private Date fechaNacimiento;

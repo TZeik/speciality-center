@@ -1,9 +1,14 @@
 package logica;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Vacuna {
+public class Vacuna implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2769523749078563771L;
 	private String codigo;
 	private String nombre;
 	private Date fechaDosis;

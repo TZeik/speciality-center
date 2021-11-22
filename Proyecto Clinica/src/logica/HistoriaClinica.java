@@ -1,9 +1,14 @@
 package logica;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class HistoriaClinica {
+public class HistoriaClinica implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8551858366988969720L;
 	private String codigo;
 	private ArrayList<Consulta> misConsultas;
 	private ArrayList<Vacuna> misVacunas;

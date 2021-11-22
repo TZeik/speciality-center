@@ -1,9 +1,14 @@
 package logica;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Consulta {
+public class Consulta implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1170647756290026293L;
 	private String codigo;
 	private Date fecha;
 	private String sintomas;

@@ -34,5 +34,13 @@ public class Clinica implements Serializable{
 		
 		return soul;
 	}
+
+	public static Clinica getSoul() {
+		return soul;
+	}
+
+	public static void setSoul(Clinica soul) {
+		Clinica.soul = soul;
+	}
 	
 }
