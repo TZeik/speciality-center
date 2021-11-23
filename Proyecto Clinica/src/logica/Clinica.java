@@ -1,7 +1,18 @@
 package logica;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Clinica implements Serializable{
 
@@ -16,8 +27,7 @@ public class Clinica implements Serializable{
 	private ArrayList<Enfermedad> misEnfermedades;
 	private ArrayList<Vacuna> misVacunas;
 	private Usuario logedUser = null;
-	private boolean login =  false;
-	
+	private int userCodeGenerator;
 	
 	private Clinica() {
 		super();
@@ -27,13 +37,13 @@ public class Clinica implements Serializable{
 		this.misCitas = new ArrayList<Cita>();
 		this.misEnfermedades = new ArrayList<Enfermedad>();
 		this.misVacunas = new ArrayList<Vacuna>();
+		this.userCodeGenerator = 1;
 	}
 	
 	public static Clinica getInstance() {
 		if(soul == null) {
 			soul = new Clinica();
 		}
-		
 		return soul;
 	}
 
@@ -51,14 +61,6 @@ public class Clinica implements Serializable{
 
 	public void setLogedUser(Usuario logedUser) {
 		this.logedUser = logedUser;
-	}
-
-	public boolean isLogin() {
-		return login;
-	}
-
-	public void setLogin(boolean login) {
-		this.login = login;
 	}
 
 	public ArrayList<Paciente> getMisPacientes() {
@@ -81,6 +83,7 @@ public class Clinica implements Serializable{
 		return misVacunas;
 	}
 	
+	
 	public void insertarPaciente (Paciente auxP) {
 		misPacientes.add(auxP);
 	}
@@ -95,6 +98,44 @@ public class Clinica implements Serializable{
 	}
 	public void insertarUsuario(Usuario auxU) {
 		misUsuarios.add(auxU);
+	}
+	
+	public void cargarClinica() {
+		FileInputStream archivo;
+		ObjectInputStream oos;
+		
+		try {
+			archivo = new FileInputStream("clinica.dat");
+			oos = new ObjectInputStream(archivo);
+			Clinica.setSoul((Clinica)oos.readObject());
+			oos.close();
+		} catch (IOException | ClassNotFoundException e) {
+			Clinica.getInstance().guardarClinica();
+		}
+
+
+	}
+	
+	public void guardarClinica() {
+		
+		FileOutputStream archivo;
+			try {
+				archivo = new FileOutputStream("clinica.dat");
+				ObjectOutputStream oos = new  ObjectOutputStream(archivo);
+				oos.writeObject(Clinica.getInstance());
+				oos.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	
+	public String getUserCodeGenerator() {
+		String codigo;
+		codigo = "U-" + userCodeGenerator;
+		
+		userCodeGenerator++;
+		return codigo;
 	}
 	
 	public Paciente buscarPacienteByCed(String CedPaciente) {
@@ -112,7 +153,35 @@ public class Clinica implements Serializable{
 		
 	}
 	
+	public boolean confirmLogin (String id, String password) {
+		
+		boolean login = false;
+		
+		
+		for (Usuario user : Clinica.getInstance().getMisUsuarios()) {
+			
+			System.out.println(user.getPassword());
+			System.out.println(password);
+			
+			if(user.getId().equals(id) && user.getPassword().equals(password)) {
+				logedUser = user;
+				login = true;
+			}
+		}
+		return login;
+	}
 	
-	
+	public boolean isFirst() {
+		
+		boolean first = false;
+		
+		if(Clinica.getInstance().misUsuarios.isEmpty() == true) {
+			first = true;
+		}
+		
+		return first;
+	}
+
+
 	
 }

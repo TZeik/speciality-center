@@ -14,13 +14,9 @@ public class Usuario implements Serializable{
 	protected String nombre;
 	protected String telefono;
 	
-	public Usuario(String codigo, String id, String password, String nombre, String telefono) {
+	public Usuario(String codigo) {
 		super();
 		this.codigo = codigo;
-		this.id = id;
-		this.password = password;
-		this.nombre = nombre;
-		this.telefono = telefono;
 	}
 
 	public String getCodigo() {

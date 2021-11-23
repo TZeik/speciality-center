@@ -2,13 +2,11 @@ package logica;
 
 public class Administrador extends Usuario {
 	
-	private String codigo;
 	private String puesto;
 	
-	public Administrador(String codigo, String id, String password, String nombre, String telefono) {
-		super(codigo, id, password, nombre, telefono);
+	public Administrador(String codigo) {
+		super(codigo);
 		
-		this.codigo = codigo;
 		this.puesto = "";
 	}
 

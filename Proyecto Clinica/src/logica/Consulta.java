@@ -65,5 +65,13 @@ public class Consulta implements Serializable{
 	public void setEnfermedad(Enfermedad enfermedad) {
 		this.enfermedad = enfermedad;
 	}
+
+	public Medico getMiMedico() {
+		return miMedico;
+	}
+
+	public void setMiMedico(Medico miMedico) {
+		this.miMedico = miMedico;
+	}
 	
 }
