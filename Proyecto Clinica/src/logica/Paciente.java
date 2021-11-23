@@ -27,7 +27,7 @@ public class Paciente implements Serializable{
 		this.direccion = direccion;
 		this.telefono = telefono;
 		this.historial = historial;
-		this.misConsultas = misConsultas;
+		this.misConsultas = new ArrayList<Consulta>();;
 	}
 
 	public String getNombre() {
@@ -84,6 +84,10 @@ public class Paciente implements Serializable{
 
 	public void setMisConsultas(ArrayList<Consulta> misConsultas) {
 		this.misConsultas = misConsultas;
+	}
+	
+	public void insertarCoonsulta (Consulta auxC) {
+		misConsultas.add(auxC);
 	}
 	
 }

@@ -81,5 +81,38 @@ public class Clinica implements Serializable{
 		return misVacunas;
 	}
 	
+	public void insertarPaciente (Paciente auxP) {
+		misPacientes.add(auxP);
+	}
+	public void insertarCita (Cita AuxC) {
+		misCitas.add(AuxC);
+	}
+	public void insertarEnfermedad(Enfermedad auxE) {
+		misEnfermedades.add(auxE);
+	}
+	public void insertarVacuna(Vacuna auxV) {
+		misVacunas.add(auxV);
+	}
+	public void insertarUsuario(Usuario auxU) {
+		misUsuarios.add(auxU);
+	}
+	
+	public Paciente buscarPacienteByCed(String CedPaciente) {
+		Paciente auxP= null;
+		boolean encontrado = false ;
+		int i=0;
+		while (!encontrado || i<misPacientes.size()) {
+			if(misPacientes.get(i).getCedula().equalsIgnoreCase(CedPaciente)) {
+				auxP = misPacientes.get(i);
+				encontrado = true;
+			}
+			i++;
+		}
+		return auxP;
+		
+	}
+	
+	
+	
 	
 }

@@ -16,8 +16,8 @@ public class HistoriaClinica implements Serializable{
 	public HistoriaClinica(String codigo, ArrayList<Consulta> misConsultas, ArrayList<Vacuna> misVacunas) {
 		super();
 		this.codigo = codigo;
-		this.misConsultas = misConsultas;
-		this.misVacunas = misVacunas;
+		this.misConsultas = new ArrayList<Consulta>();
+		this.misVacunas = new ArrayList<Vacuna>();;
 	}
 
 	public String getCodigo() {
@@ -34,6 +34,14 @@ public class HistoriaClinica implements Serializable{
 
 	public ArrayList<Vacuna> getMisVacunas() {
 		return misVacunas;
+	}
+	
+	public void insertarVacuna(Vacuna auxV) {
+		misVacunas.add(auxV);
+	}
+	
+	public void insertarCoonsulta (Consulta auxC) {
+		misConsultas.add(auxC);
 	}
 	
 }
