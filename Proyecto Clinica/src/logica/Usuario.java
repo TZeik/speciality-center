@@ -10,7 +10,7 @@ public class Usuario implements Serializable{
 	private static final long serialVersionUID = 1320807707536527972L;
 	protected String codigo;
 	protected String id;
-	protected String password; 
+	protected String password;
 	protected String nombre;
 	protected String telefono;
 	

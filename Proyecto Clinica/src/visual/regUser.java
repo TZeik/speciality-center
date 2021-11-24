@@ -112,6 +112,11 @@ public class regUser extends JFrame {
 		panel.add(lblNewLabel_2);
 		
 		JButton btnCancel = new JButton("Cancelar");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		btnCancel.setBounds(405, 283, 100, 30);
 		panel.add(btnCancel);
 		
@@ -129,31 +134,34 @@ public class regUser extends JFrame {
 					switch (cbxUserType.getSelectedIndex()) {
 					
 					case 0:
-						Administrador newAdmin = new Administrador(Clinica.getInstance().getUserCodeGenerator());
+						Administrador newAdmin = new Administrador(Clinica.getInstance().GenerateUserCode());
 						newAdmin.setId(txtUser.getText());
 						newAdmin.setPassword(psw1);
 						newAdmin.setNombre(txtName.getText());
 						Clinica.getInstance().getMisUsuarios().add(newAdmin);
+						Clinica.getInstance().setUserCodeGenerator(Clinica.getInstance().getUserCodeGenerator() + 1);
 						JOptionPane.showMessageDialog(panel , "El usuario se ha creado exitosamente", "Registro completo", JOptionPane.INFORMATION_MESSAGE);
 						Clinica.getInstance().guardarClinica();
 						dispose();
 						break;
 					case 1:
-						Medico newMedic = new Medico(Clinica.getInstance().getUserCodeGenerator());
+						Medico newMedic = new Medico(Clinica.getInstance().GenerateUserCode());
 						newMedic.setId(txtUser.getText());
 						newMedic.setPassword(psw1);
 						newMedic.setNombre(txtName.getText());
 						Clinica.getInstance().getMisUsuarios().add(newMedic);
+						Clinica.getInstance().setUserCodeGenerator(Clinica.getInstance().getUserCodeGenerator() + 1);
 						JOptionPane.showMessageDialog(panel, "El usuario se ha creado exitosamente", "Registro completo", JOptionPane.INFORMATION_MESSAGE);
 						Clinica.getInstance().guardarClinica();
 						dispose();
 						break;
 					case 2:
-						Secretario newSecretary = new Secretario(Clinica.getInstance().getUserCodeGenerator());
+						Secretario newSecretary = new Secretario(Clinica.getInstance().GenerateUserCode());
 						newSecretary.setId(txtUser.getText());
 						newSecretary.setPassword(psw1);
 						newSecretary.setNombre(txtName.getText());
 						Clinica.getInstance().getMisUsuarios().add(newSecretary);
+						Clinica.getInstance().setUserCodeGenerator(Clinica.getInstance().getUserCodeGenerator() + 1);
 						JOptionPane.showMessageDialog(panel, "El usuario se ha creado exitosamente", "Registro completo", JOptionPane.INFORMATION_MESSAGE);
 						Clinica.getInstance().guardarClinica();
 						dispose();
@@ -185,6 +193,9 @@ public class regUser extends JFrame {
 			cbxUserType.setSelectedIndex(0);
 			cbxUserType.setEnabled(false);
 			txtUser.setText("Admin");
+		}else {
+			cbxUserType.setEnabled(true);
+			txtUser.setText("");
 		}
 	}
 }

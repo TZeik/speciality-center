@@ -28,6 +28,8 @@ public class Clinica implements Serializable{
 	private ArrayList<Vacuna> misVacunas;
 	private Usuario logedUser = null;
 	private int userCodeGenerator;
+	private int enfermedadCodeGenerator;
+	private int vaccineCodeGenerator;
 	
 	private Clinica() {
 		super();
@@ -38,6 +40,8 @@ public class Clinica implements Serializable{
 		this.misEnfermedades = new ArrayList<Enfermedad>();
 		this.misVacunas = new ArrayList<Vacuna>();
 		this.userCodeGenerator = 1;
+		this.enfermedadCodeGenerator = 1;
+		this.vaccineCodeGenerator = 1;
 	}
 	
 	public static Clinica getInstance() {
@@ -45,6 +49,30 @@ public class Clinica implements Serializable{
 			soul = new Clinica();
 		}
 		return soul;
+	}
+	
+	public void setUserCodeGenerator(int userCodeGenerator) {
+		this.userCodeGenerator = userCodeGenerator;
+	}
+
+	public void setEnfermedadCodeGenerator(int enfermedadCodeGenerator) {
+		this.enfermedadCodeGenerator = enfermedadCodeGenerator;
+	}
+
+	public int getUserCodeGenerator() {
+		return userCodeGenerator;
+	}
+
+	public int getEnfermedadCodeGenerator() {
+		return enfermedadCodeGenerator;
+	}
+	
+	public int getVaccineCodeGenerator() {
+		return vaccineCodeGenerator;
+	}
+
+	public void setVaccineCodeGenerator(int vaccineCodeGenerator) {
+		this.vaccineCodeGenerator = vaccineCodeGenerator;
 	}
 
 	public static Clinica getSoul() {
@@ -100,6 +128,8 @@ public class Clinica implements Serializable{
 		misUsuarios.add(auxU);
 	}
 	
+
+	
 	public void cargarClinica() {
 		FileInputStream archivo;
 		ObjectInputStream oos;
@@ -130,11 +160,24 @@ public class Clinica implements Serializable{
 			}
 		}
 	
-	public String getUserCodeGenerator() {
+	public String GenerateUserCode() {
+		
 		String codigo;
 		codigo = "U-" + userCodeGenerator;
+		return codigo;
+	}
+	
+	public String GenerateEnfCode() {
 		
-		userCodeGenerator++;
+		String codigo;
+		codigo = "E-" + enfermedadCodeGenerator;
+		return codigo;
+	}
+	
+	public String GenerateVacCode() {
+		
+		String codigo;
+		codigo = "V-" + vaccineCodeGenerator;
 		return codigo;
 	}
 	
@@ -157,11 +200,7 @@ public class Clinica implements Serializable{
 		
 		boolean login = false;
 		
-		
 		for (Usuario user : Clinica.getInstance().getMisUsuarios()) {
-			
-			System.out.println(user.getPassword());
-			System.out.println(password);
 			
 			if(user.getId().equals(id) && user.getPassword().equals(password)) {
 				logedUser = user;
@@ -181,7 +220,40 @@ public class Clinica implements Serializable{
 		
 		return first;
 	}
-
-
 	
+	public ArrayList<Usuario> tipoEspecifico(int tipo){
+		// Sea tipo = 0 -> Administrador
+		// Sea tipo = 1 -> Medico
+		// Sea tipo = 2 -> Secretario
+		
+		ArrayList<Usuario> especificos = new ArrayList<Usuario>();
+		for (Usuario user : Clinica.getInstance().getMisUsuarios()) {
+			
+			switch (tipo) {
+			case 0:
+				if(user instanceof Administrador) {
+					especificos.add(user);
+				}
+				break;
+			case 1:
+				if(user instanceof Medico) {
+					especificos.add(user);
+				}
+				break;
+			case 2:
+				if(user instanceof Secretario) {
+					especificos.add(user);
+				}
+				break;
+			default:
+				break;
+			}
+			
+		}
+			
+		return especificos;
+
+	}
+
+
 }

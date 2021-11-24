@@ -13,20 +13,10 @@ public class Enfermedad implements Serializable{
 	private String tipo;
 	private String descipcion;
 	
-	public Enfermedad(String codigo, String nombre, String tipo, String descipcion) {
+	public Enfermedad(String codigo) {
 		super();
 		this.codigo = codigo;
-		this.nombre = nombre;
-		this.tipo = tipo;
-		this.descipcion = descipcion;
-	}
 
-	public String getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
 	}
 
 	public String getNombre() {
@@ -51,6 +41,10 @@ public class Enfermedad implements Serializable{
 
 	public void setDescipcion(String descipcion) {
 		this.descipcion = descipcion;
+	}
+
+	public String getCodigo() {
+		return codigo;
 	}
 	
 }

@@ -11,13 +11,11 @@ public class Vacuna implements Serializable{
 	private static final long serialVersionUID = -2769523749078563771L;
 	private String codigo;
 	private String nombre;
-	private Date fechaDosis;
+	private Date fechaCreacion;
 	
-	public Vacuna(String codigo, String nombre, Date fechaDosis) {
+	public Vacuna(String codigo) {
 		super();
 		this.codigo = codigo;
-		this.nombre = nombre;
-		this.fechaDosis = fechaDosis;
 	}
 
 	public String getCodigo() {
@@ -37,11 +35,11 @@ public class Vacuna implements Serializable{
 	}
 
 	public Date getFechaDosis() {
-		return fechaDosis;
+		return fechaCreacion;
 	}
 
 	public void setFechaDosis(Date fechaDosis) {
-		this.fechaDosis = fechaDosis;
+		this.fechaCreacion = fechaCreacion;
 	}
 	
 }

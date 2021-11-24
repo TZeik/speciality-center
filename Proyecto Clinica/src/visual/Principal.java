@@ -17,9 +17,15 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.border.TitledBorder;
 
+import logica.Administrador;
 import logica.Clinica;
+import logica.Medico;
+import logica.Secretario;
 
 import javax.swing.border.BevelBorder;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.JButton;
 
 public class Principal extends JFrame {
 
@@ -60,8 +66,14 @@ public class Principal extends JFrame {
 		JMenu mnNueva = new JMenu("Nueva");
 		mnCrear.add(mnNueva);
 		
-		JMenuItem itemCC = new JMenuItem("Cita/Consulta ");
+		JMenuItem itemCC = new  JMenuItem("Cita/Consulta");
 		mnNueva.add(itemCC);
+		
+		if(Clinica.getInstance().getLogedUser() instanceof Medico) {
+			itemCC.setText("Consulta");
+		}else if(Clinica.getInstance().getLogedUser() instanceof Secretario){
+			itemCC.setText("Cita");
+		}
 		
 		JMenu mnRevisar = new JMenu("Revisar");
 		menuBar.add(mnRevisar);
@@ -80,19 +92,45 @@ public class Principal extends JFrame {
 		
 		JMenuItem itemLPacientes = new JMenuItem("Lista de pacientes");
 		mnRLista.add(itemLPacientes);
+
+		if(Clinica.getInstance().getLogedUser() instanceof Secretario) {
+			itemLConsultas.setEnabled(false);
+			itemLPacientes.setEnabled(false);
+		}
 		
 		JMenu mnAdministrar = new JMenu("Administrar");
+		mnAdministrar.setEnabled(false);
 		mnAdministrar.setHorizontalAlignment(SwingConstants.LEFT);
 		menuBar.add(mnAdministrar);
+		
+		if(Clinica.getInstance().getLogedUser() instanceof Administrador) {
+			mnAdministrar.setEnabled(true);
+		}
 		
 		JMenu mnRegistrar = new JMenu("Registrar");
 		mnAdministrar.add(mnRegistrar);
 		
 		JMenuItem itemRUsuario = new JMenuItem("Registrar usuario");
+		itemRUsuario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				regUser window = new regUser();
+				window.setVisible(true);
+				
+			}
+		});
 		itemRUsuario.setHorizontalAlignment(SwingConstants.LEFT);
 		mnRegistrar.add(itemRUsuario);
 		
 		JMenuItem itemREnfermedad = new JMenuItem("Registrar enfermedad");
+		itemREnfermedad.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				RegEnfermedad regEnf = new RegEnfermedad();
+				regEnf.setVisible(true);
+				
+			}
+		});
 		mnRegistrar.add(itemREnfermedad);
 		
 		JMenuItem itemRVacuna = new JMenuItem("Registrar vacuna");
@@ -102,6 +140,12 @@ public class Principal extends JFrame {
 		mnAdministrar.add(mnALista);
 		
 		JMenuItem mntmNewMenuItem_1 = new JMenuItem("Lista de usuarios");
+		mntmNewMenuItem_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				UserList userlist = new UserList();
+				userlist.setVisible(true);
+			}
+		});
 		mntmNewMenuItem_1.setHorizontalAlignment(SwingConstants.LEFT);
 		mnALista.add(mntmNewMenuItem_1);
 		
@@ -136,6 +180,17 @@ public class Principal extends JFrame {
 		panel_1.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		panel_1.setBounds(440, 30, 270, 400);
 		panel.add(panel_1);
+		panel_1.setLayout(null);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_2.setBounds(10, 11, 250, 378);
+		panel_1.add(panel_2);
+		panel_2.setLayout(null);
+		
+		JButton btnLogout = new JButton("Cerrar sesi\u00F3n");
+		btnLogout.setBounds(70, 340, 125, 25);
+		panel_2.add(btnLogout);
 	}
 	private static void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
