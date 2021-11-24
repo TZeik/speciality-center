@@ -13,6 +13,7 @@ import logica.Administrador;
 import logica.Clinica;
 import logica.Medico;
 import logica.Secretario;
+import logica.Usuario;
 
 import java.awt.Dialog.ModalExclusionType;
 import javax.swing.UIManager;
@@ -56,7 +57,7 @@ public class Perfil extends JFrame {
 	public Perfil() {
 		setType(Type.UTILITY);
 		setTitle("Perfil");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 679, 464);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -111,8 +112,10 @@ public class Perfil extends JFrame {
 				if(Clinica.getInstance().getLogedUser() instanceof  Administrador) {
 					Administrador newAdmin = new Administrador(Clinica.getInstance().getLogedUser().getCodigo());
 					newAdmin.setNombre(txtName.getText());
+					newAdmin.setId(txtUser.getText());
 					newAdmin.setTelefono(txtTel.getText());
 					newAdmin.setPuesto(txtDynamic.getText());
+					newAdmin.setPassword(Clinica.getInstance().getLogedUser().getPassword());
 					Clinica.getInstance().EditUsuario(newAdmin);
 					Clinica.getInstance().guardarClinica();
 					JOptionPane.showMessageDialog(panel, "Se ha guardado con éxito", "Guardar usuario", JOptionPane.INFORMATION_MESSAGE);
@@ -120,8 +123,10 @@ public class Perfil extends JFrame {
 				if(Clinica.getInstance().getLogedUser() instanceof  Medico) {
 					Medico newMed = new Medico(Clinica.getInstance().getLogedUser().getCodigo());
 					newMed.setNombre(txtName.getText());
+					newMed.setId(txtUser.getText());
 					newMed.setTelefono(txtTel.getText());
 					newMed.setEspecialidad(txtDynamic.getText());
+					newMed.setPassword(Clinica.getInstance().getLogedUser().getPassword());
 					Clinica.getInstance().EditUsuario(newMed);
 					Clinica.getInstance().guardarClinica();
 					JOptionPane.showMessageDialog(panel, "Se ha guardado con éxito", "Guardar usuario", JOptionPane.INFORMATION_MESSAGE);
@@ -129,11 +134,18 @@ public class Perfil extends JFrame {
 				if(Clinica.getInstance().getLogedUser() instanceof  Secretario) {
 					Secretario newSec = new Secretario(Clinica.getInstance().getLogedUser().getCodigo());
 					newSec.setNombre(txtName.getText());
+					newSec.setId(txtUser.getText());
 					newSec.setTelefono(txtTel.getText());
+					newSec.setPassword(Clinica.getInstance().getLogedUser().getPassword());
 					Clinica.getInstance().EditUsuario(newSec);
 					Clinica.getInstance().guardarClinica();
 					JOptionPane.showMessageDialog(panel, "Se ha guardado con éxito", "Guardar usuario", JOptionPane.INFORMATION_MESSAGE);
 				}
+				
+				
+				Perfil refresh = new Perfil();
+				refresh.setVisible(true);
+				dispose();
 			}
 		});
 		btnGuardar.setBounds(147, 345, 100, 25);

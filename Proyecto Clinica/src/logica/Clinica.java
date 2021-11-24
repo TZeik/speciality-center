@@ -287,13 +287,54 @@ public class Clinica implements Serializable{
 	
 		for (Usuario user : Clinica.getInstance().getMisUsuarios()) {
 			if(newUser.getCodigo().equals(user.getCodigo())) {
-				Clinica.getInstance().getMisUsuarios().remove(user);
-				Clinica.getInstance().getMisUsuarios().add(newUser);
+				
+				if(newUser instanceof  Administrador) {
+					
+					Administrador newAdmin = (Administrador)newUser;
+					Clinica.getInstance().getMisUsuarios().get(SearchUsuarioIndex(user)).setNombre(newAdmin.getNombre());
+					Clinica.getInstance().getMisUsuarios().get(SearchUsuarioIndex(user)).setPassword(newAdmin.getPassword());
+					Clinica.getInstance().getMisUsuarios().get(SearchUsuarioIndex(user)).setId(newAdmin.getId());
+					Clinica.getInstance().getMisUsuarios().get(SearchUsuarioIndex(user)).setTelefono(newAdmin.getTelefono());
+					((Administrador) Clinica.getInstance().getMisUsuarios().get(SearchUsuarioIndex(user))).setPuesto(newAdmin.getPuesto());
+					
+				}
+				if(newUser instanceof  Medico) {
+					
+					Medico newMed = (Medico)newUser;
+					Clinica.getInstance().getMisUsuarios().get(SearchUsuarioIndex(user)).setNombre(newMed.getNombre());
+					Clinica.getInstance().getMisUsuarios().get(SearchUsuarioIndex(user)).setPassword(newMed.getPassword());
+					Clinica.getInstance().getMisUsuarios().get(SearchUsuarioIndex(user)).setId(newMed.getId());
+					Clinica.getInstance().getMisUsuarios().get(SearchUsuarioIndex(user)).setTelefono(newMed.getTelefono());
+					((Medico) Clinica.getInstance().getMisUsuarios().get(SearchUsuarioIndex(user))).setEspecialidad(newMed.getEspecialidad());
+					
+				}
+				if(newUser instanceof Secretario) {
+					
+					Secretario newSec = (Secretario)newUser;
+					Clinica.getInstance().getMisUsuarios().get(SearchUsuarioIndex(user)).setNombre(newSec.getNombre());
+					Clinica.getInstance().getMisUsuarios().get(SearchUsuarioIndex(user)).setPassword(newSec.getPassword());
+					Clinica.getInstance().getMisUsuarios().get(SearchUsuarioIndex(user)).setId(newSec.getId());
+					Clinica.getInstance().getMisUsuarios().get(SearchUsuarioIndex(user)).setTelefono(newSec.getTelefono());
+					
+				}
 			}
 		}
 		
 	}
 	
+	public int SearchUsuarioIndex(Usuario usuario) {
+		int i = 0;
+		int index = 0;
+		
+		for (Usuario user : Clinica.getInstance().misUsuarios) {
+			if(usuario.getCodigo().equals(user.getCodigo())) {
+				index = i;
+			}
+			i++;
+		}
+		
+		return index;
+	}
 
 	public void Logout() {
 		Clinica.getInstance().logedUser = null;

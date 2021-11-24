@@ -59,7 +59,7 @@ public class regUser extends JFrame {
 		setType(Type.UTILITY);
 		setTitle("Registrar usuario");
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 540, 376);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

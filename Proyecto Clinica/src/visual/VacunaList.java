@@ -56,7 +56,7 @@ public class VacunaList extends JFrame {
 	 */
 	public VacunaList() {
 		setTitle("Lista de vacunas");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 573, 469);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

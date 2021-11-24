@@ -56,7 +56,7 @@ public class RegEnfermedad extends JFrame {
 		setResizable(false);
 		setType(Type.UTILITY);
 		setTitle("Registro de enfermedad");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 457, 453);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

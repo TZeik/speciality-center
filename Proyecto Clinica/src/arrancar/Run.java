@@ -7,7 +7,7 @@ import visual.Login;
 
 public abstract class Run {
 
-// Arrancar el programa	
+// Arrancar el programa
 	
 	public static void main(String[] args) {
 		
