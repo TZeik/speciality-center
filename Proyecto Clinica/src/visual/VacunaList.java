@@ -2,6 +2,8 @@ package visual;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -11,7 +13,7 @@ import javax.swing.table.DefaultTableModel;
 
 import logica.Clinica;
 import logica.Enfermedad;
-import logica.Usuario;
+import logica.Vacuna;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -21,23 +23,17 @@ import javax.swing.JLabel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import javax.swing.JTextArea;
-import javax.swing.UIManager;
-import java.awt.Color;
-import javax.swing.SwingConstants;
-import javax.swing.JTextPane;
-import javax.swing.DropMode;
 
-public class EnfermedadList extends JFrame {
+public class VacunaList extends JFrame {
 
 	private JPanel contentPane;
 	private JTable table;
 	private static JTextField txtBuscar;
+	private JButton btnEliminar;
+	private JButton btnEditar;
 	public static DefaultTableModel model;
 	private static Object[] row;
-	private Enfermedad selected = null;
+	private Vacuna selected = null;
 
 	/**
 	 * Launch the application.
@@ -46,7 +42,7 @@ public class EnfermedadList extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					EnfermedadList frame = new EnfermedadList();
+					VacunaList frame = new VacunaList();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -58,10 +54,10 @@ public class EnfermedadList extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public EnfermedadList() {
-		setTitle("Lista de enfermedades");
+	public VacunaList() {
+		setTitle("Lista de vacunas");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 751, 500);
+		setBounds(100, 100, 573, 469);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -74,30 +70,17 @@ public class EnfermedadList extends JFrame {
 		panel.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 124, 452, 280);
+		scrollPane.setBounds(10, 108, 527, 269);
 		panel.add(scrollPane);
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new TitledBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Descripci\u00F3n", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)), "Descripci\u00F3n", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_2.setBounds(475, 124, 240, 280);
-		panel.add(panel_2);
-		panel_2.setLayout(null);
-		
-		JTextArea txaDescripcion = new JTextArea();
-		txaDescripcion.setLineWrap(true);
-		txaDescripcion.setEditable(false);
-		txaDescripcion.setBounds(10, 26, 220, 243);
-		panel_2.add(txaDescripcion);
-		
-		
-		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar = new JButton("Elminar");
 		btnEliminar.setEnabled(false);
-		btnEliminar.setBounds(525, 415, 90, 25);
+		btnEliminar.setBounds(348, 386, 90, 25);
 		panel.add(btnEliminar);
 		
-		JButton btnEditar = new JButton("Editar");
+		btnEditar = new JButton("Editar");
 		btnEditar.setEnabled(false);
-		btnEditar.setBounds(425, 415, 90, 25);
+		btnEditar.setBounds(248, 386, 90, 25);
 		panel.add(btnEditar);
 		
 		table = new JTable();
@@ -106,8 +89,7 @@ public class EnfermedadList extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				int select = table.getSelectedRow();
 				if(select != -1) {
-					selected = Clinica.getInstance().SearchEnfermedad((String)table.getValueAt(select, 0));
-					txaDescripcion.setText(selected.getDescipcion());
+					selected = Clinica.getInstance().SearchVacuna((String)table.getValueAt(select, 0));
 					btnEliminar.setEnabled(true);
 					btnEditar.setEnabled(true);
 				}
@@ -122,17 +104,17 @@ public class EnfermedadList extends JFrame {
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(null, "Filtros", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_1.setBounds(10, 11, 705, 102);
+		panel_1.setBounds(10, 11, 527, 86);
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 		
 		txtBuscar = new JTextField();
-		txtBuscar.setBounds(10, 60, 300, 25);
-		txtBuscar.setColumns(10);
+		txtBuscar.setBounds(10, 50, 360, 25);
 		panel_1.add(txtBuscar);
+		txtBuscar.setColumns(10);
 		
-		JLabel lblNewLabel = new JLabel("Buscar enfermedad:");
-		lblNewLabel.setBounds(10, 35, 300, 14);
+		JLabel lblNewLabel = new JLabel("Buscar vacuna: ");
+		lblNewLabel.setBounds(10, 25, 360, 14);
 		panel_1.add(lblNewLabel);
 		
 		JButton btnSalir = new JButton("Salir");
@@ -141,21 +123,22 @@ public class EnfermedadList extends JFrame {
 				dispose();
 			}
 		});
-		btnSalir.setBounds(625, 415, 90, 25);
+		btnSalir.setBounds(448, 386, 90, 25);
 		panel.add(btnSalir);
+	
+		loadVacTable(null);
 		
-		loadEnfTable(null);
 	}
 	
-	public static void loadEnfTable(String search) {
+	public static void loadVacTable(String search) {
 		txtBuscar.setText("");
 		model.setRowCount(0);
 		row = new Object[model.getColumnCount()];
 		
-			for (Enfermedad enf : Clinica.getInstance().getMisEnfermedades()) {
-				row[0] = enf.getCodigo();
-				row[1] = enf.getNombre();
-				row[2] = enf.getTipo();
+			for (Vacuna vac : Clinica.getInstance().getMisVacunas()) {
+				row[0] = vac.getCodigo();
+				row[1] = vac.getNombre();
+				row[2] = vac.getAnnoCreacion();
 				model.addRow(row);
 			}
 

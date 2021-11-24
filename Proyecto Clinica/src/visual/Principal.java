@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JPopupMenu;
@@ -26,6 +27,7 @@ import javax.swing.border.BevelBorder;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 
 public class Principal extends JFrame {
 
@@ -69,6 +71,11 @@ public class Principal extends JFrame {
 		JMenuItem itemCC = new  JMenuItem("Cita/Consulta");
 		mnNueva.add(itemCC);
 		
+		//if(Clinica.getInstance().getLogedUser() instanceof Medico) {
+			JMenuItem itemVacuna = new JMenuItem("Vacuna");
+			mnNueva.add(itemVacuna);
+		//}
+
 		if(Clinica.getInstance().getLogedUser() instanceof Medico) {
 			itemCC.setText("Consulta");
 		}else if(Clinica.getInstance().getLogedUser() instanceof Secretario){
@@ -79,6 +86,12 @@ public class Principal extends JFrame {
 		menuBar.add(mnRevisar);
 		
 		JMenuItem itemRPerfil = new JMenuItem("Perfil");
+		itemRPerfil.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Perfil windowPerfil = new Perfil();
+				windowPerfil.setVisible(true);
+			}
+		});
 		mnRevisar.add(itemRPerfil);
 		
 		JMenu mnRLista = new JMenu("Lista");
@@ -134,6 +147,12 @@ public class Principal extends JFrame {
 		mnRegistrar.add(itemREnfermedad);
 		
 		JMenuItem itemRVacuna = new JMenuItem("Registrar vacuna");
+		itemRVacuna.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegVacuna windowRegVacuna = new RegVacuna();
+				windowRegVacuna.setVisible(true);
+			}
+		});
 		mnRegistrar.add(itemRVacuna);
 		
 		JMenu mnALista = new JMenu("Lista");
@@ -150,9 +169,21 @@ public class Principal extends JFrame {
 		mnALista.add(mntmNewMenuItem_1);
 		
 		JMenuItem mntmNewMenuItem_9 = new JMenuItem("Lista de enfermedades");
+		mntmNewMenuItem_9.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				EnfermedadList enfList = new EnfermedadList();
+				enfList.setVisible(true);
+			}
+		});
 		mnALista.add(mntmNewMenuItem_9);
 		
 		JMenuItem mntmNewMenuItem_10 = new JMenuItem("Lista de vacunas");
+		mntmNewMenuItem_10.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				VacunaList vacList = new VacunaList();
+				vacList.setVisible(true);
+			}
+		});
 		mnALista.add(mntmNewMenuItem_10);
 		
 		JMenuItem itemReporte = new JMenuItem("Solicitar reporte");
@@ -176,6 +207,10 @@ public class Principal extends JFrame {
 		contentPane.add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
 		
+		JLabel lblInfo = new JLabel("");
+		lblInfo.setBounds(10, 431, 700, 14);
+		panel.add(lblInfo);
+		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		panel_1.setBounds(440, 30, 270, 400);
@@ -189,8 +224,23 @@ public class Principal extends JFrame {
 		panel_2.setLayout(null);
 		
 		JButton btnLogout = new JButton("Cerrar sesi\u00F3n");
+		btnLogout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (JOptionPane.showConfirmDialog(panel, "¿Está seguro de cerrar su sesión?", "Cerrar sesión", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					lblInfo.setText("Cerrando sesión...");
+					dispose();
+					Login newLogin = new Login();
+					newLogin.setVisible(true);
+					Clinica.getInstance().Logout();
+				}else {
+					
+				}
+				
+			}
+		});
 		btnLogout.setBounds(70, 340, 125, 25);
 		panel_2.add(btnLogout);
+		
 	}
 	private static void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {

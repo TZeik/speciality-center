@@ -19,13 +19,15 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Window.Type;
+import javax.swing.JTextArea;
+import java.awt.Font;
 
 public class RegEnfermedad extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtName;
 	private JTextField txtTipo;
-	private JTextField txtInfo;
+	private JTextArea txtInfo;
 	private JLabel lblNewLabel_2;
 	private JPanel panel_1;
 	private JButton btnCancel;
@@ -85,7 +87,9 @@ public class RegEnfermedad extends JFrame {
 		lblNewLabel_1.setBounds(10, 152, 233, 14);
 		panel.add(lblNewLabel_1);
 		
-		txtInfo = new JTextField();
+		txtInfo = new JTextArea();
+		txtInfo.setLineWrap(true);
+		txtInfo.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		txtInfo.setBounds(10, 247, 411, 90);
 		panel.add(txtInfo);
 		txtInfo.setColumns(10);
@@ -121,9 +125,12 @@ public class RegEnfermedad extends JFrame {
 				
 				Clinica.getInstance().getMisEnfermedades().add(newEnfermedad);
 				Clinica.getInstance().setEnfermedadCodeGenerator(Clinica.getInstance().getEnfermedadCodeGenerator() + 1);
+				Clinica.getInstance().guardarClinica();
 				
 				JOptionPane.showMessageDialog(panel, "La enfermedad se ha registrado con éxito", "Registro de enfermedad", JOptionPane.INFORMATION_MESSAGE);
-				
+				txtName.setText("");
+				txtTipo.setText("");
+				txtInfo.setText("");
 			}
 		});
 		btnRegistrar.setBounds(231, 361, 90, 25);

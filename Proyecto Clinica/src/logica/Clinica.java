@@ -254,6 +254,52 @@ public class Clinica implements Serializable{
 		return especificos;
 
 	}
+	
+	public Enfermedad SearchEnfermedad(String codigo) {
+		Enfermedad enfermedad = new Enfermedad(codigo);
+		
+		for (Enfermedad enf : Clinica.getInstance().getMisEnfermedades()) {
+			
+			if(enfermedad.getCodigo().equals(enf.getCodigo())) {
+				enfermedad = enf;
+			}
+			
+		}
+		
+		return enfermedad;
+	}
+	
+	public Vacuna SearchVacuna(String codigo) {
+		Vacuna vacuna = new Vacuna(codigo);
+		
+		for (Vacuna vac : Clinica.getInstance().getMisVacunas()) {
+			
+			if(vacuna.getCodigo().equals(vac.getCodigo())) {
+				vacuna =  vac;
+			}
+			
+		}
+		
+		return vacuna;
+	}
+	
+	public void EditUsuario(Usuario newUser) {
+	
+		for (Usuario user : Clinica.getInstance().getMisUsuarios()) {
+			if(newUser.getCodigo().equals(user.getCodigo())) {
+				Clinica.getInstance().getMisUsuarios().remove(user);
+				Clinica.getInstance().getMisUsuarios().add(newUser);
+			}
+		}
+		
+	}
+	
+
+	public void Logout() {
+		Clinica.getInstance().logedUser = null;
+		Clinica.getInstance().guardarClinica();
+		
+	}
 
 
 }
