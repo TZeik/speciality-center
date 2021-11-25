@@ -68,12 +68,12 @@ public class Principal extends JFrame {
 	public Principal() {
 		addWindowListener(new WindowAdapter() {
 			@Override
-			public void windowClosed(WindowEvent e) {
+			public void windowClosing(WindowEvent e) {
 				Clinica.getInstance().setLogedUser(null);
+				Clinica.getInstance().setSelectedCita(null);
 				Clinica.getInstance().guardarClinica();
 			}
 		});
-
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Administraci\u00F3n de Cl\u00EDnica");

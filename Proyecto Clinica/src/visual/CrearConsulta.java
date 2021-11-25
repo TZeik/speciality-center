@@ -88,6 +88,9 @@ public class CrearConsulta extends JFrame {
 		txaFinalidad.setBounds(220, 50, 216, 61);
 		panel_1.add(txaFinalidad);
 		
+		txtSelectCita.setText("");
+		txaFinalidad.setText("");
+		
 		JLabel lblNewLabel = new JLabel("Seleccionar Cita:");
 		lblNewLabel.setBounds(10, 30, 241, 14);
 		panel_1.add(lblNewLabel);
@@ -121,13 +124,13 @@ public class CrearConsulta extends JFrame {
 		lblSintomas.setBounds(10, 30, 250, 14);
 		panel_2.add(lblSintomas);
 		
-		DefaultComboBoxModel enfermedadModel = new DefaultComboBoxModel();
+		DefaultComboBoxModel<String> enfermedadModel = new DefaultComboBoxModel<String>();
 		enfermedadModel.addElement("<< Seleccione >>");
 		for(Enfermedad enf : Clinica.getInstance().getMisEnfermedades()) {
 			enfermedadModel.addElement(enf.getNombre());
 		}
 		
-		JComboBox cbxEnfermedad = new JComboBox();
+		JComboBox<String> cbxEnfermedad = new JComboBox<String>();
 		cbxEnfermedad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(cbxEnfermedad.getSelectedIndex() != 0) {
@@ -206,11 +209,17 @@ public class CrearConsulta extends JFrame {
 						dispose();
 					}else {
 						Clinica.getInstance().setSelectedCita(Clinica.getInstance().SoloCitasMedico().get(0));
+						txtSelectCita.setText("");
+						txaFinalidad.setText("");
 					}
 				}
 			}
 			@Override
 			public void windowClosed(WindowEvent e) {
+				Clinica.getInstance().setSelectedCita(null);
+			}
+			@Override
+			public void windowOpened(WindowEvent e) {
 				Clinica.getInstance().setSelectedCita(null);
 			}
 		});
