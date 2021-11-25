@@ -66,6 +66,13 @@ public class Principal extends JFrame {
 	 * Create the frame.
 	 */
 	public Principal() {
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosed(WindowEvent e) {
+				Clinica.getInstance().setLogedUser(null);
+				Clinica.getInstance().guardarClinica();
+			}
+		});
 
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -126,13 +133,19 @@ public class Principal extends JFrame {
 		mnRevisar.add(mnRLista);
 		
 		JMenuItem itemLCitas = new JMenuItem("Lista de citas");
+		itemLCitas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CitaList citaList = new CitaList(0);
+				citaList.setVisible(true);
+			}
+		});
 		mnRLista.add(itemLCitas);
-		
-		JMenuItem itemLConsultas = new JMenuItem("Lista de consultas");
-		mnRLista.add(itemLConsultas);
 		
 		JMenuItem itemLPacientes = new JMenuItem("Lista de pacientes");
 		mnRLista.add(itemLPacientes);
+		
+		JMenuItem itemLConsultas = new JMenuItem("Lista de consultas");
+		mnRLista.add(itemLConsultas);
 
 		if(Clinica.getInstance().getLogedUser() instanceof Secretario) {
 			itemLConsultas.setEnabled(false);

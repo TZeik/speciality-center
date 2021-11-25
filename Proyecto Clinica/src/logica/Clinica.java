@@ -27,10 +27,13 @@ public class Clinica implements Serializable{
 	private ArrayList<Enfermedad> misEnfermedades;
 	private ArrayList<Vacuna> misVacunas;
 	private Usuario logedUser = null;
+	private Cita selectedCita = null;
 	private int userCodeGenerator;
 	private int enfermedadCodeGenerator;
 	private int vaccineCodeGenerator;
 	private int citaCodeGenerator;
+	private int consultaCodeGenerator;
+	private int pacienteCodeGenerator;
 	
 	private Clinica() {
 		super();
@@ -44,6 +47,8 @@ public class Clinica implements Serializable{
 		this.enfermedadCodeGenerator = 1;
 		this.vaccineCodeGenerator = 1;
 		this.citaCodeGenerator = 1;
+		this.consultaCodeGenerator = 1;
+		this.pacienteCodeGenerator = 1;
 	}
 	
 	public static Clinica getInstance() {
@@ -77,6 +82,31 @@ public class Clinica implements Serializable{
 		this.vaccineCodeGenerator = vaccineCodeGenerator;
 	}
 
+	public int getCitaCodeGenerator() {
+		return citaCodeGenerator;
+	}
+
+	public void setCitaCodeGenerator(int citaCodeGenerator) {
+		this.citaCodeGenerator = citaCodeGenerator;
+	}
+	
+	public int getConsultaCodeGenerator() {
+		return consultaCodeGenerator;
+	}
+
+	public void setConsultaCodeGenerator(int consultaCodeGenerator) {
+		this.consultaCodeGenerator = consultaCodeGenerator;
+	}
+	
+	public int getPacienteCodeGenerator() {
+		return pacienteCodeGenerator;
+	}
+
+	public void setPacienteCodeGenerator(int pacienteCodeGenerator) {
+		this.pacienteCodeGenerator = pacienteCodeGenerator;
+	}
+
+	
 	public static Clinica getSoul() {
 		return soul;
 	}
@@ -91,6 +121,14 @@ public class Clinica implements Serializable{
 
 	public void setLogedUser(Usuario logedUser) {
 		this.logedUser = logedUser;
+	}
+	
+	public Cita getSelectedCita() {
+		return selectedCita;
+	}
+
+	public void setSelectedCita(Cita selectedCita) {
+		this.selectedCita = selectedCita;
 	}
 
 	public ArrayList<Paciente> getMisPacientes() {
@@ -190,19 +228,43 @@ public class Clinica implements Serializable{
 		return codigo;
 	}
 	
+	public String GenerateConsultaCode() {
+		
+		String codigo;
+		codigo = "O-" + consultaCodeGenerator;
+		return codigo;
+	}
+	
+	public String GeneratePacienteCode() {
+		
+		String codigo;
+		codigo = "P-" + pacienteCodeGenerator;
+		return codigo;
+	}
+	
 	public Paciente buscarPacienteByCed(String CedPaciente) {
-		Paciente auxP= null;
-		boolean encontrado = false ;
-		int i=0;
-		while (!encontrado || i<misPacientes.size()) {
-			if(misPacientes.get(i).getCedula().equalsIgnoreCase(CedPaciente)) {
-				auxP = misPacientes.get(i);
-				encontrado = true;
+		
+		Paciente paciente = null;
+		
+		for(Paciente pac : Clinica.getInstance().getMisPacientes()) {
+			if(CedPaciente.equals(pac.getCedula())) {
+				paciente = pac;
+			}
+		}
+		return paciente;
+	}
+	
+	public int buscarPacienteIndex(String codigo) {
+		
+		int i = -1;
+		int index = 0;
+		for(Paciente pac : Clinica.getInstance().getMisPacientes()) {
+			if(pac.getCodigo().equals(codigo)) {
+				index = i;
 			}
 			i++;
 		}
-		return auxP;
-		
+		return index;
 	}
 	
 	public boolean confirmLogin (String id, String password) {
@@ -278,6 +340,19 @@ public class Clinica implements Serializable{
 		return enfermedad;
 	}
 	
+	public Enfermedad SearchEnfermedadByName(String name) {
+		
+		Enfermedad enfermedad = null;
+		
+		for(Enfermedad enf :  Clinica.getInstance().getMisEnfermedades()) {
+			if(name.equals(enf.getNombre())) {
+				enfermedad = enf;
+			}
+		}
+		
+		return enfermedad;
+	}
+	
 	public Vacuna SearchVacuna(String codigo) {
 		Vacuna vacuna = new Vacuna(codigo);
 		
@@ -290,6 +365,18 @@ public class Clinica implements Serializable{
 		}
 		
 		return vacuna;
+	}
+	
+	public Cita SearchCita(String codigo) {
+		Cita cita = new Cita(codigo);
+		
+		for(Cita cit : Clinica.getInstance().getMisCitas()) {
+			if(cita.getCodigo().equals(cit.getCodigo())) {
+				cita = cit;
+			}
+		}
+		
+		return cita;
 	}
 	
 	public void EditUsuario(Usuario newUser) {
@@ -364,6 +451,18 @@ public class Clinica implements Serializable{
 		return misMedicos;
 	}
 	
+	public ArrayList<Cita> SoloCitasMedico(){
+		
+		ArrayList<Cita> misCitas = new ArrayList<Cita>();
+		
+		for(Cita cit : Clinica.getInstance().getMisCitas()) {
+			if(cit.getMedico().equals(Clinica.getInstance().getLogedUser())) {
+				misCitas.add(cit);
+			}
+		}
+		return misCitas;
+	}
+	
 	public Medico SearchMedicoByName(String name) {
 		Medico medico = new Medico(null);
 		
@@ -380,6 +479,20 @@ public class Clinica implements Serializable{
 		
 		Clinica.getInstance().logedUser.setNombre(user.getNombre());
 		
+	}
+	
+	public void nuevoPaciente(Cita cita, Consulta consulta, Vacuna vacuna) {
+		
+		Paciente newPaciente = new Paciente(Clinica.getInstance().GeneratePacienteCode(),cita.getNombre(),cita.getCedula(),cita.getFechaNacimiento(),cita.getDireccion(),cita.getTelefono());
+		if(vacuna == null) {
+			newPaciente.getHistorial().getMisConsultas().add(consulta);
+		}
+		if(consulta == null) {
+			newPaciente.getHistorial().getMisVacunas().add(vacuna);
+		}
+		Clinica.getInstance().getMisPacientes().add(newPaciente);
+		Clinica.getInstance().setPacienteCodeGenerator(Clinica.getInstance().getPacienteCodeGenerator() + 1);
+		Clinica.getInstance().guardarClinica();
 	}
 
 

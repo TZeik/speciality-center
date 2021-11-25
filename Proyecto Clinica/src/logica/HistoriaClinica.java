@@ -9,23 +9,13 @@ public class HistoriaClinica implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 8551858366988969720L;
-	private String codigo;
 	private ArrayList<Consulta> misConsultas;
 	private ArrayList<Vacuna> misVacunas;
 	
-	public HistoriaClinica(String codigo, ArrayList<Consulta> misConsultas, ArrayList<Vacuna> misVacunas) {
+	public HistoriaClinica() {
 		super();
-		this.codigo = codigo;
 		this.misConsultas = new ArrayList<Consulta>();
 		this.misVacunas = new ArrayList<Vacuna>();;
-	}
-
-	public String getCodigo() {
-		return codigo;
-	}
-
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
 	}
 
 	public ArrayList<Consulta> getMisConsultas() {

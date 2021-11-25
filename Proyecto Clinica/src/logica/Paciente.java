@@ -2,6 +2,7 @@ package logica;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Paciente implements Serializable{
@@ -10,24 +11,31 @@ public class Paciente implements Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 4750282174471169681L;
+	private String codigo;
 	private String nombre;
 	private String cedula;
-	private Date fechaNacimiento;
+	private Calendar fechaNacimiento;
 	private String direccion;
 	private String telefono;
 	private HistoriaClinica historial;
-	private ArrayList<Consulta> misConsultas;
 	
-	public Paciente(String nombre, String cedula, Date fechaNacimiento, String direccion, String telefono,
-			HistoriaClinica historial, ArrayList<Consulta> misConsultas) {
+	public Paciente(String codigo,String nombre, String cedula, Calendar fechaNacimiento, String direccion, String telefono) {
 		super();
+		this.codigo = codigo;
 		this.nombre = nombre;
 		this.cedula = cedula;
 		this.fechaNacimiento = fechaNacimiento;
 		this.direccion = direccion;
 		this.telefono = telefono;
-		this.historial = historial;
-		this.misConsultas = new ArrayList<Consulta>();;
+		this.historial = new HistoriaClinica();
+	}
+
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
 	}
 
 	public String getNombre() {
@@ -46,11 +54,11 @@ public class Paciente implements Serializable{
 		this.cedula = cedula;
 	}
 
-	public Date getFechaNacimiento() {
+	public Calendar getFechaNacimiento() {
 		return fechaNacimiento;
 	}
 
-	public void setFechaNacimiento(Date fechaNacimiento) {
+	public void setFechaNacimiento(Calendar fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
@@ -78,16 +86,6 @@ public class Paciente implements Serializable{
 		this.historial = historial;
 	}
 
-	public ArrayList<Consulta> getMisConsultas() {
-		return misConsultas;
-	}
 
-	public void setMisConsultas(ArrayList<Consulta> misConsultas) {
-		this.misConsultas = misConsultas;
-	}
-	
-	public void insertarCoonsulta (Consulta auxC) {
-		misConsultas.add(auxC);
-	}
 	
 }

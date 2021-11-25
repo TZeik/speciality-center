@@ -300,6 +300,7 @@ public class CrearCita extends JFrame {
 				
 				Clinica.getInstance().getMisCitas().add(newCita);
 				Clinica.getInstance().guardarClinica();
+				Clinica.getInstance().setCitaCodeGenerator(Clinica.getInstance().getCitaCodeGenerator() + 1);
 				
 				CrearCita refresh = new CrearCita();
 				refresh.setVisible(true);
