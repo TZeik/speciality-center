@@ -30,6 +30,7 @@ public class Clinica implements Serializable{
 	private int userCodeGenerator;
 	private int enfermedadCodeGenerator;
 	private int vaccineCodeGenerator;
+	private int citaCodeGenerator;
 	
 	private Clinica() {
 		super();
@@ -42,6 +43,7 @@ public class Clinica implements Serializable{
 		this.userCodeGenerator = 1;
 		this.enfermedadCodeGenerator = 1;
 		this.vaccineCodeGenerator = 1;
+		this.citaCodeGenerator = 1;
 	}
 	
 	public static Clinica getInstance() {
@@ -178,6 +180,13 @@ public class Clinica implements Serializable{
 		
 		String codigo;
 		codigo = "V-" + vaccineCodeGenerator;
+		return codigo;
+	}
+	
+	public String GenerateCitaCode() {
+		
+		String codigo;
+		codigo = "C-" + citaCodeGenerator;
 		return codigo;
 	}
 	
@@ -339,6 +348,37 @@ public class Clinica implements Serializable{
 	public void Logout() {
 		Clinica.getInstance().logedUser = null;
 		Clinica.getInstance().guardarClinica();
+		
+	}
+	
+	public ArrayList<Usuario> misMedicos(){
+		
+		ArrayList<Usuario> misMedicos = new ArrayList<Usuario>();
+		
+		for(Usuario user : Clinica.getInstance().getMisUsuarios()) {
+			if(user instanceof Medico) {
+				misMedicos.add(user);
+			}
+		}
+		
+		return misMedicos;
+	}
+	
+	public Medico SearchMedicoByName(String name) {
+		Medico medico = new Medico(null);
+		
+		for(Usuario user : Clinica.getInstance().misMedicos()) {
+			if(user.getNombre().equals(name)) {
+				medico = (Medico)user;
+			}
+		}
+		
+		return medico;
+	}
+	
+	public void EditLogedUser(Usuario user) {
+		
+		Clinica.getInstance().logedUser.setNombre(user.getNombre());
 		
 	}
 

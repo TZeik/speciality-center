@@ -74,7 +74,7 @@ public class regUser extends JFrame {
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_1.setBounds(10, 11, 495, 30);
+		panel_1.setBounds(10, 11, 495, 47);
 		panel.add(panel_1);
 		
 		JComboBox cbxUserType = new JComboBox();

@@ -1,6 +1,7 @@
 package logica;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Cita implements Serializable{
@@ -13,28 +14,17 @@ public class Cita implements Serializable{
 	private String nombre;
 	private String cedula;
 	private String genero;
-	private Date fechaNacimiento;
-	private Date fecha;
+	private Calendar fechaNacimiento;
+	private Calendar fechaCita;
 	private String finalidad;
 	private String direccion;
 	private String telefono;
 	private String especialidad;
 	private Medico medico;
 	
-	public Cita(String codigo, String nombre, String cedula, String genero, Date fechaNacimiento, Date fecha,
-			String finalidad, String direccion, String telefono, String especialidad, Medico medico) {
+	public Cita(String codigo) {
 		super();
 		this.codigo = codigo;
-		this.nombre = nombre;
-		this.cedula = cedula;
-		this.genero = genero;
-		this.fechaNacimiento = fechaNacimiento;
-		this.fecha = fecha;
-		this.finalidad = finalidad;
-		this.direccion = direccion;
-		this.telefono = telefono;
-		this.especialidad = especialidad;
-		this.medico = medico;
 	}
 
 	public String getCodigo() {
@@ -69,20 +59,20 @@ public class Cita implements Serializable{
 		this.genero = genero;
 	}
 
-	public Date getFechaNacimiento() {
+	public Calendar getFechaNacimiento() {
 		return fechaNacimiento;
 	}
 
-	public void setFechaNacimiento(Date fechaNacimiento) {
+	public void setFechaNacimiento(Calendar fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
-	public Date getFecha() {
-		return fecha;
+	public Calendar getFechaCita() {
+		return fechaCita;
 	}
 
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
+	public void setFechaCita(Calendar fecha) {
+		this.fechaCita = fecha;
 	}
 
 	public String getFinalidad() {

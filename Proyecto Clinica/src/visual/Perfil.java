@@ -117,6 +117,7 @@ public class Perfil extends JFrame {
 					newAdmin.setPuesto(txtDynamic.getText());
 					newAdmin.setPassword(Clinica.getInstance().getLogedUser().getPassword());
 					Clinica.getInstance().EditUsuario(newAdmin);
+					Clinica.getInstance().EditLogedUser(newAdmin);
 					Clinica.getInstance().guardarClinica();
 					JOptionPane.showMessageDialog(panel, "Se ha guardado con éxito", "Guardar usuario", JOptionPane.INFORMATION_MESSAGE);
 				}
@@ -128,6 +129,7 @@ public class Perfil extends JFrame {
 					newMed.setEspecialidad(txtDynamic.getText());
 					newMed.setPassword(Clinica.getInstance().getLogedUser().getPassword());
 					Clinica.getInstance().EditUsuario(newMed);
+					Clinica.getInstance().EditLogedUser(newMed);
 					Clinica.getInstance().guardarClinica();
 					JOptionPane.showMessageDialog(panel, "Se ha guardado con éxito", "Guardar usuario", JOptionPane.INFORMATION_MESSAGE);
 				}
@@ -138,6 +140,7 @@ public class Perfil extends JFrame {
 					newSec.setTelefono(txtTel.getText());
 					newSec.setPassword(Clinica.getInstance().getLogedUser().getPassword());
 					Clinica.getInstance().EditUsuario(newSec);
+					Clinica.getInstance().EditLogedUser(newSec);
 					Clinica.getInstance().guardarClinica();
 					JOptionPane.showMessageDialog(panel, "Se ha guardado con éxito", "Guardar usuario", JOptionPane.INFORMATION_MESSAGE);
 				}

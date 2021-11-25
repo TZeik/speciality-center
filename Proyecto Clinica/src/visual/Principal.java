@@ -28,10 +28,22 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.UIManager;
+import java.awt.Color;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
+import java.awt.Font;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class Principal extends JFrame {
 
 	private JPanel contentPane;
+	private JTable table;
+	private JTable table_1;
 
 	/**
 	 * Launch the application.
@@ -53,6 +65,7 @@ public class Principal extends JFrame {
 	 * Create the frame.
 	 */
 	public Principal() {
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Administraci\u00F3n de Cl\u00EDnica");
 		setResizable(false);
@@ -69,6 +82,17 @@ public class Principal extends JFrame {
 		mnCrear.add(mnNueva);
 		
 		JMenuItem itemCC = new  JMenuItem("Cita/Consulta");
+		itemCC.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(Clinica.getInstance().getLogedUser() instanceof Medico) {
+					
+				}
+				if(Clinica.getInstance().getLogedUser() instanceof Secretario) {
+					CrearCita ventanaCrearCita = new CrearCita();
+					ventanaCrearCita.setVisible(true);
+				}
+			}
+		});
 		mnNueva.add(itemCC);
 		
 		//if(Clinica.getInstance().getLogedUser() instanceof Medico) {
@@ -213,17 +237,57 @@ public class Principal extends JFrame {
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panel_1.setBounds(440, 30, 270, 400);
+		panel_1.setBounds(440, 30, 270, 364);
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_2.setBounds(10, 11, 250, 378);
-		panel_1.add(panel_2);
-		panel_2.setLayout(null);
+		JScrollPane scrollPane_1 = new JScrollPane();
+		scrollPane_1.setBounds(10, 102, 250, 251);
+		panel_1.add(scrollPane_1);
+		
+		table_1 = new JTable();
+		table_1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		scrollPane_1.setViewportView(table_1);
+		
+		JPanel imagePanel = new JPanel();
+		imagePanel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		imagePanel.setBounds(10, 11, 80, 80);
+		panel_1.add(imagePanel);
+		imagePanel.setLayout(new BorderLayout(0, 0));
+		
+		JLabel lblNombre = new JLabel(Clinica.getInstance().getLogedUser().getNombre());
+		lblNombre.setFont(new Font("Arial", Font.BOLD, 12));
+		lblNombre.setBounds(100, 11, 160, 14);
+		panel_1.add(lblNombre);
+		
+		JComboBox cbxEstado = new JComboBox();
+		cbxEstado.setModel(new DefaultComboBoxModel(new String[] {"En l\u00EDnea", "Ausente", "Invisible"}));
+		cbxEstado.setBounds(100, 50, 160, 20);
+		panel_1.add(cbxEstado);
+		
+		JPanel panel_3 = new JPanel();
+		panel_3.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Crear", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		panel_3.setBounds(10, 30, 420, 150);
+		panel.add(panel_3);
+		panel_3.setLayout(null);
+		
+		JPanel panel_4 = new JPanel();
+		panel_4.setBorder(new TitledBorder(null, "Bandeja de entrada", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_4.setBounds(10, 188, 420, 242);
+		panel.add(panel_4);
+		panel_4.setLayout(null);
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBounds(10, 23, 400, 208);
+		panel_4.add(scrollPane);
+		
+		table = new JTable();
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		scrollPane.setViewportView(table);
 		
 		JButton btnLogout = new JButton("Cerrar sesi\u00F3n");
+		btnLogout.setBounds(440, 405, 270, 25);
+		panel.add(btnLogout);
 		btnLogout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (JOptionPane.showConfirmDialog(panel, "¿Está seguro de cerrar su sesión?", "Cerrar sesión", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
@@ -238,9 +302,7 @@ public class Principal extends JFrame {
 				
 			}
 		});
-		btnLogout.setBounds(70, 340, 125, 25);
-		panel_2.add(btnLogout);
-		
+
 	}
 	private static void addPopup(Component component, final JPopupMenu popup) {
 		component.addMouseListener(new MouseAdapter() {
