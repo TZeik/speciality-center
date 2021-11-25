@@ -10,7 +10,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import logica.Administrador;
 import logica.Clinica;
+import logica.Medico;
+import logica.Secretario;
 import logica.Usuario;
 
 import javax.swing.JList;
@@ -85,9 +88,16 @@ public class UserList extends JFrame {
 		panel_1.add(lblNewLabel);
 		
 		cbxTipo = new JComboBox();
+		cbxTipo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int aux= cbxTipo.getSelectedIndex();
+				loadUserTable(aux);
+			}
+		});
+		cbxTipo.setModel(new DefaultComboBoxModel(new String[] {"Todos", "Administrador", "M\u00E9dico", "Secretario"}));
 		cbxTipo.setBounds(10, 60, 300, 25);
 		panel_1.add(cbxTipo);
-		cbxTipo.setModel(new DefaultComboBoxModel(new String[] {"Todos", "Administrador", "M\u00E9dico", "Secretario"}));
+		
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 118, 614, 222);
@@ -104,7 +114,7 @@ public class UserList extends JFrame {
 			}
 		});
 		model = new DefaultTableModel();
-		String[] headers = {"Codigo","Nombre","ID","Contraseña","Teléfono"};
+		String[] headers = {"Codigo","Nombre","ID","Contraseña","Tipo de usuario"};
 		model.setColumnIdentifiers(headers);
 		table.setModel(model);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -135,7 +145,6 @@ public class UserList extends JFrame {
 	}
 	
 	public static void loadUserTable(int selection) {
-		cbxTipo.setSelectedIndex(0);
 		model.setRowCount(0);
 		row = new Object[model.getColumnCount()];
 		switch (selection) {
@@ -145,38 +154,57 @@ public class UserList extends JFrame {
 				row[1] = user.getNombre();
 				row[2] = user.getId();
 				row[3] = user.getPassword();
-				row[4] = user.getTelefono();
+				if (user instanceof Administrador) {row[4] = "Administrador";}
+				if (user instanceof Medico) {row[4] = "Medico";}
+				if (user  instanceof Secretario) {row[4] = "Secretario";}
 				model.addRow(row);
 			}
 			break;
 		case 1:
 			for (Usuario user : Clinica.getInstance().tipoEspecifico(0)){
-				row[0] = user.getCodigo();
-				row[1] = user.getNombre();
-				row[2] = user.getId();
-				row[3] = user.getPassword();
-				row[4] = user.getTelefono();
-				model.addRow(row);
+				if(user instanceof Administrador) {
+					row[0] = user.getCodigo();
+					row[1] = user.getNombre();
+					row[2] = user.getId();
+					row[3] = user.getPassword();
+					if (user instanceof Administrador) {row[4] = "Administrador";}
+					if (user instanceof Medico) {row[4] = "Medico";}
+					if (user  instanceof Secretario) {row[4] = "Secretario";}
+					model.addRow(row);
+				}	
 			}
 			break;
 		case 2:
 			for (Usuario user : Clinica.getInstance().tipoEspecifico(1)){
-				row[0] = user.getCodigo();
-				row[1] = user.getNombre();
-				row[2] = user.getId();
-				row[3] = user.getPassword();
-				row[4] = user.getTelefono();
-				model.addRow(row);
+				if(user instanceof Medico) {
+					row[0] = user.getCodigo();
+					row[1] = user.getNombre();
+					row[2] = user.getId();
+					row[3] = user.getPassword();
+					row[3] = user.getPassword();
+					if (user instanceof Administrador) {row[4] = "Administrador";}
+					if (user instanceof Medico) {row[4] = "Medico";}
+					if (user  instanceof Secretario) {row[4] = "Secretario";}
+					model.addRow(row);
+					
+				}
+
 			}
 			break;
 		case 3:
 			for (Usuario user : Clinica.getInstance().tipoEspecifico(2)){
-				row[0] = user.getCodigo();
-				row[1] = user.getNombre();
-				row[2] = user.getId();
-				row[3] = user.getPassword();
-				row[4] = user.getTelefono();
-				model.addRow(row);
+				if(user instanceof Secretario) {
+					row[0] = user.getCodigo();
+					row[1] = user.getNombre();
+					row[2] = user.getId();
+					row[3] = user.getPassword();
+					row[3] = user.getPassword();
+					if (user instanceof Administrador) {row[4] = "Administrador";}
+					if (user instanceof Medico) {row[4] = "Medico";}
+					if (user  instanceof Secretario) {row[4] = "Secretario";}
+					model.addRow(row);
+				}
+				
 			}
 			break;
 
