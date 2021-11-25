@@ -379,6 +379,32 @@ public class Clinica implements Serializable{
 		return cita;
 	}
 	
+	public Vacuna SearchVacunaByName(String nombre) {
+		Vacuna vacuna = new Vacuna(null);
+		
+		for (Vacuna vac : Clinica.getInstance().getMisVacunas()) {
+			
+			if(nombre.equalsIgnoreCase(vac.getNombre())) {
+				vacuna =  vac;
+			}
+			
+		}
+		
+		return vacuna;
+	}
+	
+	public Cita SearchCitaByName(String nombre) {
+		Cita cita = new Cita(null);
+		
+		for(Cita cit : Clinica.getInstance().getMisCitas()) {
+			if(nombre.equalsIgnoreCase(cit.getNombre())) {
+				cita = cit;
+			}
+		}
+		
+		return cita;
+	}
+	
 	public void EditUsuario(Usuario newUser) {
 	
 		for (Usuario user : Clinica.getInstance().getMisUsuarios()) {
@@ -479,6 +505,18 @@ public class Clinica implements Serializable{
 		
 		Clinica.getInstance().logedUser.setNombre(user.getNombre());
 		
+	}
+	
+	public Paciente getPacienteByCita(Cita cita) {
+		Paciente paciente = null;
+				
+		for(Paciente pac : Clinica.getInstance().getMisPacientes()) {
+			if(cita.getCedula().equalsIgnoreCase(pac.getCedula())) {
+				paciente =  pac;
+			}
+		}
+		
+		return paciente;
 	}
 	
 	public void nuevoPaciente(Cita cita, Consulta consulta, Vacuna vacuna) {

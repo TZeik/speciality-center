@@ -41,6 +41,7 @@ public class EnfermedadList extends JFrame {
 	private Enfermedad selected = null;
 	private JButton btnEliminar;
 	private JButton btnEditar;
+	private JTextArea txaDescripcion;
 
 	/**
 	 * Launch the application.
@@ -86,7 +87,7 @@ public class EnfermedadList extends JFrame {
 		panel.add(panel_2);
 		panel_2.setLayout(null);
 		
-		JTextArea txaDescripcion = new JTextArea();
+		txaDescripcion = new JTextArea();
 		txaDescripcion.setLineWrap(true);
 		txaDescripcion.setEditable(false);
 		txaDescripcion.setBounds(10, 26, 220, 243);
@@ -97,8 +98,9 @@ public class EnfermedadList extends JFrame {
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(table.getSelectedRow()>=0) {
-					if(JOptionPane.showConfirmDialog(null, "Seguro que desea eliminar esta enfermedad ?", "Enfermedades", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					if(JOptionPane.showConfirmDialog(null, "¿Esta seguro de eliminar " + selected.getNombre() + "?", "Enfermedades", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 						Clinica.getInstance().getMisEnfermedades().remove(selected);
+						Clinica.getInstance().guardarClinica();
 						loadEnfTable("");
 						botonesDef();
 						} else {
@@ -182,5 +184,7 @@ public class EnfermedadList extends JFrame {
 	private void botonesDef() {
 		btnEliminar.setEnabled(false);
 		btnEditar.setEnabled(false);
+		txtBuscar.setText("");
+		txaDescripcion.setText("");
 	}
 }

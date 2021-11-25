@@ -90,6 +90,10 @@ public class Principal extends JFrame {
 		JMenu mnNueva = new JMenu("Nueva");
 		mnCrear.add(mnNueva);
 		
+		if(Clinica.getInstance().getLogedUser() instanceof Administrador) {
+			mnCrear.setEnabled(false);
+		}
+		
 		JMenuItem itemCC = new  JMenuItem("Cita/Consulta");
 		itemCC.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -106,10 +110,16 @@ public class Principal extends JFrame {
 		});
 		mnNueva.add(itemCC);
 		
-		//if(Clinica.getInstance().getLogedUser() instanceof Medico) {
-			JMenuItem itemVacuna = new JMenuItem("Vacuna");
+		if(Clinica.getInstance().getLogedUser() instanceof Medico) {
+			JMenuItem itemVacuna = new JMenuItem("Vacunación");
+			itemVacuna.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					CrearVacuna crearVacuna = new CrearVacuna();
+					crearVacuna.setVisible(true);
+				}
+			});
 			mnNueva.add(itemVacuna);
-		//}
+		}
 
 		if(Clinica.getInstance().getLogedUser() instanceof Medico) {
 			itemCC.setText("Consulta");
