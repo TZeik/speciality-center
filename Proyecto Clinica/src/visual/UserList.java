@@ -10,10 +10,14 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import logica.Administrador;
 import logica.Clinica;
+import logica.Medico;
+import logica.Secretario;
 import logica.Usuario;
 
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.DefaultListModel;
@@ -38,6 +42,9 @@ public class UserList extends JFrame {
 	private static JComboBox cbxTipo;
 	private static Object[] row;
 	private Usuario selected = null;
+	private JButton btnEliminar;
+	private JButton btnEditar;
+	private JButton btnRevisar;
 
 	/**
 	 * Launch the application.
@@ -85,9 +92,16 @@ public class UserList extends JFrame {
 		panel_1.add(lblNewLabel);
 		
 		cbxTipo = new JComboBox();
+		cbxTipo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int aux= cbxTipo.getSelectedIndex();
+				loadUserTable(aux);
+			}
+		});
+		cbxTipo.setModel(new DefaultComboBoxModel(new String[] {"Todos", "Administrador", "M\u00E9dico", "Secretario"}));
 		cbxTipo.setBounds(10, 60, 300, 25);
 		panel_1.add(cbxTipo);
-		cbxTipo.setModel(new DefaultComboBoxModel(new String[] {"Todos", "Administrador", "M\u00E9dico", "Secretario"}));
+		
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 118, 614, 222);
@@ -99,12 +113,15 @@ public class UserList extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				int select = table.getSelectedRow();
 				if(select != -1) {
-					
+					selected = Clinica.getInstance().SearchUsuarioCode((String)table.getValueAt(select, 0));
+					btnEliminar.setEnabled(true);
+					btnEditar.setEnabled(true);
+					btnRevisar.setEnabled(true);
 				}
 			}
 		});
 		model = new DefaultTableModel();
-		String[] headers = {"Codigo","Nombre","ID","Contraseña","Teléfono"};
+		String[] headers = {"Codigo","Nombre","ID","Contraseña","Tipo de usuario"};
 		model.setColumnIdentifiers(headers);
 		table.setModel(model);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -119,23 +136,43 @@ public class UserList extends JFrame {
 		btnNewButton.setBounds(534, 351, 90, 25);
 		panel.add(btnNewButton);
 		
-		JButton btnNewButton_1 = new JButton("Eliminar");
-		btnNewButton_1.setBounds(434, 352, 90, 25);
-		panel.add(btnNewButton_1);
+		btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(table.getSelectedRow()>=0) {
+					if (JOptionPane.showConfirmDialog(null, "Seguro que desea eliminar este usuario ?", "Uusarios", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+						Clinica.getInstance().getMisUsuarios().remove(selected);
+						loadUserTable(0);
+						botonesDef();
+					}else {
+						botonesDef();
+					}
+					
+				}
+			}
+		});
+		btnEliminar.setEnabled(false);
+		btnEliminar.setBounds(434, 352, 90, 25);
+		panel.add(btnEliminar);
 		
-		JButton btnNewButton_2 = new JButton("Editar");
-		btnNewButton_2.setBounds(334, 352, 90, 25);
-		panel.add(btnNewButton_2);
+		btnEditar = new JButton("Editar");
+		btnEditar.setEnabled(false);
+		btnEditar.setBounds(334, 352, 90, 25);
+		panel.add(btnEditar);
 		
-		JButton btnNewButton_3 = new JButton("Revisar");
-		btnNewButton_3.setBounds(234, 352, 90, 25);
-		panel.add(btnNewButton_3);
+		btnRevisar = new JButton("Revisar");
+		btnRevisar.setEnabled(false);
+		btnRevisar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		btnRevisar.setBounds(234, 352, 90, 25);
+		panel.add(btnRevisar);
 		
 		loadUserTable(0);
 	}
 	
 	public static void loadUserTable(int selection) {
-		cbxTipo.setSelectedIndex(0);
 		model.setRowCount(0);
 		row = new Object[model.getColumnCount()];
 		switch (selection) {
@@ -145,45 +182,71 @@ public class UserList extends JFrame {
 				row[1] = user.getNombre();
 				row[2] = user.getId();
 				row[3] = user.getPassword();
-				row[4] = user.getTelefono();
+				if (user instanceof Administrador) {row[4] = "Administrador";}
+				if (user instanceof Medico) {row[4] = "Medico";}
+				if (user  instanceof Secretario) {row[4] = "Secretario";}
 				model.addRow(row);
 			}
 			break;
 		case 1:
 			for (Usuario user : Clinica.getInstance().tipoEspecifico(0)){
-				row[0] = user.getCodigo();
-				row[1] = user.getNombre();
-				row[2] = user.getId();
-				row[3] = user.getPassword();
-				row[4] = user.getTelefono();
-				model.addRow(row);
+				if(user instanceof Administrador) {
+					row[0] = user.getCodigo();
+					row[1] = user.getNombre();
+					row[2] = user.getId();
+					row[3] = user.getPassword();
+					if (user instanceof Administrador) {row[4] = "Administrador";}
+					if (user instanceof Medico) {row[4] = "Medico";}
+					if (user  instanceof Secretario) {row[4] = "Secretario";}
+					model.addRow(row);
+				}	
 			}
 			break;
 		case 2:
 			for (Usuario user : Clinica.getInstance().tipoEspecifico(1)){
-				row[0] = user.getCodigo();
-				row[1] = user.getNombre();
-				row[2] = user.getId();
-				row[3] = user.getPassword();
-				row[4] = user.getTelefono();
-				model.addRow(row);
+				if(user instanceof Medico) {
+					row[0] = user.getCodigo();
+					row[1] = user.getNombre();
+					row[2] = user.getId();
+					row[3] = user.getPassword();
+					row[3] = user.getPassword();
+					if (user instanceof Administrador) {row[4] = "Administrador";}
+					if (user instanceof Medico) {row[4] = "Medico";}
+					if (user  instanceof Secretario) {row[4] = "Secretario";}
+					model.addRow(row);
+					
+				}
+
 			}
 			break;
 		case 3:
 			for (Usuario user : Clinica.getInstance().tipoEspecifico(2)){
-				row[0] = user.getCodigo();
-				row[1] = user.getNombre();
-				row[2] = user.getId();
-				row[3] = user.getPassword();
-				row[4] = user.getTelefono();
-				model.addRow(row);
+				if(user instanceof Secretario) {
+					row[0] = user.getCodigo();
+					row[1] = user.getNombre();
+					row[2] = user.getId();
+					row[3] = user.getPassword();
+					row[3] = user.getPassword();
+					if (user instanceof Administrador) {row[4] = "Administrador";}
+					if (user instanceof Medico) {row[4] = "Medico";}
+					if (user  instanceof Secretario) {row[4] = "Secretario";}
+					model.addRow(row);
+				}
+				
 			}
 			break;
 
 		default:
 			break;
 		}
+		
 
+	}
+	
+	private void botonesDef() {
+		btnEliminar.setEnabled(false);
+		btnEditar.setEnabled(false);
+		btnRevisar.setEnabled(false);
 	}
 }
 

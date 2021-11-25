@@ -18,6 +18,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -38,6 +39,8 @@ public class EnfermedadList extends JFrame {
 	public static DefaultTableModel model;
 	private static Object[] row;
 	private Enfermedad selected = null;
+	private JButton btnEliminar;
+	private JButton btnEditar;
 
 	/**
 	 * Launch the application.
@@ -90,12 +93,27 @@ public class EnfermedadList extends JFrame {
 		panel_2.add(txaDescripcion);
 		
 		
-		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(table.getSelectedRow()>=0) {
+					if(JOptionPane.showConfirmDialog(null, "Seguro que desea eliminar esta enfermedad ?", "Enfermedades", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+						Clinica.getInstance().getMisEnfermedades().remove(selected);
+						loadEnfTable("");
+						botonesDef();
+						} else {
+							botonesDef();
+					}
+					
+				}
+			}
+
+		});
 		btnEliminar.setEnabled(false);
 		btnEliminar.setBounds(525, 415, 90, 25);
 		panel.add(btnEliminar);
 		
-		JButton btnEditar = new JButton("Editar");
+		btnEditar = new JButton("Editar");
 		btnEditar.setEnabled(false);
 		btnEditar.setBounds(425, 415, 90, 25);
 		panel.add(btnEditar);
@@ -159,5 +177,10 @@ public class EnfermedadList extends JFrame {
 				model.addRow(row);
 			}
 
+	}
+	
+	private void botonesDef() {
+		btnEliminar.setEnabled(false);
+		btnEditar.setEnabled(false);
 	}
 }

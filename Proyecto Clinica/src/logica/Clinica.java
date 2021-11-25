@@ -495,5 +495,16 @@ public class Clinica implements Serializable{
 		Clinica.getInstance().guardarClinica();
 	}
 
+	public Usuario SearchUsuarioCode(String code) {
+		Usuario auxU = null;
+		for(Usuario usua : misUsuarios ) {
+			if (usua.getCodigo().equalsIgnoreCase(code)) {
+				auxU = usua;
+			}
+		}
+		return auxU;
+
+	}
+
 
 }
