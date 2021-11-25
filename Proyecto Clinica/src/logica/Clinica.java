@@ -382,5 +382,16 @@ public class Clinica implements Serializable{
 		
 	}
 
+	public Usuario SearchUsuarioCode(String code) {
+		Usuario auxU = null;
+		for(Usuario usua : misUsuarios ) {
+			if (usua.getCodigo().equalsIgnoreCase(code)) {
+				auxU = usua;
+			}
+		}
+		return auxU;
+
+	}
+
 
 }

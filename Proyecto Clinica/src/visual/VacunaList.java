@@ -20,6 +20,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -74,6 +75,20 @@ public class VacunaList extends JFrame {
 		panel.add(scrollPane);
 		
 		btnEliminar = new JButton("Elminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(table.getSelectedRow()>=0) {
+					if(JOptionPane.showConfirmDialog(null, "Seguro que desea eliminar esta Vacuna ?", "Vacunas", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+						Clinica.getInstance().getMisVacunas().remove(selected);
+						loadVacTable("");
+						botonesDef();
+						} else {
+							botonesDef();
+					}
+					
+				}
+			}
+		});
 		btnEliminar.setEnabled(false);
 		btnEliminar.setBounds(348, 386, 90, 25);
 		panel.add(btnEliminar);
@@ -142,5 +157,9 @@ public class VacunaList extends JFrame {
 				model.addRow(row);
 			}
 
+	}
+	private void botonesDef() {
+		btnEliminar.setEnabled(false);
+		btnEditar.setEnabled(false);
 	}
 }
