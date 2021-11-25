@@ -38,6 +38,7 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.MouseMotionAdapter;
 
 public class Principal extends JFrame {
 
@@ -66,6 +67,7 @@ public class Principal extends JFrame {
 	 */
 	public Principal() {
 
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Administraci\u00F3n de Cl\u00EDnica");
 		setResizable(false);
@@ -85,6 +87,8 @@ public class Principal extends JFrame {
 		itemCC.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(Clinica.getInstance().getLogedUser() instanceof Medico) {
+					CrearConsulta ventanaCrearConsulta = new CrearConsulta();
+					ventanaCrearConsulta.setVisible(true);
 					
 				}
 				if(Clinica.getInstance().getLogedUser() instanceof Secretario) {
@@ -300,6 +304,13 @@ public class Principal extends JFrame {
 					
 				}
 				
+			}
+		});
+		addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				lblNombre.setText(Clinica.getInstance().getLogedUser().getNombre());
+				panel.setBorder(new TitledBorder(null, "Bienvenido, " + Clinica.getInstance().getLogedUser().getNombre(), TitledBorder.RIGHT, TitledBorder.TOP, null, null));
 			}
 		});
 

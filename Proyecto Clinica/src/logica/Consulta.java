@@ -1,6 +1,7 @@
 package logica;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Consulta implements Serializable{
@@ -10,20 +11,15 @@ public class Consulta implements Serializable{
 	 */
 	private static final long serialVersionUID = -1170647756290026293L;
 	private String codigo;
-	private Date fecha;
+	private Calendar fecha;
 	private String sintomas;
 	private String diagnostico;
 	private Enfermedad enfermedad;
 	private Medico miMedico;
 	
-	public Consulta(String codigo, Date fecha, String sintomas, String diagnostico, Enfermedad enfermedad, Medico miMedico) {
+	public Consulta(String codigo) {
 		super();
 		this.codigo = codigo;
-		this.fecha = fecha;
-		this.sintomas = sintomas;
-		this.diagnostico = diagnostico;
-		this.enfermedad = enfermedad;
-		this.miMedico = miMedico;
 	}
 
 	public String getCodigo() {
@@ -34,11 +30,11 @@ public class Consulta implements Serializable{
 		this.codigo = codigo;
 	}
 
-	public Date getFecha() {
+	public Calendar getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(Date fecha) {
+	public void setFecha(Calendar fecha) {
 		this.fecha = fecha;
 	}
 
