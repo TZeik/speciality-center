@@ -17,6 +17,7 @@ import logica.Usuario;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
@@ -26,6 +27,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Calendar;
+import java.util.ConcurrentModificationException;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 
@@ -36,6 +38,8 @@ public class ConsultaList extends JFrame {
 	public static DefaultTableModel model;
 	private static Object[] row;
 	private Consulta selected = null;
+	private static JComboBox<String> cbxPaciente;
+	private static JComboBox<String> cbxMedico;
 
 	/**
 	 * Launch the application.
@@ -84,7 +88,12 @@ public class ConsultaList extends JFrame {
 			medicoModel.addElement(user.getNombre());
 		}
 		
-		JComboBox<String> cbxMedico = new JComboBox<String>();
+		cbxMedico = new JComboBox<String>();
+		cbxMedico.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				loadConsTable();
+			}
+		});
 		cbxMedico.setBounds(320, 71, 300, 25);
 		cbxMedico.setModel(medicoModel);
 		panel_1.add(cbxMedico);
@@ -99,9 +108,19 @@ public class ConsultaList extends JFrame {
 		lblMedico.setBounds(320, 51, 300, 14);
 		panel_1.add(lblMedico);
 		
-		JComboBox<String> cbxMedico_1 = new JComboBox<String>();
-		cbxMedico_1.setBounds(10, 71, 300, 25);
-		panel_1.add(cbxMedico_1);
+		DefaultComboBoxModel<String> pacienteModel = new DefaultComboBoxModel<String>();
+		pacienteModel.addElement("Todos");
+		for(Paciente pac : Clinica.getInstance().getMisPacientes())
+			pacienteModel.addElement(pac.getNombre());
+		cbxPaciente = new JComboBox<String>();
+		cbxPaciente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				loadConsTable();
+			}
+		});
+		cbxPaciente.setModel(pacienteModel);
+		cbxPaciente.setBounds(10, 71, 300, 25);
+		panel_1.add(cbxPaciente);
 		
 		JLabel lblPaciente = new JLabel("Paciente: ");
 		lblPaciente.setBounds(10, 51, 300, 14);
@@ -145,6 +164,21 @@ public class ConsultaList extends JFrame {
 		panel.add(btnSalir);
 		
 		JButton btnEliminar = new JButton("Eliminar");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(JOptionPane.showConfirmDialog(panel, "¿Está seguro que desea eliminar la consulta " + selected.getCodigo() + "?", "Eliminar consulta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					
+					try {
+						Clinica.getInstance().EliminarConsulta(selected.getCodigo());
+					}catch(ConcurrentModificationException e1) {
+						loadConsTable();
+					}
+
+					Clinica.getInstance().guardarClinica();
+				}
+
+			}
+		});
 		btnEliminar.setBounds(458, 441, 90, 25);
 		panel.add(btnEliminar);
 		
@@ -152,23 +186,81 @@ public class ConsultaList extends JFrame {
 		btnRevisar.setBounds(359, 442, 89, 23);
 		panel.add(btnRevisar);
 		
-		loadConsTable(0,0);
+		loadConsTable();
 	}
 	
-	public static void loadConsTable(int index1, int index2) {
+	public static void loadConsTable() {
+		int opcion = 0;
 		model.setRowCount(0);
 		row = new Object[model.getColumnCount()];
-			for (Paciente pac : Clinica.getInstance().getMisPacientes()) {
-				row[1] = pac.getNombre();
-				for(Consulta cons : pac.getHistorial().getMisConsultas()) {
+		
+		if(cbxPaciente.getSelectedIndex() == 0 && cbxMedico.getSelectedIndex() == 0) {
+			opcion = 0;
+		}
+		if(cbxPaciente.getSelectedIndex() != 0 && cbxMedico.getSelectedIndex() == 0) {
+			opcion = 1;
+		}
+		if(cbxPaciente.getSelectedIndex() == 0 && cbxMedico.getSelectedIndex() != 0) {
+			opcion = 2;
+		}
+		if(cbxPaciente.getSelectedIndex() != 0 && cbxMedico.getSelectedIndex() != 0) {
+			opcion = 3;
+		}
+		
+		switch (opcion) {
+		case 0:
+			for(Consulta cons : Clinica.getInstance().misConsultas()) {
+				
 					row[0] = cons.getCodigo();
+					row[1] = Clinica.getInstance().BuscarPacienteByConsultaCode(cons.getCodigo()).getNombre();
 					row[2] = cons.getEnfermedad().getNombre();
 					row[3] = cons.getMiMedico().getNombre();
 					row[4] = cons.getFecha().get(Calendar.DAY_OF_MONTH) + "/" + cons.getFecha().get(Calendar.MONTH) + "/" + cons.getFecha().get(Calendar.YEAR);
-				}
-
+					model.addRow(row);
+			}
+			break;
+		case 1:
+			for(Consulta cons : Clinica.getInstance().SearchPacienteByName(cbxPaciente.getSelectedItem().toString()).getHistorial().getMisConsultas()) {
+				row[0] = cons.getCodigo();
+				row[1] = cbxPaciente.getSelectedItem().toString();
+				row[2] = cons.getEnfermedad().getNombre();
+				row[3] = cons.getMiMedico().getNombre();
+				row[4] = cons.getFecha().get(Calendar.DAY_OF_MONTH) + "/" + cons.getFecha().get(Calendar.MONTH) + "/" + cons.getFecha().get(Calendar.YEAR);
 				model.addRow(row);
 			}
+			break;
+		case 2:
+			for (Paciente pac : Clinica.getInstance().getMisPacientes()) {	
+				for(Consulta cons : pac.getHistorial().getMisConsultas()) {
+					if(cons.getMiMedico().getNombre().equalsIgnoreCase(cbxMedico.getSelectedItem().toString())) {
+						row[0] = cons.getCodigo();
+						row[1] = pac.getNombre();
+						row[2] = cons.getEnfermedad().getNombre();
+						row[3] = cons.getMiMedico().getNombre();
+						row[4] = cons.getFecha().get(Calendar.DAY_OF_MONTH) + "/" + cons.getFecha().get(Calendar.MONTH) + "/" + cons.getFecha().get(Calendar.YEAR);
+						model.addRow(row);
+					}
+				}
+
+
+			}
+			break;
+		case 3:
+			for(Consulta cons : Clinica.getInstance().SearchPacienteByName(cbxPaciente.getSelectedItem().toString()).getHistorial().getMisConsultas()) {
+				if(cons.getMiMedico().getNombre().equalsIgnoreCase(cbxMedico.getSelectedItem().toString())) {
+					row[0] = cons.getCodigo();
+					row[1] = cbxPaciente.getSelectedItem().toString();
+					row[2] = cons.getEnfermedad().getNombre();
+					row[3] = cons.getMiMedico().getNombre();
+					row[4] = cons.getFecha().get(Calendar.DAY_OF_MONTH) + "/" + cons.getFecha().get(Calendar.MONTH) + "/" + cons.getFecha().get(Calendar.YEAR);
+					model.addRow(row);
+				}
+			}
+			break;
+
+		default:
+			break;
+		}
 
 	}
 }

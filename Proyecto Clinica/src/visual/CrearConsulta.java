@@ -30,6 +30,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Calendar;
+import java.util.ConcurrentModificationException;
 
 public class CrearConsulta extends JFrame {
 
@@ -206,6 +207,15 @@ public class CrearConsulta extends JFrame {
 				
 				if(cancel == false) {
 					JOptionPane.showMessageDialog(panel, "Se ha creado la consulta correctamente", "Crear consulta", JOptionPane.INFORMATION_MESSAGE);
+					txtSelectCita.setText("");
+					txaFinalidad.setText("");
+					try {
+						Clinica.getInstance().EliminarCita(Clinica.getInstance().getSelectedCita().getCodigo());
+					}catch(ConcurrentModificationException e1) {
+						txtSelectCita.setText("");
+						txaFinalidad.setText("");
+					}
+					Clinica.getInstance().setConsultaCodeGenerator(Clinica.getInstance().getConsultaCodeGenerator() + 1);
 					Clinica.getInstance().guardarClinica();
 				}
 				CrearConsulta refresh = new CrearConsulta();

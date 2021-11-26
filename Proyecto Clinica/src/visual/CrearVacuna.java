@@ -21,6 +21,7 @@ import javax.swing.JOptionPane;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.ConcurrentModificationException;
 import java.awt.event.ActionEvent;
 
 public class CrearVacuna extends JFrame {
@@ -136,6 +137,12 @@ public class CrearVacuna extends JFrame {
 				
 				if(cancel == false) {
 					JOptionPane.showMessageDialog(panel, "Se ha creado la vacunación correctamente", "Crear vacunación", JOptionPane.INFORMATION_MESSAGE);
+					try {
+						Clinica.getInstance().EliminarCita(cita.getCodigo());
+					}catch(ConcurrentModificationException e1) {
+						citaModel.insertElementAt("<< Seleccione >>", 0);
+						cbxCita.setSelectedIndex(0);
+					}
 					Clinica.getInstance().guardarClinica();
 				}
 				CrearVacuna refresh = new CrearVacuna();

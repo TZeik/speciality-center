@@ -620,6 +620,59 @@ public class Clinica implements Serializable{
 		return e;
 	}
 
+	public void EliminarCita(String codigo) {
+		
+		int index = 0;
+		
+		for(Cita cit : Clinica.getInstance().getMisCitas()) {
+			if(cit.getCodigo().equalsIgnoreCase(codigo)) {
+				Clinica.getInstance().getMisCitas().remove(index);
+			}
+			index++;
+		}
+		
+	}
+	
+	public void EliminarConsulta(String codigo) {
+		
+		int indexPaciente = 0;
+		int indexConsulta;
+		for(Paciente pac : Clinica.getInstance().getMisPacientes()) {
+			indexConsulta = 0;
+			for(Consulta cons : pac.getHistorial().getMisConsultas()) {
+				if(cons.getCodigo().equalsIgnoreCase(codigo)) {
+					Clinica.getInstance().getMisPacientes().get(indexPaciente).getHistorial().getMisConsultas().remove(indexConsulta);
+				}
+				indexConsulta++;
+			}
+			indexPaciente++;
+		}
+	}
+	
+	public Paciente SearchPacienteByName(String nombre) {
+		Paciente paciente = null;
+		
+		for(Paciente pac : Clinica.getInstance().getMisPacientes()) {
+			if(pac.getNombre().equalsIgnoreCase(nombre)) {
+				paciente = pac;
+			}
+		}
+		return paciente;
+	}
+	
+	public ArrayList<Consulta> misConsultas(){
+		
+		ArrayList<Consulta> misConsultas =  new ArrayList<Consulta>();
+		
+		for(Paciente pac : Clinica.getInstance().getMisPacientes()) {
+			for(Consulta cons : pac.getHistorial().getMisConsultas()) {
+				misConsultas.add(cons);
+			}
+		}
+		
+		return misConsultas;
+	}
+
 
 	
 }
