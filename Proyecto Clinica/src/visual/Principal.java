@@ -152,6 +152,12 @@ public class Principal extends JFrame {
 		mnRLista.add(itemLCitas);
 		
 		JMenuItem itemLPacientes = new JMenuItem("Lista de pacientes");
+		itemLPacientes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				PacienteList pacienteList = new PacienteList();
+				pacienteList.setVisible(true);
+			}
+		});
 		mnRLista.add(itemLPacientes);
 		
 		JMenuItem itemLConsultas = new JMenuItem("Lista de consultas");

@@ -521,7 +521,7 @@ public class Clinica implements Serializable{
 	
 	public void nuevoPaciente(Cita cita, Consulta consulta, Vacuna vacuna) {
 		
-		Paciente newPaciente = new Paciente(Clinica.getInstance().GeneratePacienteCode(),cita.getNombre(),cita.getCedula(),cita.getFechaNacimiento(),cita.getDireccion(),cita.getTelefono());
+		Paciente newPaciente = new Paciente(Clinica.getInstance().GeneratePacienteCode(),cita.getNombre(),cita.getCedula(),cita.getGenero(),cita.getFechaNacimiento(),cita.getDireccion(),cita.getTelefono());
 		if(vacuna == null) {
 			newPaciente.getHistorial().getMisConsultas().add(consulta);
 		}
@@ -542,6 +542,20 @@ public class Clinica implements Serializable{
 		}
 		return auxU;
 
+	}
+	
+	public Paciente BuscarPacienteByConsultaCode(String codigo) {
+		Paciente paciente = null;
+		
+		for(Paciente pac : Clinica.getInstance().getMisPacientes()) {
+			for(Consulta cons : pac.getHistorial().getMisConsultas()) {
+				if(cons.getCodigo().equalsIgnoreCase(codigo)) {
+					paciente = pac;
+				}
+			}
+		}
+		
+		return paciente;
 	}
 
 
