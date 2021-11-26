@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 
+import logica.Administrador;
 import logica.Cita;
 import logica.Clinica;
 import logica.Consulta;
@@ -57,7 +58,7 @@ public class CrearConsulta extends JFrame {
 		setResizable(false);
 		setTitle("Crear consulta");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 481, 524);
+		setBounds(100, 100, 481, 530);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -73,7 +74,7 @@ public class CrearConsulta extends JFrame {
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Cita", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel_1.setBounds(10, 11, 445, 124);
+		panel_1.setBounds(10, 11, 434, 124);
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 		
@@ -85,7 +86,7 @@ public class CrearConsulta extends JFrame {
 		JTextArea txaFinalidad = new JTextArea();
 		txaFinalidad.setEditable(false);
 		txaFinalidad.setLineWrap(true);
-		txaFinalidad.setBounds(220, 50, 216, 61);
+		txaFinalidad.setBounds(220, 50, 204, 61);
 		panel_1.add(txaFinalidad);
 		
 		txtSelectCita.setText("");
@@ -111,13 +112,13 @@ public class CrearConsulta extends JFrame {
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Consulta", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel_2.setBounds(10, 146, 445, 292);
+		panel_2.setBounds(10, 146, 434, 292);
 		panel.add(panel_2);
 		panel_2.setLayout(null);
 		
 		JTextArea txaSintomas = new JTextArea();
 		txaSintomas.setLineWrap(true);
-		txaSintomas.setBounds(10, 50, 425, 70);
+		txaSintomas.setBounds(10, 50, 414, 70);
 		panel_2.add(txaSintomas);
 		
 		JLabel lblSintomas = new JLabel("Sintomas: ");
@@ -139,7 +140,7 @@ public class CrearConsulta extends JFrame {
 			}
 		});
 		cbxEnfermedad.setModel(enfermedadModel);
-		cbxEnfermedad.setBounds(10, 150, 425, 25);
+		cbxEnfermedad.setBounds(10, 150, 414, 25);
 		panel_2.add(cbxEnfermedad);
 		
 		JLabel lblEnfermedad = new JLabel("Enfermedad: ");
@@ -148,7 +149,7 @@ public class CrearConsulta extends JFrame {
 		
 		JTextArea txaDiagnostico = new JTextArea();
 		txaDiagnostico.setLineWrap(true);
-		txaDiagnostico.setBounds(10, 204, 425, 70);
+		txaDiagnostico.setBounds(10, 204, 414, 70);
 		panel_2.add(txaDiagnostico);
 		
 		JLabel lblDiagnostico = new JLabel("Diagnostico:");
@@ -162,39 +163,60 @@ public class CrearConsulta extends JFrame {
 				buscarCita.dispose();
 			}
 		});
-		btnSalir.setBounds(365, 449, 90, 25);
+		btnSalir.setBounds(354, 449, 90, 25);
 		panel.add(btnSalir);
 		
 		JButton btnCrear = new JButton("Crear");
 		btnCrear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				boolean cancel = false;
 				Consulta newConsulta = new Consulta(Clinica.getInstance().GenerateConsultaCode());
 				Paciente paciente = null;
 				newConsulta.setFecha(Calendar.getInstance());
 				newConsulta.setDiagnostico(txaDiagnostico.getText());
 				newConsulta.setSintomas(txaSintomas.getText());
 				newConsulta.setEnfermedad(Clinica.getInstance().SearchEnfermedadByName(cbxEnfermedad.getSelectedItem().toString()));
-				newConsulta.setMiMedico((Medico) Clinica.getInstance().getLogedUser());
+				if(Clinica.getInstance().getLogedUser() instanceof Administrador) {
+					Medico adminMedico = new Medico(Clinica.getInstance().getLogedUser().getCodigo());
+					Administrador temp = (Administrador)Clinica.getInstance().getLogedUser();
+					adminMedico.setId(temp.getId());
+					adminMedico.setNombre(temp.getNombre());
+					adminMedico.setPassword(temp.getPassword());
+					adminMedico.setTelefono(temp.getTelefono());
+					adminMedico.setEspecialidad(temp.getPuesto());
+					newConsulta.setMiMedico(adminMedico);
+				}else {
+					newConsulta.setMiMedico((Medico) Clinica.getInstance().getLogedUser());
+				}
+
 				paciente = Clinica.getInstance().buscarPacienteByCed(Clinica.getInstance().getSelectedCita().getCedula());
 				if(paciente == null) {
-					Clinica.getInstance().nuevoPaciente(Clinica.getInstance().getSelectedCita(), newConsulta, null);
+					if(JOptionPane.showConfirmDialog(panel, "Se creará un nuevo paciente de nombre: " + Clinica.getInstance().getSelectedCita().getNombre(), "Nuevo paciente", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+						Clinica.getInstance().nuevoPaciente(Clinica.getInstance().getSelectedCita(), newConsulta, null);
+					}else {
+						JOptionPane.showMessageDialog(panel, "No se ha podido crear la consulta", "Crear consulta", JOptionPane.ERROR_MESSAGE);
+						cancel = true;
+						
+					}
 				}
 				if(paciente != null) {
 					Clinica.getInstance().getMisPacientes().get(Clinica.getInstance().buscarPacienteIndex(paciente.getCodigo())).getHistorial().getMisConsultas().add(newConsulta);
 				}
 				
-				Clinica.getInstance().setConsultaCodeGenerator(Clinica.getInstance().getConsultaCodeGenerator() + 1);
-				JOptionPane.showMessageDialog(panel, "Se ha creado la consulta correctamente", "Crear consulta", JOptionPane.INFORMATION_MESSAGE);
-				Clinica.getInstance().guardarClinica();
+				if(cancel == false) {
+					JOptionPane.showMessageDialog(panel, "Se ha creado la consulta correctamente", "Crear consulta", JOptionPane.INFORMATION_MESSAGE);
+					Clinica.getInstance().guardarClinica();
+				}
 				CrearConsulta refresh = new CrearConsulta();
 				refresh.setVisible(true);
 				Clinica.getInstance().setSelectedCita(null);
 				dispose();
+
 				
 			}
 		});
-		btnCrear.setBounds(265, 449, 90, 25);
+		btnCrear.setBounds(254, 449, 90, 25);
 		panel.add(btnCrear);
 		
 		addWindowListener(new WindowAdapter() {

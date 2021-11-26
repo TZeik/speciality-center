@@ -133,7 +133,13 @@ public class EnfermedadList extends JFrame {
 				}
 			}
 		});
-		model = new DefaultTableModel();
+		model = new DefaultTableModel(){
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		       //all cells false
+		       return false;
+		    }
+		};
 		String[] headers = {"Codigo","Nombre","Tipo"};
 		model.setColumnIdentifiers(headers);
 		table.setModel(model);

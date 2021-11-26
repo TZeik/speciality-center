@@ -89,28 +89,35 @@ public class Principal extends JFrame {
 		
 		JMenu mnNueva = new JMenu("Nueva");
 		mnCrear.add(mnNueva);
-		
-		if(Clinica.getInstance().getLogedUser() instanceof Administrador) {
-			mnCrear.setEnabled(false);
-		}
-		
-		JMenuItem itemCC = new  JMenuItem("Cita/Consulta");
-		itemCC.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(Clinica.getInstance().getLogedUser() instanceof Medico) {
-					CrearConsulta ventanaCrearConsulta = new CrearConsulta();
-					ventanaCrearConsulta.setVisible(true);
+	
+		if(Clinica.getInstance().getLogedUser() instanceof Secretario || Clinica.getInstance().getLogedUser() instanceof  Administrador) {
+			JMenuItem itemCita = new  JMenuItem("Cita");
+			itemCita.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+	
+	
+						CrearCita ventanaCrearCita = new CrearCita();
+						ventanaCrearCita.setVisible(true);
 					
 				}
-				if(Clinica.getInstance().getLogedUser() instanceof Secretario) {
-					CrearCita ventanaCrearCita = new CrearCita();
-					ventanaCrearCita.setVisible(true);
-				}
-			}
-		});
-		mnNueva.add(itemCC);
+			});
+			mnNueva.add(itemCita);
+		}
 		
-		if(Clinica.getInstance().getLogedUser() instanceof Medico) {
+		if(Clinica.getInstance().getLogedUser() instanceof Medico || Clinica.getInstance().getLogedUser() instanceof Administrador) {
+			JMenuItem itemConsulta = new  JMenuItem("Consulta");
+			itemConsulta.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+	
+						CrearConsulta ventanaCrearConsulta = new CrearConsulta();
+						ventanaCrearConsulta.setVisible(true);
+						
+					
+				}
+			});
+			mnNueva.add(itemConsulta);
+		}	
+		if(Clinica.getInstance().getLogedUser() instanceof Medico || Clinica.getInstance().getLogedUser() instanceof Administrador) {
 			JMenuItem itemVacuna = new JMenuItem("Vacunación");
 			itemVacuna.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
@@ -119,12 +126,6 @@ public class Principal extends JFrame {
 				}
 			});
 			mnNueva.add(itemVacuna);
-		}
-
-		if(Clinica.getInstance().getLogedUser() instanceof Medico) {
-			itemCC.setText("Consulta");
-		}else if(Clinica.getInstance().getLogedUser() instanceof Secretario){
-			itemCC.setText("Cita");
 		}
 		
 		JMenu mnRevisar = new JMenu("Revisar");
@@ -161,6 +162,12 @@ public class Principal extends JFrame {
 		mnRLista.add(itemLPacientes);
 		
 		JMenuItem itemLConsultas = new JMenuItem("Lista de consultas");
+		itemLConsultas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ConsultaList consultaList = new ConsultaList();
+				consultaList.setVisible(true);
+			}
+		});
 		mnRLista.add(itemLConsultas);
 
 		if(Clinica.getInstance().getLogedUser() instanceof Secretario) {
@@ -297,6 +304,25 @@ public class Principal extends JFrame {
 		cbxEstado.setModel(new DefaultComboBoxModel(new String[] {"En l\u00EDnea", "Ausente", "Invisible"}));
 		cbxEstado.setBounds(100, 50, 160, 20);
 		panel_1.add(cbxEstado);
+		
+		JLabel lblUserType = new JLabel("<dynamic>");
+		lblUserType.setBounds(100, 77, 160, 14);
+		panel_1.add(lblUserType);
+		int opcion = Clinica.getInstance().OpcionUserClinica();
+		switch (opcion) {
+		case 0:
+			lblUserType.setText("Administrador");
+			break;
+		case 1:
+			lblUserType.setText("Médico");
+			break;
+		case 2:
+			lblUserType.setText("Secretario");
+			break;
+
+		default:
+			break;
+		}
 		
 		JPanel panel_3 = new JPanel();
 		panel_3.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Crear", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));

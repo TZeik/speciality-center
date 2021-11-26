@@ -120,7 +120,13 @@ public class UserList extends JFrame {
 				}
 			}
 		});
-		model = new DefaultTableModel();
+		model = new DefaultTableModel(){
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		       //all cells false
+		       return false;
+		    }
+		};
 		String[] headers = {"Codigo","Nombre","ID","Contraseña","Tipo de usuario"};
 		model.setColumnIdentifiers(headers);
 		table.setModel(model);
@@ -157,6 +163,10 @@ public class UserList extends JFrame {
 		panel.add(btnEliminar);
 		
 		btnEditar = new JButton("Editar");
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
 		btnEditar.setEnabled(false);
 		btnEditar.setBounds(334, 352, 90, 25);
 		panel.add(btnEditar);

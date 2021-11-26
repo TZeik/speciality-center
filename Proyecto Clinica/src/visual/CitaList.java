@@ -2,6 +2,7 @@ package visual;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Font;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -13,11 +14,13 @@ import logica.Cita;
 import logica.Clinica;
 import logica.Enfermedad;
 import logica.Medico;
+import logica.Usuario;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTable;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.ListSelectionModel;
@@ -25,6 +28,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
 
 public class CitaList extends JFrame {
 
@@ -113,13 +117,34 @@ public class CitaList extends JFrame {
 		panel_1.setLayout(null);
 		
 		txtBuscar = new JTextField();
-		txtBuscar.setBounds(10, 40, 285, 25);
+		txtBuscar.setBounds(10, 40, 431, 25);
 		panel_1.add(txtBuscar);
 		txtBuscar.setColumns(10);
 		
 		JLabel lblBuscarCita = new JLabel("Buscar cita: ");
 		lblBuscarCita.setBounds(10, 20, 390, 14);
 		panel_1.add(lblBuscarCita);
+		
+		DefaultComboBoxModel medicoModel = new DefaultComboBoxModel();
+		medicoModel.addElement("Todos");
+		for(Usuario user : Clinica.getInstance().misMedicos()) {
+			medicoModel.addElement(user.getNombre());
+		}
+		JComboBox cbxMedico = new JComboBox();
+		cbxMedico.setModel(medicoModel);
+		cbxMedico.setBounds(451, 40, 300, 25);
+		panel_1.add(cbxMedico);
+		
+		
+		if(Clinica.getInstance().getLogedUser() instanceof Medico) {
+			cbxMedico.setSelectedIndex(Clinica.getInstance().GetLogedMedicoIndex());
+			cbxMedico.setFont(new Font("Tahoma", Font.BOLD, 11));
+			cbxMedico.setEnabled(false);
+		}
+		
+		JLabel lblNewLabel = new JLabel("M\u00E9dico: ");
+		lblNewLabel.setBounds(451, 20, 300, 14);
+		panel_1.add(lblNewLabel);
 		
 		JButton btnSalir = new JButton("Salir");
 		btnSalir.addActionListener(new ActionListener() {

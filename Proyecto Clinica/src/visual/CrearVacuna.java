@@ -115,19 +115,29 @@ public class CrearVacuna extends JFrame {
 		JButton btnCrear = new JButton("Crear");
 		btnCrear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				boolean cancel = false;
 				Paciente paciente = null;
 				Cita cita = Clinica.getInstance().SearchCitaByName(cbxCita.getSelectedItem().toString());
 				Vacuna vacuna = Clinica.getInstance().SearchVacunaByName(cbxVacuna.getSelectedItem().toString());
 				
 				paciente = Clinica.getInstance().buscarPacienteByCed(cita.getCedula());
 				if(paciente == null) {
-					Clinica.getInstance().nuevoPaciente(cita, null, vacuna);
+					if(JOptionPane.showConfirmDialog(panel, "Se creará un nuevo paciente de nombre: " + cita.getNombre(), "Nuevo paciente", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+						Clinica.getInstance().nuevoPaciente(cita, null, vacuna);
+					}else {
+						JOptionPane.showMessageDialog(panel, "No se ha podido crear la vacunación", "Crear vacunación", JOptionPane.ERROR_MESSAGE);
+						cancel = true;
+					}
+					
 				}
 				if(paciente != null) {
 					Clinica.getInstance().getMisPacientes().get(Clinica.getInstance().buscarPacienteIndex(paciente.getCodigo())).getHistorial().getMisVacunas().add(vacuna);
 				}
-				JOptionPane.showMessageDialog(panel, "Se ha añadido la vacuna correctamente", "Crear vacunación", JOptionPane.INFORMATION_MESSAGE);
-				Clinica.getInstance().guardarClinica();
+				
+				if(cancel == false) {
+					JOptionPane.showMessageDialog(panel, "Se ha creado la vacunación correctamente", "Crear vacunación", JOptionPane.INFORMATION_MESSAGE);
+					Clinica.getInstance().guardarClinica();
+				}
 				CrearVacuna refresh = new CrearVacuna();
 				refresh.setVisible(true);
 				dispose();

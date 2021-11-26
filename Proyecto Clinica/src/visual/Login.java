@@ -24,6 +24,8 @@ import javax.swing.SwingConstants;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Login extends JFrame {
 
@@ -54,6 +56,7 @@ public class Login extends JFrame {
 	 * Create the frame.
 	 */
 	public Login() {
+
 		setResizable(false);
 		setTitle("Autentificaci\u00F3n");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -68,6 +71,25 @@ public class Login extends JFrame {
 		panel.setBorder(new TitledBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)), "Ingresar usuario", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
 		contentPane.add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
+		
+		addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				int keyCode = e.getKeyCode();
+				if(keyCode == KeyEvent.VK_ENTER) {
+					System.out.println("Pressed Enter");
+					String psw = new String(pswLogin.getPassword());
+					
+					if(Clinica.getInstance().confirmLogin(txtLogin.getText(), psw) == true) {
+						Principal window = new Principal();
+						dispose();
+						window.setVisible(true);
+					}else {
+						JOptionPane.showMessageDialog(panel, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+			}
+		});
 		
 		btnIngresar = new JButton("Ingresar");
 		btnIngresar.addActionListener(new ActionListener() {
@@ -130,5 +152,6 @@ public class Login extends JFrame {
 			dispose();
 			register.setVisible(true);
 		}
+		
 	}
 }

@@ -256,7 +256,7 @@ public class Clinica implements Serializable{
 	
 	public int buscarPacienteIndex(String codigo) {
 		
-		int i = -1;
+		int i = 0;
 		int index = 0;
 		for(Paciente pac : Clinica.getInstance().getMisPacientes()) {
 			if(pac.getCodigo().equals(codigo)) {
@@ -481,11 +481,18 @@ public class Clinica implements Serializable{
 		
 		ArrayList<Cita> misCitas = new ArrayList<Cita>();
 		
-		for(Cita cit : Clinica.getInstance().getMisCitas()) {
-			if(cit.getMedico().equals(Clinica.getInstance().getLogedUser())) {
+		if(Clinica.getInstance().getLogedUser() instanceof Administrador) {
+			for(Cita cit : Clinica.getInstance().getMisCitas()) {
 				misCitas.add(cit);
 			}
+		}else {
+			for(Cita cit : Clinica.getInstance().getMisCitas()) {
+				if(cit.getMedico().equals(Clinica.getInstance().getLogedUser())) {
+					misCitas.add(cit);
+				}
+			}
 		}
+
 		return misCitas;
 	}
 	
@@ -558,5 +565,61 @@ public class Clinica implements Serializable{
 		return paciente;
 	}
 
+	public Paciente SearchPaciente(String codigo) {
+		Paciente paciente = null;
+		
+		for(Paciente pac : Clinica.getInstance().getMisPacientes()) {
+			if(pac.getCodigo().equalsIgnoreCase(codigo)) {
+				paciente = pac;
+			}
+		}
+		
+		return paciente;
+	}
+	
+	public Consulta SearchConsulta(String codigo) {
+		Consulta  consulta = null;
+		
+		for(Paciente pac : Clinica.getInstance().getMisPacientes()) {
+			for(Consulta cons : pac.getHistorial().getMisConsultas()) {
+				if(cons.getCodigo().equalsIgnoreCase(codigo)) {
+					consulta = cons;
+				}
+			}
+		}
+		return consulta;
+	}
+	
+	public int GetLogedMedicoIndex() {
+		int index = 0;
+		int i = 1;
+		if(Clinica.getInstance().getLogedUser() instanceof Medico) {
+			for(Usuario user : Clinica.getInstance().misMedicos()) {
+				if(Clinica.getInstance().getLogedUser().getCodigo().equals(user.getCodigo())) {
+					index = i;
+				}
+				i++;
+			}
+		}
+		return index;
+	}
+	
+	public int OpcionUserClinica() {
+		int e = -1;
+		
+		if(Clinica.getInstance().getLogedUser() instanceof Administrador) {
+			e = 0;
+		}
+		if(Clinica.getInstance().getLogedUser() instanceof Medico) {
+			e = 1;
+		}
+		if(Clinica.getInstance().getLogedUser() instanceof Secretario) {
+			e = 2;
+		}
+		
+		return e;
+	}
 
+
+	
 }

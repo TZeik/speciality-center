@@ -7,24 +7,35 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 
 import logica.Clinica;
+import logica.Consulta;
 import logica.Medico;
+import logica.Paciente;
 import logica.Usuario;
 
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.Calendar;
 import java.awt.event.ActionEvent;
+import java.awt.Font;
 
 public class ConsultaList extends JFrame {
 
 	private JPanel contentPane;
 	private JTable table;
+	public static DefaultTableModel model;
+	private static Object[] row;
+	private Consulta selected = null;
 
 	/**
 	 * Launch the application.
@@ -49,7 +60,7 @@ public class ConsultaList extends JFrame {
 		setTitle("Lista de consultas");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 750, 516);
+		setBounds(100, 100, 688, 527);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -63,7 +74,7 @@ public class ConsultaList extends JFrame {
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new TitledBorder(null, "Filtros", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_1.setBounds(10, 11, 714, 107);
+		panel_1.setBounds(10, 11, 637, 107);
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 		
@@ -74,32 +85,54 @@ public class ConsultaList extends JFrame {
 		}
 		
 		JComboBox<String> cbxMedico = new JComboBox<String>();
-		cbxMedico.setBounds(10, 71, 300, 25);
+		cbxMedico.setBounds(320, 71, 300, 25);
 		cbxMedico.setModel(medicoModel);
 		panel_1.add(cbxMedico);
 		
-		int index = 0;
-		int i = 0;
 		if(Clinica.getInstance().getLogedUser() instanceof Medico) {
-			for(Usuario user : Clinica.getInstance().misMedicos()) {
-				if(user.getCodigo().equalsIgnoreCase(Clinica.getInstance().getLogedUser().getCodigo())) {
-					index = i;
-				}
-				i++;
-			}
-			cbxMedico.setSelectedIndex(index);
+			cbxMedico.setSelectedIndex(Clinica.getInstance().GetLogedMedicoIndex());
+			cbxMedico.setFont(new Font("Tahoma", Font.BOLD, 11));
 			cbxMedico.setEnabled(false);
 		}
-		
+
 		JLabel lblMedico = new JLabel("M\u00E9dico: ");
-		lblMedico.setBounds(10, 51, 300, 14);
+		lblMedico.setBounds(320, 51, 300, 14);
 		panel_1.add(lblMedico);
 		
+		JComboBox<String> cbxMedico_1 = new JComboBox<String>();
+		cbxMedico_1.setBounds(10, 71, 300, 25);
+		panel_1.add(cbxMedico_1);
+		
+		JLabel lblPaciente = new JLabel("Paciente: ");
+		lblPaciente.setBounds(10, 51, 300, 14);
+		panel_1.add(lblPaciente);
+		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 129, 714, 292);
+		scrollPane.setBounds(10, 129, 637, 292);
 		panel.add(scrollPane);
 		
 		table = new JTable();
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int select = table.getSelectedRow();
+				if(select != -1) {
+					selected = Clinica.getInstance().SearchConsulta(table.getValueAt(select, 0).toString());
+				}
+			}
+		});
+		model = new DefaultTableModel() {
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		       //all cells false
+		       return false;
+		    }
+		};
+		
+		String[] headers = {"Codigo","Paciente","Enfermedad","Medico","Fecha"};
+		model.setColumnIdentifiers(headers);
+		table.setModel(model);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane.setViewportView(table);
 		
 		JButton btnSalir = new JButton("Salir");
@@ -108,15 +141,34 @@ public class ConsultaList extends JFrame {
 				dispose();
 			}
 		});
-		btnSalir.setBounds(634, 441, 90, 25);
+		btnSalir.setBounds(557, 441, 90, 25);
 		panel.add(btnSalir);
 		
 		JButton btnEliminar = new JButton("Eliminar");
-		btnEliminar.setBounds(535, 441, 90, 25);
+		btnEliminar.setBounds(458, 441, 90, 25);
 		panel.add(btnEliminar);
 		
 		JButton btnRevisar = new JButton("Revisar");
-		btnRevisar.setBounds(436, 442, 89, 23);
+		btnRevisar.setBounds(359, 442, 89, 23);
 		panel.add(btnRevisar);
+		
+		loadConsTable(0,0);
+	}
+	
+	public static void loadConsTable(int index1, int index2) {
+		model.setRowCount(0);
+		row = new Object[model.getColumnCount()];
+			for (Paciente pac : Clinica.getInstance().getMisPacientes()) {
+				row[1] = pac.getNombre();
+				for(Consulta cons : pac.getHistorial().getMisConsultas()) {
+					row[0] = cons.getCodigo();
+					row[2] = cons.getEnfermedad().getNombre();
+					row[3] = cons.getMiMedico().getNombre();
+					row[4] = cons.getFecha().get(Calendar.DAY_OF_MONTH) + "/" + cons.getFecha().get(Calendar.MONTH) + "/" + cons.getFecha().get(Calendar.YEAR);
+				}
+
+				model.addRow(row);
+			}
+
 	}
 }
