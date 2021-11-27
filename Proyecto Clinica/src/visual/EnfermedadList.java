@@ -34,6 +34,8 @@ import javax.swing.JTextPane;
 import javax.swing.DropMode;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class EnfermedadList extends JFrame {
 
@@ -69,6 +71,7 @@ public class EnfermedadList extends JFrame {
 	 * Create the frame.
 	 */
 	public EnfermedadList() {
+
 		setTitle("Lista de enfermedades");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 751, 500);
@@ -121,16 +124,6 @@ public class EnfermedadList extends JFrame {
 		btnEliminar.setBounds(525, 415, 90, 25);
 		panel.add(btnEliminar);
 		
-		btnEditar = new JButton("Editar");
-		btnEditar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				RegEnfermedad edit = new RegEnfermedad (selected);
-				edit.setVisible(true);
-			}
-		});
-		btnEditar.setEnabled(false);
-		btnEditar.setBounds(425, 415, 90, 25);
-		panel.add(btnEditar);
 		
 		table = new JTable();
 		table.addMouseListener(new MouseAdapter() {
@@ -138,7 +131,7 @@ public class EnfermedadList extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				int select = table.getSelectedRow();
 				if(select != -1) {
-					selected = Clinica.getInstance().SearchEnfermedad((String)table.getValueAt(select, 0));
+					selected = Clinica.getInstance().SearchEnfermedad(table.getValueAt(select, 0).toString());
 					txaDescripcion.setText(selected.getDescipcion());
 					btnEliminar.setEnabled(true);
 					btnEditar.setEnabled(true);
@@ -188,10 +181,31 @@ public class EnfermedadList extends JFrame {
 				dispose();
 			}
 		});
+		
+		
 		btnSalir.setBounds(625, 415, 90, 25);
 		panel.add(btnSalir);
 		
+		btnEditar = new JButton("Editar");
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegEnfermedad edit = new RegEnfermedad(selected);
+				edit.setVisible(true);
+			}
+		});
+		
+		btnEditar.setEnabled(false);
+		btnEditar.setBounds(425, 415, 90, 25);
+		panel.add(btnEditar);
+
+		
 		loadEnfTable(null);
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowActivated(WindowEvent e) {
+				loadEnfTable(null);
+			}
+		});
 	}
 	
 	public static void loadEnfTable(String search) {

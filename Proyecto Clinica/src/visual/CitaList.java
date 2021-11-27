@@ -128,7 +128,6 @@ public class CitaList extends JFrame {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				trs.setRowFilter(RowFilter.regexFilter("(?i)"+txtBuscar.getText(), 1));
-				
 			}
 		});
 		

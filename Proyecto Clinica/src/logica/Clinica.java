@@ -331,7 +331,7 @@ public class Clinica implements Serializable{
 		
 		for (Enfermedad enf : Clinica.getInstance().getMisEnfermedades()) {
 			
-			if(enfermedad.getCodigo().equals(enf.getCodigo())) {
+			if(enfermedad.getCodigo().equalsIgnoreCase(enf.getCodigo())) {
 				enfermedad = enf;
 			}
 			
@@ -671,6 +671,33 @@ public class Clinica implements Serializable{
 		}
 		
 		return misConsultas;
+	}
+
+	public int buscarEnfermedadIndex(Enfermedad enfermedad) {
+		int index = 0;
+		int i = 0;
+		for(Enfermedad enf : Clinica.getInstance().getMisEnfermedades()) {
+			if(enfermedad.getCodigo().equalsIgnoreCase(enf.getCodigo())) {
+				index = i;
+			}
+			i++;
+		}
+			
+		return index;
+	}
+
+	public int buscarVacunaIndex(Vacuna vacuna) {
+		int i = 0;
+		int index = 0;
+		
+		for(Vacuna vac : Clinica.getInstance().getMisVacunas()) {
+			
+			if(vac.getCodigo().equalsIgnoreCase(vacuna.getCodigo())) {
+				index = i;
+			}
+			i++;
+		}
+		return index;
 	}
 
 

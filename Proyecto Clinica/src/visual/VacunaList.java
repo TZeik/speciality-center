@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -168,7 +170,12 @@ public class VacunaList extends JFrame {
 		panel.add(btnSalir);
 	
 		loadVacTable(null);
-		
+		addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowActivated(WindowEvent e) {
+				loadVacTable(null);
+			}
+		});
 	}
 	
 	public static void loadVacTable(String search) {

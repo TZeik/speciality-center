@@ -57,7 +57,6 @@ public class RegVacuna extends JFrame {
 		setTitle("Registrar vacuna");	
 		}else {
 			setTitle("Editar vacuna");
-		
 		}
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -137,23 +136,23 @@ public class RegVacuna extends JFrame {
 				}else {
 					update.setNombre(txtName.getText());
 					update.setAnnoCreacion((int)cbxFecha.getSelectedItem());
+					Clinica.getInstance().getMisVacunas().get(Clinica.getInstance().buscarVacunaIndex(update)).setNombre(update.getNombre());
+					Clinica.getInstance().getMisVacunas().get(Clinica.getInstance().buscarVacunaIndex(update)).setAnnoCreacion(update.getAnnoCreacion());
 					Clinica.getInstance().guardarClinica();
 					JOptionPane.showMessageDialog(panel, "La vacuna se ha editado con éxito", "Editar vacuna", JOptionPane.DEFAULT_OPTION);
 					dispose();
 				}
-				VacunaList.loadVacTable(null);
 			}
 		});
 		btnRegistrar.setBounds(122, 237, 90, 25);
 		panel.add(btnRegistrar);
-	loadVacuna();
+		loadVacuna();
 	}
 	
 	private void loadVacuna() {
 		if (update != null) {
 			txtName.setText(update.getNombre());
 			cbxFecha.setSelectedItem(update.getAnnoCreacion());
-			Clinica.getInstance().guardarClinica();
 		}
 	}
 }

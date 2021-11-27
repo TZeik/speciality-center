@@ -60,7 +60,6 @@ public class RegEnfermedad extends JFrame {
 			setTitle("Registro de enfermedad");	
 			}else {
 				setTitle("Editar enfermedad");
-			
 			}
 		setType(Type.UTILITY);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -145,11 +144,13 @@ public class RegEnfermedad extends JFrame {
 					update.setNombre(txtName.getText());
 					update.setTipo(txtTipo.getText());
 					update.setDescipcion(txtInfo.getText());
+					Clinica.getInstance().getMisEnfermedades().get(Clinica.getInstance().buscarEnfermedadIndex(update)).setNombre(update.getNombre());
+					Clinica.getInstance().getMisEnfermedades().get(Clinica.getInstance().buscarEnfermedadIndex(update)).setTipo(update.getTipo());
+					Clinica.getInstance().getMisEnfermedades().get(Clinica.getInstance().buscarEnfermedadIndex(update)).setDescipcion(update.getDescipcion());
 					Clinica.getInstance().guardarClinica();
 					JOptionPane.showMessageDialog(panel, "La enfermedad se ha editado con éxito", "Editar Enfermedad", JOptionPane.DEFAULT_OPTION);
 					dispose();
 				}
-				EnfermedadList.loadEnfTable(null);
 				txtName.setText("");
 				txtTipo.setText("");
 				txtInfo.setText("");
@@ -165,7 +166,6 @@ public class RegEnfermedad extends JFrame {
 			txtName.setText(update.getNombre());
 			txtTipo.setText(update.getTipo());
 			txtInfo.setText(update.getDescipcion());
-			Clinica.getInstance().guardarClinica();
 		}
 	}
 }
