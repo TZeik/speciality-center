@@ -14,18 +14,17 @@ public class Paciente implements Serializable{
 	private String codigo;
 	private String nombre;
 	private String cedula;
-	private String genero;
 	private Calendar fechaNacimiento;
 	private String direccion;
 	private String telefono;
 	private HistoriaClinica historial;
+	private String genero;
 	
 	public Paciente(String codigo,String nombre, String cedula, String genero,Calendar fechaNacimiento, String direccion, String telefono) {
 		super();
 		this.codigo = codigo;
 		this.nombre = nombre;
 		this.cedula = cedula;
-		this.genero = genero;
 		this.fechaNacimiento = fechaNacimiento;
 		this.direccion = direccion;
 		this.telefono = telefono;
@@ -54,14 +53,6 @@ public class Paciente implements Serializable{
 
 	public void setCedula(String cedula) {
 		this.cedula = cedula;
-	}
-	
-	public String getGenero() {
-		return genero;
-	}
-
-	public void setGenero(String genero) {
-		this.genero = genero;
 	}
 
 	public Calendar getFechaNacimiento() {
@@ -96,7 +87,13 @@ public class Paciente implements Serializable{
 		this.historial = historial;
 	}
 
+	public String getGenero() {
+		return genero;
+	}
 
+	public void setGenero(String genero) {
+		this.genero = genero;
+	}
 
 
 	

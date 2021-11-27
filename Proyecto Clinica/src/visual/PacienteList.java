@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 import logica.Clinica;
 import logica.Enfermedad;
@@ -16,6 +17,7 @@ import logica.Paciente;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.RowFilter;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
@@ -26,6 +28,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Calendar;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class PacienteList extends JFrame {
 
@@ -35,6 +39,7 @@ public class PacienteList extends JFrame {
 	public static DefaultTableModel model;
 	private static Object[] row;
 	private Paciente selected = null;
+	private TableRowSorter trs = null;
 
 	/**
 	 * Launch the application.
@@ -105,6 +110,14 @@ public class PacienteList extends JFrame {
 		panel_1.setLayout(null);
 		
 		txtBuscar = new JTextField();
+		txtBuscar.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				trs.setRowFilter(RowFilter.regexFilter("(?i)"+txtBuscar.getText(), 1));
+			}
+		});
+		trs = new TableRowSorter(model);
+		table.setRowSorter(trs);
 		txtBuscar.setBounds(10, 75, 374, 25);
 		panel_1.add(txtBuscar);
 		txtBuscar.setColumns(10);

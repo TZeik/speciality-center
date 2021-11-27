@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 import logica.Clinica;
 import logica.Enfermedad;
@@ -19,11 +20,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
+import javax.swing.RowFilter;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class VacunaList extends JFrame {
 
@@ -35,6 +39,7 @@ public class VacunaList extends JFrame {
 	public static DefaultTableModel model;
 	private static Object[] row;
 	private Vacuna selected = null;
+	private TableRowSorter trs = null;
 
 	/**
 	 * Launch the application.
@@ -131,6 +136,14 @@ public class VacunaList extends JFrame {
 		panel_1.setLayout(null);
 		
 		txtBuscar = new JTextField();
+		txtBuscar.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				trs.setRowFilter(RowFilter.regexFilter("(?i)"+txtBuscar.getText(), 1));
+			}
+		});
+		trs = new TableRowSorter(model);
+		table.setRowSorter(trs);
 		txtBuscar.setBounds(10, 50, 360, 25);
 		panel_1.add(txtBuscar);
 		txtBuscar.setColumns(10);

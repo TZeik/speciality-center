@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 import logica.Cita;
 import logica.Clinica;
@@ -24,11 +25,15 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.ListSelectionModel;
+import javax.swing.RowFilter;
+
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class CitaList extends JFrame {
 
@@ -39,6 +44,7 @@ public class CitaList extends JFrame {
 	private static Object[] row;
 	private Cita selected = null;
 	public int select;
+	private TableRowSorter trs = null;
 
 	/**
 	 * Launch the application.
@@ -60,6 +66,7 @@ public class CitaList extends JFrame {
 	 * Create the frame.
 	 */
 	public CitaList(int opcion) {
+		
 		setTitle("Lista de citas");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 807, 474);
@@ -117,6 +124,16 @@ public class CitaList extends JFrame {
 		panel_1.setLayout(null);
 		
 		txtBuscar = new JTextField();
+		txtBuscar.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyReleased(KeyEvent e) {
+				trs.setRowFilter(RowFilter.regexFilter("(?i)"+txtBuscar.getText(), 1));
+				
+			}
+		});
+		
+		trs = new TableRowSorter(model);
+		table.setRowSorter(trs);
 		txtBuscar.setBounds(10, 40, 431, 25);
 		panel_1.add(txtBuscar);
 		txtBuscar.setColumns(10);
