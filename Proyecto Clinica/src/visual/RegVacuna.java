@@ -141,14 +141,13 @@ public class RegVacuna extends JFrame {
 					JOptionPane.showMessageDialog(panel, "La vacuna se ha editado con éxito", "Editar vacuna", JOptionPane.DEFAULT_OPTION);
 					dispose();
 				}
-				VacunaList.loadVacTable(null);
+				VacunaList.loadVacTable("");
 			}
 		});
 		btnRegistrar.setBounds(122, 237, 90, 25);
 		panel.add(btnRegistrar);
 	loadVacuna();
 	}
-	
 	private void loadVacuna() {
 		if (update != null) {
 			txtName.setText(update.getNombre());

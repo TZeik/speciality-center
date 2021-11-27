@@ -124,7 +124,7 @@ public class EnfermedadList extends JFrame {
 		btnEditar = new JButton("Editar");
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegEnfermedad edit = new RegEnfermedad (selected);
+				RegEnfermedad edit = new RegEnfermedad(selected);
 				edit.setVisible(true);
 			}
 		});
