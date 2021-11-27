@@ -699,6 +699,16 @@ public class Clinica implements Serializable{
 		}
 		return index;
 	}
+	
+	public  int buscarPacienteIndex(Paciente paciente) {
+		
+		int index = 0;
+		int i = 0;
+		
+		return index;
+		
+		
+	}
 
 
 	

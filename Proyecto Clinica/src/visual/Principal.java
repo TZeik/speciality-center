@@ -143,15 +143,6 @@ public class Principal extends JFrame {
 		JMenu mnRLista = new JMenu("Lista");
 		mnRevisar.add(mnRLista);
 		
-		JMenuItem itemLCitas = new JMenuItem("Lista de citas");
-		itemLCitas.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				CitaList citaList = new CitaList(0);
-				citaList.setVisible(true);
-			}
-		});
-		mnRLista.add(itemLCitas);
-		
 		JMenuItem itemLPacientes = new JMenuItem("Lista de pacientes");
 		itemLPacientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -160,6 +151,15 @@ public class Principal extends JFrame {
 			}
 		});
 		mnRLista.add(itemLPacientes);
+		
+		JMenuItem itemLCitas = new JMenuItem("Lista de citas");
+		itemLCitas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CitaList citaList = new CitaList(0);
+				citaList.setVisible(true);
+			}
+		});
+		mnRLista.add(itemLCitas);
 		
 		JMenuItem itemLConsultas = new JMenuItem("Lista de consultas");
 		itemLConsultas.addActionListener(new ActionListener() {

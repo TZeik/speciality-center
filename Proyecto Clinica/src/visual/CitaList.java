@@ -30,6 +30,7 @@ import javax.swing.RowFilter;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.regex.PatternSyntaxException;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 import java.awt.event.KeyAdapter;
@@ -127,7 +128,11 @@ public class CitaList extends JFrame {
 		txtBuscar.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyReleased(KeyEvent e) {
-				trs.setRowFilter(RowFilter.regexFilter("(?i)"+txtBuscar.getText(), 1));
+				try {
+					trs.setRowFilter(RowFilter.regexFilter("(?i)"+txtBuscar.getText(), 1));
+				}catch(PatternSyntaxException e1) {
+					trs.setRowFilter(RowFilter.regexFilter("(?i)", 1));
+				}
 			}
 		});
 		
@@ -197,10 +202,10 @@ public class CitaList extends JFrame {
 		lblFinalidad.setBounds(569, 100, 202, 14);
 		panel.add(lblFinalidad);
 		
-		loadCitaTable(null);
+		loadCitaTable();
 	}
 	
-	public static void loadCitaTable(String search) {
+	public static void loadCitaTable() {
 		txtBuscar.setText("");
 		model.setRowCount(0);
 		row = new Object[model.getColumnCount()];

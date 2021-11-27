@@ -27,6 +27,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Calendar;
+import java.util.regex.PatternSyntaxException;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -39,7 +40,7 @@ public class PacienteList extends JFrame {
 	public static DefaultTableModel model;
 	private static Object[] row;
 	private Paciente selected = null;
-	private TableRowSorter trs = null;
+	private TableRowSorter<DefaultTableModel> trs = null;
 
 	/**
 	 * Launch the application.
@@ -109,15 +110,22 @@ public class PacienteList extends JFrame {
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 		
+		trs = new TableRowSorter<DefaultTableModel>(model);
+		table.setRowSorter(trs);
+		
 		txtBuscar = new JTextField();
 		txtBuscar.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyReleased(KeyEvent e) {
-				trs.setRowFilter(RowFilter.regexFilter("(?i)"+txtBuscar.getText(), 1));
+			public void keyPressed(KeyEvent e) {
+				try {
+					trs.setRowFilter(RowFilter.regexFilter("(?i)"+txtBuscar.getText(), 1));
+				}catch(PatternSyntaxException e1) {
+					trs.setRowFilter(RowFilter.regexFilter("(?i)", 1));
+				}
+
 			}
 		});
-		trs = new TableRowSorter(model);
-		table.setRowSorter(trs);
+		
 		txtBuscar.setBounds(10, 75, 374, 25);
 		panel_1.add(txtBuscar);
 		txtBuscar.setColumns(10);
@@ -126,10 +134,15 @@ public class PacienteList extends JFrame {
 		lblNewLabel.setBounds(10, 55, 374, 14);
 		panel_1.add(lblNewLabel);
 		
-		JComboBox comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"Todos", "Masculino", "Femenino"}));
-		comboBox.setBounds(394, 75, 300, 25);
-		panel_1.add(comboBox);
+		JComboBox cbxGenero = new JComboBox();
+		cbxGenero.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				loadPacTable(cbxGenero.getSelectedIndex());
+			}
+		});
+		cbxGenero.setModel(new DefaultComboBoxModel(new String[] {"Todos", "Masculino", "Femenino"}));
+		cbxGenero.setBounds(394, 75, 300, 25);
+		panel_1.add(cbxGenero);
 		
 		JLabel lblNewLabel_1 = new JLabel("Genero: ");
 		lblNewLabel_1.setBounds(394, 55, 300, 14);
@@ -145,17 +158,25 @@ public class PacienteList extends JFrame {
 		panel.add(btnSalir);
 		
 		JButton btnRevisar = new JButton("Revisar");
+		btnRevisar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RevPaciente revpaciente = new RevPaciente(selected);
+				revpaciente.setVisible(true);
+			}
+		});
 		btnRevisar.setBounds(525, 410, 90, 25);
 		panel.add(btnRevisar);
 		
-		loadPacTable(null,0);
+		loadPacTable(0);
 	}
 	
-	public static void loadPacTable(String search, int index) {
+	public static void loadPacTable(int index) {
 		txtBuscar.setText("");
 		model.setRowCount(0);
 		row = new Object[model.getColumnCount()];
 		int edad = 0;
+		switch (index) {
+		case 0:
 			for (Paciente pac : Clinica.getInstance().getMisPacientes()) {
 				row[0] = pac.getCodigo();
 				row[1] = pac.getNombre();
@@ -167,6 +188,42 @@ public class PacienteList extends JFrame {
 				row[4] = pac.getGenero();
 				model.addRow(row);
 			}
+			break;
+		case 1:
+			for (Paciente pac : Clinica.getInstance().getMisPacientes()) {
+				if(pac.getGenero().equalsIgnoreCase("Masculino")) {
+					row[0] = pac.getCodigo();
+					row[1] = pac.getNombre();
+					row[2] = pac.getCedula();
+					for(int i = pac.getFechaNacimiento().get(Calendar.YEAR); i < Calendar.getInstance().get(Calendar.YEAR); i++)
+					edad++;
+					row[3] = edad;
+					edad = 0;
+					row[4] = pac.getGenero();
+					model.addRow(row);
+				}
+			}
+			break;
+			
+		case 2:
+			for (Paciente pac : Clinica.getInstance().getMisPacientes()) {
+				if(pac.getGenero().equalsIgnoreCase("Femenino")) {
+					row[0] = pac.getCodigo();
+					row[1] = pac.getNombre();
+					row[2] = pac.getCedula();
+					for(int i = pac.getFechaNacimiento().get(Calendar.YEAR); i < Calendar.getInstance().get(Calendar.YEAR); i++)
+					edad++;
+					row[3] = edad;
+					edad = 0;
+					row[4] = pac.getGenero();
+					model.addRow(row);
+				}
+			}
+			break;
+		default:
+			break;
+		}
+
 
 	}
 }
