@@ -25,6 +25,7 @@ public class Paciente implements Serializable{
 		this.codigo = codigo;
 		this.nombre = nombre;
 		this.cedula = cedula;
+		this.genero = genero;
 		this.fechaNacimiento = fechaNacimiento;
 		this.direccion = direccion;
 		this.telefono = telefono;
