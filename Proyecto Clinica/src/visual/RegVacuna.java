@@ -28,11 +28,13 @@ public class RegVacuna extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField txtName;
+	private Vacuna update;
+	private JComboBox cbxFecha;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -43,13 +45,21 @@ public class RegVacuna extends JFrame {
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the frame.
 	 */
-	public RegVacuna() {
-		setTitle("Registrar vacuna");
+	public RegVacuna(Vacuna aux) {
+		setResizable(false);
+		update = aux;
+		if (update== null) {
+		setTitle("Registrar vacuna");	
+		}else {
+			setTitle("Editar vacuna");
+		
+		}
+		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 351, 322);
 		contentPane = new JPanel();
@@ -89,7 +99,7 @@ public class RegVacuna extends JFrame {
 			fechaModel.addElement(i);
 			index++;
 		}
-		JComboBox cbxFecha = new JComboBox();
+		cbxFecha = new JComboBox();
 		cbxFecha.setModel(fechaModel);
 		cbxFecha.setSelectedIndex(index);
 		cbxFecha.setBounds(10, 177, 302, 25);
@@ -104,10 +114,16 @@ public class RegVacuna extends JFrame {
 		btnCancelar.setBounds(222, 237, 90, 25);
 		panel.add(btnCancelar);
 		
-		JButton btnRegistrar = new JButton("Registrar");
+		JButton btnRegistrar = new JButton("");
+		if (update== null) {
+			btnRegistrar.setText("Registrar");	
+			}else {
+				btnRegistrar.setText("Editar");
+			
+			}
 		btnRegistrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				if (update == null) {
 				Vacuna newVacuna = new Vacuna(Clinica.getInstance().GenerateVacCode());
 				newVacuna.setNombre(txtName.getText());
 				newVacuna.setAnnoCreacion((int)cbxFecha.getSelectedItem());
@@ -118,14 +134,26 @@ public class RegVacuna extends JFrame {
 				
 				JOptionPane.showMessageDialog(panel, "La vacuna se ha registrado con éxito", "Registro de vacuna", JOptionPane.INFORMATION_MESSAGE);
 				txtName.setText("");
+				}else {
+					update.setNombre(txtName.getText());
+					update.setAnnoCreacion((int)cbxFecha.getSelectedItem());
+					Clinica.getInstance().guardarClinica();
+					JOptionPane.showMessageDialog(panel, "La vacuna se ha editado con éxito", "Editar vacuna", JOptionPane.DEFAULT_OPTION);
+					dispose();
+				}
+				VacunaList.loadVacTable(null);
 			}
 		});
 		btnRegistrar.setBounds(122, 237, 90, 25);
 		panel.add(btnRegistrar);
-		
-
-
-		
-		
+	loadVacuna();
+	}
+	
+	private void loadVacuna() {
+		if (update != null) {
+			txtName.setText(update.getNombre());
+			cbxFecha.setSelectedItem(update.getAnnoCreacion());
+			Clinica.getInstance().guardarClinica();
+		}
 	}
 }

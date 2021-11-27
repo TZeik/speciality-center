@@ -213,7 +213,7 @@ public class Principal extends JFrame {
 		JMenuItem itemRVacuna = new JMenuItem("Registrar vacuna");
 		itemRVacuna.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RegVacuna windowRegVacuna = new RegVacuna();
+				RegVacuna windowRegVacuna = new RegVacuna(null);
 				windowRegVacuna.setVisible(true);
 			}
 		});

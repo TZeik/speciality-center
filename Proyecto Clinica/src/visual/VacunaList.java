@@ -100,6 +100,12 @@ public class VacunaList extends JFrame {
 		panel.add(btnEliminar);
 		
 		btnEditar = new JButton("Editar");
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RegVacuna edit = new RegVacuna(selected);
+				edit.setVisible(true);
+			}
+		});
 		btnEditar.setEnabled(false);
 		btnEditar.setBounds(248, 386, 90, 25);
 		panel.add(btnEditar);
