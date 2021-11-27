@@ -89,11 +89,6 @@ public class ConsultaList extends JFrame {
 		}
 		
 		cbxMedico = new JComboBox<String>();
-		cbxMedico.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				loadConsTable();
-			}
-		});
 		cbxMedico.setBounds(320, 71, 300, 25);
 		cbxMedico.setModel(medicoModel);
 		panel_1.add(cbxMedico);
@@ -113,11 +108,6 @@ public class ConsultaList extends JFrame {
 		for(Paciente pac : Clinica.getInstance().getMisPacientes())
 			pacienteModel.addElement(pac.getNombre());
 		cbxPaciente = new JComboBox<String>();
-		cbxPaciente.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				loadConsTable();
-			}
-		});
 		cbxPaciente.setModel(pacienteModel);
 		cbxPaciente.setBounds(10, 71, 300, 25);
 		panel_1.add(cbxPaciente);
@@ -162,6 +152,18 @@ public class ConsultaList extends JFrame {
 		});
 		btnSalir.setBounds(557, 441, 90, 25);
 		panel.add(btnSalir);
+		
+		cbxPaciente.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				loadConsTable();
+			}
+		});
+		
+		cbxMedico.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				loadConsTable();
+			}
+		});
 		
 		JButton btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(new ActionListener() {
