@@ -32,11 +32,12 @@ public class RegEnfermedad extends JFrame {
 	private JPanel panel_1;
 	private JButton btnCancel;
 	private JButton btnRegistrar;
+	private Enfermedad update;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -47,15 +48,21 @@ public class RegEnfermedad extends JFrame {
 				}
 			}
 		});
-	}
+	}*/
 
 	/**
 	 * Create the frame.
 	 */
-	public RegEnfermedad() {
+	public RegEnfermedad(Enfermedad aux) {
 		setResizable(false);
+		update = aux;
+		if (update== null) {
+			setTitle("Registro de enfermedad");	
+			}else {
+				setTitle("Editar enfermedad");
+			
+			}
 		setType(Type.UTILITY);
-		setTitle("Registro de enfermedad");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 457, 453);
 		contentPane = new JPanel();
@@ -113,10 +120,16 @@ public class RegEnfermedad extends JFrame {
 		btnCancel.setBounds(331, 361, 90, 25);
 		panel.add(btnCancel);
 		
-		btnRegistrar = new JButton("Registrar");
+		btnRegistrar = new JButton("");
+		if (update== null) {
+			btnRegistrar.setText("Registrar");	
+			}else {
+				btnRegistrar.setText("Editar");
+			
+			}
 		btnRegistrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				if (update == null) {
 				Enfermedad newEnfermedad =  new Enfermedad(Clinica.getInstance().GenerateEnfCode());
 				
 				newEnfermedad.setNombre(txtName.getText());
@@ -128,6 +141,15 @@ public class RegEnfermedad extends JFrame {
 				Clinica.getInstance().guardarClinica();
 				
 				JOptionPane.showMessageDialog(panel, "La enfermedad se ha registrado con éxito", "Registro de enfermedad", JOptionPane.INFORMATION_MESSAGE);
+				}else {
+					update.setNombre(txtName.getText());
+					update.setTipo(txtTipo.getText());
+					update.setDescipcion(txtInfo.getText());
+					Clinica.getInstance().guardarClinica();
+					JOptionPane.showMessageDialog(panel, "La enfermedad se ha editado con éxito", "Editar Enfermedad", JOptionPane.DEFAULT_OPTION);
+					dispose();
+				}
+				EnfermedadList.loadEnfTable(null);
 				txtName.setText("");
 				txtTipo.setText("");
 				txtInfo.setText("");
@@ -135,5 +157,15 @@ public class RegEnfermedad extends JFrame {
 		});
 		btnRegistrar.setBounds(231, 361, 90, 25);
 		panel.add(btnRegistrar);
+		loadEnfer();
+	}
+	
+	private void loadEnfer() {
+		if(update != null) {
+			txtName.setText(update.getNombre());
+			txtTipo.setText(update.getTipo());
+			txtInfo.setText(update.getDescipcion());
+			Clinica.getInstance().guardarClinica();
+		}
 	}
 }

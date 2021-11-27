@@ -203,7 +203,7 @@ public class Principal extends JFrame {
 		itemREnfermedad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				RegEnfermedad regEnf = new RegEnfermedad();
+				RegEnfermedad regEnf = new RegEnfermedad(null);
 				regEnf.setVisible(true);
 				
 			}
