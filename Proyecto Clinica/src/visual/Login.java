@@ -148,7 +148,7 @@ public class Login extends JFrame {
 		panel_2.add(lblNewLabel_1, BorderLayout.CENTER);
 		
 		if(Clinica.getInstance().isFirst() == true) {
-			regUser register = new regUser();
+			regUser register = new regUser(null);
 			dispose();
 			register.setVisible(true);
 		}

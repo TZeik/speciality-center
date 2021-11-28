@@ -191,7 +191,7 @@ public class Principal extends JFrame {
 		itemRUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				regUser window = new regUser();
+				regUser window = new regUser(null);
 				window.setVisible(true);
 				
 			}

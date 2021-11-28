@@ -165,6 +165,8 @@ public class UserList extends JFrame {
 		btnEditar = new JButton("Editar");
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				regUser edit = new regUser(selected);
+				edit.setVisible(true);
 			}
 		});
 		btnEditar.setEnabled(false);

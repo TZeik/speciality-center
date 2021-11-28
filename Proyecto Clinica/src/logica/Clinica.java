@@ -710,6 +710,20 @@ public class Clinica implements Serializable{
 		
 	}
 
+	public int buscarUsuarioIndex(Usuario update) {
+		int i = 0;
+		int index = 0;
+		
+		for(Usuario usua : Clinica.getInstance().getMisUsuarios()) {
+			
+			if(usua.getCodigo().equalsIgnoreCase(update.getCodigo())) {
+				index = i;
+			}
+			i++;
+		}
+		return index;
+	}
+
 
 	
 }

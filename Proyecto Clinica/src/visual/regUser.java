@@ -34,6 +34,9 @@ public class regUser extends JFrame {
 	private JPasswordField pswRegister;
 	private JPasswordField pswConfirm;
 	private JTextField txtName;
+	private Usuario update;
+	private JComboBox cbxUserType;
+	private JButton btnRegister;
 
 	/**
 	 * Launch the application.
@@ -42,7 +45,7 @@ public class regUser extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					regUser frame = new regUser();
+					regUser frame = new regUser(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -53,8 +56,15 @@ public class regUser extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @param selected 
 	 */
-	public regUser() {
+	public regUser(Usuario aux) {
+		update = aux;
+		if (update == null ) {
+			setTitle("Registrar usuario");
+		} else {
+			setTitle("Editar usuario");
+		}
 		setAlwaysOnTop(true);
 		setType(Type.UTILITY);
 		setTitle("Registrar usuario");
@@ -77,7 +87,7 @@ public class regUser extends JFrame {
 		panel_1.setBounds(10, 11, 495, 47);
 		panel.add(panel_1);
 		
-		JComboBox cbxUserType = new JComboBox();
+		cbxUserType = new JComboBox();
 		cbxUserType.setModel(new DefaultComboBoxModel(new String[] {"Administrador", "M\u00E9dico", "Secretario"}));
 		cbxUserType.setBounds(10, 220, 234, 25);
 		panel.add(cbxUserType);
@@ -120,7 +130,12 @@ public class regUser extends JFrame {
 		btnCancel.setBounds(405, 283, 100, 30);
 		panel.add(btnCancel);
 		
-		JButton btnRegister = new JButton("Registrar");
+		btnRegister = new JButton("");
+		if (update == null ) {
+			btnRegister.setText("Registrar");
+		} else {
+			btnRegister.setText("Editar");
+		}
 		btnRegister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -130,6 +145,7 @@ public class regUser extends JFrame {
 				if(txtName.getText().isEmpty() == true || txtUser.getText().isEmpty() == true || psw1.isEmpty() == true|| psw2.isEmpty() == true) {
 					JOptionPane.showMessageDialog(panel, "No puede dejar casillas vacias", "Error", JOptionPane.ERROR_MESSAGE);
 				}else if(psw1.equals(psw2)) {
+					if(update == null) {
 					
 					switch (cbxUserType.getSelectedIndex()) {
 					
@@ -168,6 +184,46 @@ public class regUser extends JFrame {
 						break;
 
 					}
+				   }else {
+						switch (cbxUserType.getSelectedIndex()) {
+						
+						case 0:
+							
+							update.setId(txtUser.getText());
+							update.setPassword(psw1);
+							update.setNombre(txtName.getText());
+							Clinica.getInstance().getMisUsuarios().get(Clinica.getInstance().buscarUsuarioIndex(update)).setNombre(update.getNombre());
+							Clinica.getInstance().getMisUsuarios().get(Clinica.getInstance().buscarUsuarioIndex(update)).setId(update.getId());
+							Clinica.getInstance().getMisUsuarios().get(Clinica.getInstance().buscarUsuarioIndex(update)).setPassword(update.getPassword());
+							Clinica.getInstance().guardarClinica();
+							JOptionPane.showMessageDialog(panel , "El usuario se ha editado exitosamente", "Edición completada", JOptionPane.INFORMATION_MESSAGE);
+							dispose();
+							break;
+						case 1:
+							update.setId(txtUser.getText());
+							update.setPassword(psw1);
+							update.setNombre(txtName.getText());
+							Clinica.getInstance().getMisUsuarios().get(Clinica.getInstance().buscarUsuarioIndex(update)).setNombre(update.getNombre());
+							Clinica.getInstance().getMisUsuarios().get(Clinica.getInstance().buscarUsuarioIndex(update)).setId(update.getId());
+							Clinica.getInstance().getMisUsuarios().get(Clinica.getInstance().buscarUsuarioIndex(update)).setPassword(update.getPassword());
+							Clinica.getInstance().guardarClinica();
+							JOptionPane.showMessageDialog(panel, "El usuario se ha editado exitosamente", "Edición completada", JOptionPane.INFORMATION_MESSAGE);
+							dispose();
+							break;
+						case 2:
+							update.setId(txtUser.getText());
+							update.setPassword(psw1);
+							update.setNombre(txtName.getText());
+							Clinica.getInstance().getMisUsuarios().get(Clinica.getInstance().buscarUsuarioIndex(update)).setNombre(update.getNombre());
+							Clinica.getInstance().getMisUsuarios().get(Clinica.getInstance().buscarUsuarioIndex(update)).setId(update.getId());
+							Clinica.getInstance().getMisUsuarios().get(Clinica.getInstance().buscarUsuarioIndex(update)).setPassword(update.getPassword());
+							Clinica.getInstance().guardarClinica();
+							JOptionPane.showMessageDialog(panel, "El usuario se ha editado exitosamente", "Edición completada", JOptionPane.INFORMATION_MESSAGE);
+							dispose();
+							break;
+
+						}
+				   }
 				}else if(psw1 != psw2){
 					JOptionPane.showMessageDialog(panel, "Las contraseñas no coinciden", "Error", JOptionPane.ERROR_MESSAGE);
 					pswRegister.setText("");
@@ -197,5 +253,23 @@ public class regUser extends JFrame {
 			cbxUserType.setEnabled(true);
 			txtUser.setText("");
 		}
+	}
+	
+	private void loadUser(){
+		if(update != null) {
+			txtName.setText(update.getNombre());
+			txtUser.setText(update.getId());
+			pswRegister.setText(update.getPassword());
+			pswConfirm.setText(update.getPassword());
+			if (update instanceof Administrador) {
+				cbxUserType.setSelectedIndex(0);
+			}else if (update instanceof Medico) {
+				cbxUserType.setSelectedIndex(1);
+			}else if (update instanceof Secretario) {
+				cbxUserType.setSelectedIndex(2);
+			}
+
+		}
+		
 	}
 }
