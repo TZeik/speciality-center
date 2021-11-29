@@ -229,6 +229,7 @@ public class regUser extends JFrame {
 					pswRegister.setText("");
 					pswConfirm.setText("");
 				}
+				UserList.loadUserTable(0);
 				
 
 			}
@@ -253,6 +254,7 @@ public class regUser extends JFrame {
 			cbxUserType.setEnabled(true);
 			txtUser.setText("");
 		}
+		loadUser();
 	}
 	
 	private void loadUser(){
