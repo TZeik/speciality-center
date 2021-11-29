@@ -229,7 +229,7 @@ public class regUser extends JFrame {
 					pswRegister.setText("");
 					pswConfirm.setText("");
 				}
-				UserList.loadUserTable(0);
+				
 				
 
 			}
