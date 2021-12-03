@@ -25,6 +25,7 @@ import java.awt.event.HierarchyListener;
 import java.util.Calendar;
 import java.util.Date;
 import java.awt.event.HierarchyEvent;
+import java.awt.Font;
 
 public class CrearCita extends JFrame {
 
@@ -35,6 +36,12 @@ public class CrearCita extends JFrame {
 	private JTextField txtTelefono;
 	private JTextField txtEspecialidad;
 	private JTextField txtFechaCita;
+	private JComboBox cbxSexo;
+	private JComboBox cbxDia;
+	private JComboBox cbxMes;
+	private JComboBox cbxAnno;
+	private JComboBox cbxMedico;
+	private JTextArea txaFinalidad;
 
 	/**
 	 * Launch the application.
@@ -43,7 +50,7 @@ public class CrearCita extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					CrearCita frame = new CrearCita();
+					CrearCita frame = new CrearCita(0);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -55,11 +62,11 @@ public class CrearCita extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public CrearCita() {
+	public CrearCita(int option) {
 		setTitle("Crear cita");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 631, 536);
+		setBounds(100, 100, 666, 536);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -67,6 +74,7 @@ public class CrearCita extends JFrame {
 		setLocationRelativeTo(null);
 		
 		DefaultComboBoxModel diaModel = new DefaultComboBoxModel();
+		DefaultComboBoxModel diaModel_1 = new DefaultComboBoxModel();
 		
 		JPanel panel = new JPanel();
 		panel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -94,16 +102,16 @@ public class CrearCita extends JFrame {
 		panel.add(lblDireccion);
 		
 		JLabel lblEspecialidad = new JLabel("Especialidad: ");
-		lblEspecialidad.setBounds(320, 30, 285, 14);
+		lblEspecialidad.setBounds(320, 170, 285, 14);
 		panel.add(lblEspecialidad);
 		
 		JLabel lblNacimiento = new JLabel("Fecha de nacimiento: ");
-		lblNacimiento.setBounds(320, 100, 285, 14);
+		lblNacimiento.setBounds(320, 30, 285, 14);
 		panel.add(lblNacimiento);
 		
-		JLabel lblFechaCita = new JLabel("Fecha de cita: ");
-		lblFechaCita.setBounds(320, 170, 285, 14);
-		panel.add(lblFechaCita);
+		JLabel lblFechaHoy = new JLabel("Fecha de hoy:");
+		lblFechaHoy.setBounds(10, 366, 285, 14);
+		panel.add(lblFechaHoy);
 		
 		JLabel lblMedico = new JLabel("Medico: ");
 		lblMedico.setBounds(320, 240, 285, 14);
@@ -135,17 +143,17 @@ public class CrearCita extends JFrame {
 		
 		txtEspecialidad = new JTextField();
 		txtEspecialidad.setColumns(10);
-		txtEspecialidad.setBounds(320, 50, 285, 25);
+		txtEspecialidad.setBounds(320, 190, 320, 25);
 		panel.add(txtEspecialidad);
 		
-		JTextArea txaFinalidad = new JTextArea();
+		txaFinalidad = new JTextArea();
 		txaFinalidad.setLineWrap(true);
-		txaFinalidad.setBounds(320, 330, 285, 100);
+		txaFinalidad.setBounds(320, 330, 320, 100);
 		panel.add(txaFinalidad);
 		
-		JComboBox cbxDia = new JComboBox();
+		cbxDia = new JComboBox();
 		
-		JComboBox cbxMes = new JComboBox();
+		cbxMes = new JComboBox();
 		cbxMes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -210,7 +218,7 @@ public class CrearCita extends JFrame {
 		});
 
 		cbxMes.setModel(new DefaultComboBoxModel(new String[] {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"}));
-		cbxMes.setBounds(380, 120, 130, 25);
+		cbxMes.setBounds(380, 50, 130, 25);
 		panel.add(cbxMes);
 		
 
@@ -234,7 +242,7 @@ public class CrearCita extends JFrame {
 		
 
 		cbxDia.setModel(diaModel);
-		cbxDia.setBounds(320, 120, 50, 25);
+		cbxDia.setBounds(320, 50, 50, 25);
 		panel.add(cbxDia);
 		
 		DefaultComboBoxModel annoModel  = new  DefaultComboBoxModel();
@@ -243,15 +251,15 @@ public class CrearCita extends JFrame {
 			annoModel.addElement(i);
 			index++;
 		}
-		JComboBox cbxAnno = new JComboBox();
+		cbxAnno = new JComboBox();
 		cbxAnno.setModel(annoModel);
 		cbxAnno.setSelectedIndex(index);
-		cbxAnno.setBounds(520, 120, 85, 25);
+		cbxAnno.setBounds(520, 50, 120, 25);
 		panel.add(cbxAnno);
 		
 		txtFechaCita = new JTextField();
 		txtFechaCita.setEditable(false);
-		txtFechaCita.setBounds(320, 190, 285, 25);
+		txtFechaCita.setBounds(10, 386, 285, 25);
 		txtFechaCita.setText( + Calendar.getInstance().get(Calendar.DAY_OF_MONTH) + "/" + Calendar.getInstance().get(Calendar.MONTH) + "/" + Calendar.getInstance().get(Calendar.YEAR));
 		panel.add(txtFechaCita);
 		txtFechaCita.setColumns(10);
@@ -261,12 +269,12 @@ public class CrearCita extends JFrame {
 		for(Usuario user : Clinica.getInstance().misMedicos()) {
 			medicoModel.addElement(user.getNombre());
 		}
-		JComboBox cbxMedico = new JComboBox();
+		cbxMedico = new JComboBox();
 		cbxMedico.setModel(medicoModel);
-		cbxMedico.setBounds(320, 260, 285, 25);
+		cbxMedico.setBounds(320, 260, 320, 25);
 		panel.add(cbxMedico);
 		
-		JComboBox cbxSexo = new JComboBox();
+		cbxSexo = new JComboBox();
 		cbxSexo.setModel(new DefaultComboBoxModel(new String[] {"Masculino", "Femenino"}));
 		cbxSexo.setBounds(10, 190, 285, 25);
 		panel.add(cbxSexo);
@@ -277,7 +285,7 @@ public class CrearCita extends JFrame {
 				dispose();
 			}
 		});
-		btnSalir.setBounds(515, 461, 90, 25);
+		btnSalir.setBounds(550, 461, 90, 25);
 		panel.add(btnSalir);
 		
 		JButton btnCrear = new JButton("Crear");
@@ -301,13 +309,190 @@ public class CrearCita extends JFrame {
 				Clinica.getInstance().getMisCitas().add(newCita);
 				Clinica.getInstance().guardarClinica();
 				Clinica.getInstance().setCitaCodeGenerator(Clinica.getInstance().getCitaCodeGenerator() + 1);
-				
-				CrearCita refresh = new CrearCita();
-				refresh.setVisible(true);
+
 				dispose();
 			}
 		});
-		btnCrear.setBounds(410, 461, 90, 25);
+		btnCrear.setBounds(445, 461, 90, 25);
 		panel.add(btnCrear);
+		
+		JLabel lblFechaDeCita = new JLabel("Fecha de cita programada:");
+		lblFechaDeCita.setBounds(320, 100, 190, 14);
+		panel.add(lblFechaDeCita);
+		
+
+		
+		JComboBox cbxDia_1 = new JComboBox();
+		cbxDia_1.setBounds(320, 120, 37, 25);
+		panel.add(cbxDia_1);
+		
+		JComboBox cbxMes_1 = new JComboBox();
+		cbxMes_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				if(cbxMes_1.getSelectedIndex() == 0 || cbxMes_1.getSelectedIndex() == 2 || cbxMes_1.getSelectedIndex() == 4 || cbxMes_1.getSelectedIndex() == 6 || cbxMes_1.getSelectedIndex() == 7 || cbxMes_1.getSelectedIndex() == 9 || cbxMes_1.getSelectedIndex() == 11) {
+					if(diaModel_1.getSize() == 30) {
+						diaModel.addElement(31);
+					}
+					if(diaModel.getSize() == 28) {
+						diaModel.addElement(29);
+						diaModel.addElement(30);
+						diaModel.addElement(31);
+					}
+				}
+				
+				if(cbxMes_1.getSelectedIndex() == 3 || cbxMes_1.getSelectedIndex() == 5 || cbxMes_1.getSelectedIndex() == 8 || cbxMes_1.getSelectedIndex() == 10) {
+					if(diaModel.getSize() == 31) {
+						if(cbxDia_1.getSelectedIndex()+1 < 31) {
+							diaModel_1.removeElementAt(30);
+						}else {
+							cbxDia_1.setSelectedIndex(29);
+							diaModel_1.removeElementAt(30);
+						}
+					}
+					
+					if(diaModel_1.getSize() == 28) {
+						diaModel_1.addElement(30);
+						diaModel_1.addElement(31);
+					}
+					
+
+					
+				}
+				
+				if(cbxMes_1.getSelectedIndex() == 1) {
+					if(diaModel_1.getSize() == 31) {
+						if(cbxDia_1.getSelectedIndex() + 1 < 30) {
+							diaModel_1.removeElementAt(30);
+							diaModel_1.removeElementAt(29);
+							diaModel_1.removeElementAt(28);
+						} else {
+							cbxDia_1.setSelectedIndex(27);
+							diaModel_1.removeElementAt(30);
+							diaModel_1.removeElementAt(29);
+							diaModel_1.removeElementAt(28);
+						}
+						
+					}
+					
+					if(diaModel_1.getSize() == 30) {
+						if(cbxDia_1.getSelectedIndex() + 1 < 30) {
+							diaModel_1.removeElementAt(29);
+							diaModel_1.removeElementAt(28);
+						} else {
+							cbxDia_1.setSelectedIndex(27);
+							diaModel_1.removeElementAt(29);
+							diaModel_1.removeElementAt(28);
+						}
+					}
+					
+				}
+			}
+		});
+		cbxMes_1.setModel(new DefaultComboBoxModel(new String[] {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"}));
+		cbxMes_1.setBounds(367, 120, 87, 25);
+		panel.add(cbxMes_1);
+		
+		JComboBox cbxAnno_1 = new JComboBox();
+		cbxAnno_1.setSelectedIndex(-1);
+		cbxAnno_1.setBounds(464, 120, 68, 25);
+		panel.add(cbxAnno_1);
+		
+		if(cbxMes_1.getSelectedIndex() == 0 || cbxMes_1.getSelectedIndex() == 2 || cbxMes_1.getSelectedIndex() == 4 || cbxMes_1.getSelectedIndex() == 6 || cbxMes_1.getSelectedIndex() == 7 || cbxMes_1.getSelectedIndex() == 9 || cbxMes_1.getSelectedIndex() == 11) {
+			for(int i = 1; i <= 31; i++) {
+				diaModel_1.addElement(i);
+			}
+		}
+		
+		if(cbxMes_1.getSelectedIndex() == 3 || cbxMes_1.getSelectedIndex() == 5 || cbxMes_1.getSelectedIndex() == 8 || cbxMes_1.getSelectedIndex() == 10) {
+			for(int i = 1; i <= 30; i++) {
+				diaModel_1.addElement(i);
+			}
+		}
+		
+		if(cbxMes_1.getSelectedIndex() == 1) {
+			for(int i = 1; i <= 28; i++) {
+				diaModel_1.addElement(i);
+			}
+		}
+		
+		DefaultComboBoxModel annoModel_1  = new  DefaultComboBoxModel();
+		int index1 = -1;
+		for(int i = Calendar.getInstance().get(Calendar.YEAR); i <= Calendar.getInstance().get(Calendar.YEAR)+5; i++) {
+			annoModel_1.addElement(i);
+		}
+		
+		cbxDia_1.setModel(diaModel_1);
+		cbxAnno_1.setModel(annoModel_1);
+		cbxAnno_1.setSelectedIndex(0);
+		
+		JComboBox cbxHora = new JComboBox();
+		cbxHora.setBounds(542, 120, 44, 25);
+		panel.add(cbxHora);
+		
+		JComboBox cbxMinuto = new JComboBox();
+		cbxMinuto.setBounds(596, 120, 44, 25);
+		panel.add(cbxMinuto);
+		
+		DefaultComboBoxModel horaModel = new DefaultComboBoxModel();
+		DefaultComboBoxModel minutoModel = new DefaultComboBoxModel();
+		String temp;
+		
+		for(int i = 0; i <= 24; i++) {
+			if(i < 10) {
+				temp = "0"+i;
+			}else {
+				temp = ""+i;	
+			}
+			
+			horaModel.addElement(temp);
+		}
+		
+		for(int i = 0; i <= 60; i++) {
+			if(i < 10) {
+				temp = "0"+i;
+			}else {
+				temp = ""+i;
+			}
+			
+			minutoModel.addElement(temp);
+		}
+		
+		cbxHora.setModel(horaModel);
+		cbxMinuto.setModel(minutoModel);
+		
+		JLabel lblNewLabel = new JLabel(":");
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblNewLabel.setBounds(588, 114, 37, 35);
+		panel.add(lblNewLabel);
+		
+		if(option == 1) {
+			llenarDatosPaciente();
+		}
+
+	}
+	
+	public void llenarDatosPaciente() {
+		int genderIndex = 0;
+		txtName.setText(Clinica.getInstance().getSelectedPaciente().getNombre());
+		txtCedula.setText(Clinica.getInstance().getSelectedPaciente().getCedula());
+		if(Clinica.getInstance().getSelectedPaciente().getGenero() == "Femenino") {
+			genderIndex = 1;
+		}
+		cbxSexo.setSelectedIndex(genderIndex);
+		txtTelefono.setText(Clinica.getInstance().getSelectedPaciente().getTelefono());
+		txtDireccion.setText(Clinica.getInstance().getSelectedPaciente().getDireccion());
+		cbxDia.setSelectedItem(Clinica.getInstance().getSelectedPaciente().getFechaNacimiento().get(Calendar.DAY_OF_MONTH));
+		cbxMes.setSelectedItem(Clinica.getInstance().getSelectedPaciente().getFechaNacimiento().get(Calendar.MONTH));
+		cbxAnno.setSelectedItem(Clinica.getInstance().getSelectedPaciente().getFechaNacimiento().get(Calendar.YEAR));
+		
+		txtName.setEnabled(false);
+		txtCedula.setEnabled(false);
+		cbxSexo.setEnabled(false);
+		txtTelefono.setEnabled(false);
+		txtDireccion.setEnabled(false);
+		cbxDia.setEnabled(false);
+		cbxMes.setEnabled(false);
+		cbxAnno.setEnabled(false);
 	}
 }

@@ -28,6 +28,7 @@ public class Clinica implements Serializable{
 	private ArrayList<Vacuna> misVacunas;
 	private Usuario logedUser = null;
 	private Cita selectedCita = null;
+	private Paciente selectedPaciente = null;
 	private int userCodeGenerator;
 	private int enfermedadCodeGenerator;
 	private int vaccineCodeGenerator;
@@ -130,6 +131,15 @@ public class Clinica implements Serializable{
 	public void setSelectedCita(Cita selectedCita) {
 		this.selectedCita = selectedCita;
 	}
+	
+	public Paciente getSelectedPaciente() {
+		return selectedPaciente;
+	}
+
+	public void setSelectedPaciente(Paciente selectedPaciente) {
+		this.selectedPaciente = selectedPaciente;
+	}
+
 
 	public ArrayList<Paciente> getMisPacientes() {
 		return misPacientes;
@@ -723,6 +733,7 @@ public class Clinica implements Serializable{
 		}
 		return index;
 	}
+
 
 
 	

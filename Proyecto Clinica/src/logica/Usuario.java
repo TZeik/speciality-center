@@ -13,6 +13,7 @@ public class Usuario implements Serializable{
 	protected String password;
 	protected String nombre;
 	protected String telefono;
+	protected String estado;
 	
 	public Usuario(String codigo) {
 		super();

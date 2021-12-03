@@ -49,7 +49,7 @@ public class PacienteList extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					PacienteList frame = new PacienteList();
+					PacienteList frame = new PacienteList(0);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -61,7 +61,7 @@ public class PacienteList extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public PacienteList() {
+	public PacienteList(int option) {
 		setTitle("Lista de pacientes");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -157,14 +157,29 @@ public class PacienteList extends JFrame {
 		btnSalir.setBounds(624, 410, 90, 25);
 		panel.add(btnSalir);
 		
-		JButton btnRevisar = new JButton("Revisar");
+		JButton btnRevisar = new JButton("<dynamic>");
+		if(option == 0) {
+			btnRevisar.setText("Revisar");
+		}
+		if(option == 1) {
+			btnRevisar.setText("Seleccionar");
+		}
 		btnRevisar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				RevPaciente revpaciente = new RevPaciente(selected);
-				revpaciente.setVisible(true);
+				if(option == 0) {
+					RevPaciente revpaciente = new RevPaciente(selected);
+					revpaciente.setVisible(true);
+				}
+				
+				if(option == 1) {
+					Clinica.getInstance().setSelectedPaciente(selected);
+					CrearCita nuevaCita = new CrearCita(1);
+					nuevaCita.setVisible(true);
+					dispose();
+				}
 			}
 		});
-		btnRevisar.setBounds(525, 410, 90, 25);
+		btnRevisar.setBounds(494, 410, 120, 25);
 		panel.add(btnRevisar);
 		
 		loadPacTable(0);

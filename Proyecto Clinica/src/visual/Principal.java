@@ -14,6 +14,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JPopupMenu;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.border.TitledBorder;
@@ -39,12 +40,16 @@ import javax.swing.DefaultComboBoxModel;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.MouseMotionAdapter;
+import javax.swing.JTextField;
+import javax.swing.JTextArea;
 
 public class Principal extends JFrame {
 
 	private JPanel contentPane;
 	private JTable table;
 	private JTable table_1;
+	private Dimension dim;
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -66,6 +71,7 @@ public class Principal extends JFrame {
 	 * Create the frame.
 	 */
 	public Principal() {
+		dim = getToolkit().getScreenSize();
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -78,8 +84,11 @@ public class Principal extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setTitle("Administraci\u00F3n de Cl\u00EDnica");
 		setResizable(false);
-		setBounds(100, 100, 745, 516);
+		//setBounds(100, 100, 745, 516);
 		setLocationRelativeTo(null);
+		setBounds(-12, 0, (int)dim.getWidth()+24, (int)dim.getHeight()-34);
+
+		
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -96,7 +105,7 @@ public class Principal extends JFrame {
 				public void actionPerformed(ActionEvent e) {
 	
 	
-						CrearCita ventanaCrearCita = new CrearCita();
+						CitaSelect ventanaCrearCita = new CitaSelect();
 						ventanaCrearCita.setVisible(true);
 					
 				}
@@ -146,7 +155,7 @@ public class Principal extends JFrame {
 		JMenuItem itemLPacientes = new JMenuItem("Lista de pacientes");
 		itemLPacientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				PacienteList pacienteList = new PacienteList();
+				PacienteList pacienteList = new PacienteList(0);
 				pacienteList.setVisible(true);
 			}
 		});
@@ -272,17 +281,17 @@ public class Principal extends JFrame {
 		panel.setLayout(null);
 		
 		JLabel lblInfo = new JLabel("");
-		lblInfo.setBounds(10, 431, 700, 14);
+		lblInfo.setBounds(10, 967, 1904, 14);
 		panel.add(lblInfo);
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		panel_1.setBounds(440, 30, 270, 364);
+		panel_1.setBounds(1301, 30, 613, 926);
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 		
 		JScrollPane scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(10, 102, 250, 251);
+		scrollPane_1.setBounds(10, 198, 593, 676);
 		panel_1.add(scrollPane_1);
 		
 		table_1 = new JTable();
@@ -291,23 +300,53 @@ public class Principal extends JFrame {
 		
 		JPanel imagePanel = new JPanel();
 		imagePanel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		imagePanel.setBounds(10, 11, 80, 80);
+		imagePanel.setBounds(10, 11, 180, 180);
 		panel_1.add(imagePanel);
 		imagePanel.setLayout(new BorderLayout(0, 0));
 		
 		JLabel lblNombre = new JLabel(Clinica.getInstance().getLogedUser().getNombre());
 		lblNombre.setFont(new Font("Arial", Font.BOLD, 12));
-		lblNombre.setBounds(100, 11, 160, 14);
+		lblNombre.setBounds(200, 11, 403, 14);
 		panel_1.add(lblNombre);
 		
 		JComboBox cbxEstado = new JComboBox();
 		cbxEstado.setModel(new DefaultComboBoxModel(new String[] {"En l\u00EDnea", "Ausente", "Invisible"}));
-		cbxEstado.setBounds(100, 50, 160, 20);
+		cbxEstado.setBounds(200, 50, 403, 20);
 		panel_1.add(cbxEstado);
 		
 		JLabel lblUserType = new JLabel("<dynamic>");
-		lblUserType.setBounds(100, 77, 160, 14);
+		lblUserType.setBounds(200, 92, 403, 14);
 		panel_1.add(lblUserType);
+		
+		JButton btnLogout = new JButton("Cerrar sesi\u00F3n");
+		btnLogout.setBounds(200, 162, 403, 25);
+		panel_1.add(btnLogout);
+		
+		JButton btnNewButton_1 = new JButton("Abrir chat");
+		btnNewButton_1.setBounds(10, 890, 166, 25);
+		panel_1.add(btnNewButton_1);
+		
+		JButton btnNewButton_2 = new JButton("Redactar correo");
+		btnNewButton_2.setBounds(186, 890, 241, 25);
+		panel_1.add(btnNewButton_2);
+		
+		JButton btnNewButton_3 = new JButton("Ver informaci\u00F3n");
+		btnNewButton_3.setBounds(437, 890, 166, 25);
+		panel_1.add(btnNewButton_3);
+		btnLogout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (JOptionPane.showConfirmDialog(panel, "¿Está seguro de cerrar su sesión?", "Cerrar sesión", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					lblInfo.setText("Cerrando sesión...");
+					dispose();
+					Login newLogin = new Login();
+					newLogin.setVisible(true);
+					Clinica.getInstance().Logout();
+				}else {
+					
+				}
+				
+			}
+		});
 		int opcion = Clinica.getInstance().OpcionUserClinica();
 		switch (opcion) {
 		case 0:
@@ -326,41 +365,72 @@ public class Principal extends JFrame {
 		
 		JPanel panel_3 = new JPanel();
 		panel_3.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Crear", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(0, 0, 0)));
-		panel_3.setBounds(10, 30, 420, 150);
+		panel_3.setBounds(10, 30, 373, 114);
 		panel.add(panel_3);
 		panel_3.setLayout(null);
 		
+		JButton btnCrear1 = new JButton("<dynamic>");
+		btnCrear1.setBounds(10, 25, 170, 75);
+		panel_3.add(btnCrear1);
+		
+		JButton btnCrear2 = new JButton("<dynamic>");
+		btnCrear2.setBounds(190, 25, 170, 75);
+		panel_3.add(btnCrear2);
+		
+		if(Clinica.getInstance().getLogedUser() instanceof Medico || Clinica.getInstance().getLogedUser() instanceof Administrador) {
+			btnCrear1.setText("Consulta");
+			btnCrear2.setText("Vacunación");
+		}
+		
+		if(Clinica.getInstance().getLogedUser() instanceof Secretario) {
+			btnCrear1.setText("<html><center>Cita<p>Nuevo paciente<html>");
+			btnCrear2.setText("<html><center>Cita<p>Paciente existente<html>");
+		}
+
+		
 		JPanel panel_4 = new JPanel();
 		panel_4.setBorder(new TitledBorder(null, "Bandeja de entrada", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_4.setBounds(10, 188, 420, 242);
+		panel_4.setBounds(10, 161, 675, 795);
 		panel.add(panel_4);
 		panel_4.setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 23, 400, 208);
+		scrollPane.setBounds(10, 23, 655, 761);
 		panel_4.add(scrollPane);
 		
 		table = new JTable();
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane.setViewportView(table);
 		
-		JButton btnLogout = new JButton("Cerrar sesi\u00F3n");
-		btnLogout.setBounds(440, 405, 270, 25);
-		panel.add(btnLogout);
-		btnLogout.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (JOptionPane.showConfirmDialog(panel, "¿Está seguro de cerrar su sesión?", "Cerrar sesión", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-					lblInfo.setText("Cerrando sesión...");
-					dispose();
-					Login newLogin = new Login();
-					newLogin.setVisible(true);
-					Clinica.getInstance().Logout();
-				}else {
-					
-				}
-				
-			}
-		});
+		JPanel panel_2 = new JPanel();
+		panel_2.setBorder(new TitledBorder(null, "Mensajer\u00EDa instant\u00E1nea", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_2.setBounds(695, 30, 595, 926);
+		panel.add(panel_2);
+		panel_2.setLayout(null);
+		
+		textField = new JTextField();
+		textField.setBounds(10, 890, 477, 25);
+		panel_2.add(textField);
+		textField.setColumns(10);
+		
+		JButton btnNewButton = new JButton("Enviar");
+		btnNewButton.setBounds(497, 890, 89, 25);
+		panel_2.add(btnNewButton);
+		
+		JTextArea chatArea = new JTextArea();
+		chatArea.setEditable(false);
+		chatArea.setBounds(10, 57, 576, 822);
+		panel_2.add(chatArea);
+		
+		JLabel lblNewLabel = new JLabel("Chat de: ");
+		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblNewLabel.setBounds(10, 30, 65, 14);
+		panel_2.add(lblNewLabel);
+		
+		JLabel lblNewLabel_1 = new JLabel("<dynamic>");
+		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblNewLabel_1.setBounds(78, 30, 508, 14);
+		panel_2.add(lblNewLabel_1);
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseMoved(MouseEvent e) {

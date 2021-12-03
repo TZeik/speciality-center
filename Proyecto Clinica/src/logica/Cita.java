@@ -15,6 +15,7 @@ public class Cita implements Serializable{
 	private String cedula;
 	private String genero;
 	private Calendar fechaNacimiento;
+	private Calendar fechaProgramada;
 	private Calendar fechaCita;
 	private String finalidad;
 	private String direccion;
@@ -113,6 +114,14 @@ public class Cita implements Serializable{
 
 	public void setMedico(Medico medico) {
 		this.medico = medico;
+	}
+
+	public Calendar getFechaProgramada() {
+		return fechaProgramada;
+	}
+
+	public void setFechaProgramada(Calendar fechaProgramada) {
+		this.fechaProgramada = fechaProgramada;
 	}
 	
 

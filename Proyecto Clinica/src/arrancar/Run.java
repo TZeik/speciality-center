@@ -15,7 +15,6 @@ public abstract class Run {
 			public void run() {
 				try {
 					Clinica.getInstance().cargarClinica();
-					System.out.println(Clinica.getInstance().misConsultas().size());
 					Login frame = new Login();
 					frame.setVisible(true);
 				} catch (Exception e) {
