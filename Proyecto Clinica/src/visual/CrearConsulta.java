@@ -194,7 +194,12 @@ public class CrearConsulta extends JFrame {
 				paciente = Clinica.getInstance().buscarPacienteByCed(Clinica.getInstance().getSelectedCita().getCedula());
 				if(paciente == null) {
 					if(JOptionPane.showConfirmDialog(panel, "Se creará un nuevo paciente de nombre: " + Clinica.getInstance().getSelectedCita().getNombre(), "Nuevo paciente", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-						Clinica.getInstance().nuevoPaciente(Clinica.getInstance().getSelectedCita(), newConsulta, null);
+						
+						if(newConsulta.getEnfermedad().isVigilancia() == true) {
+							Clinica.getInstance().nuevoPaciente(Clinica.getInstance().getSelectedCita(), newConsulta, null);
+						}else {
+							Clinica.getInstance().nuevoPaciente(Clinica.getInstance().getSelectedCita(), null, null);
+						}
 					}else {
 						JOptionPane.showMessageDialog(panel, "No se ha podido crear la consulta", "Crear consulta", JOptionPane.ERROR_MESSAGE);
 						cancel = true;
@@ -202,7 +207,10 @@ public class CrearConsulta extends JFrame {
 					}
 				}
 				if(paciente != null) {
-					Clinica.getInstance().getMisPacientes().get(Clinica.getInstance().buscarPacienteIndex(paciente.getCodigo())).getHistorial().getMisConsultas().add(newConsulta);
+					if(newConsulta.getEnfermedad().isVigilancia() == true) {
+						Clinica.getInstance().getMisPacientes().get(Clinica.getInstance().buscarPacienteIndex(paciente.getCodigo())).getHistorial().getMisConsultas().add(newConsulta);
+
+					}
 				}
 				
 				if(cancel == false) {

@@ -12,10 +12,12 @@ public class Enfermedad implements Serializable{
 	private String nombre;
 	private String tipo;
 	private String descipcion;
+	private boolean vigilancia;
 	
 	public Enfermedad(String codigo) {
 		super();
 		this.codigo = codigo;
+		this.vigilancia = false;
 
 	}
 
@@ -45,6 +47,14 @@ public class Enfermedad implements Serializable{
 
 	public String getCodigo() {
 		return codigo;
+	}
+
+	public boolean isVigilancia() {
+		return vigilancia;
+	}
+
+	public void setVigilancia(boolean vigilancia) {
+		this.vigilancia = vigilancia;
 	}
 	
 }

@@ -42,6 +42,11 @@ public class CrearCita extends JFrame {
 	private JComboBox cbxAnno;
 	private JComboBox cbxMedico;
 	private JTextArea txaFinalidad;
+	private JComboBox cbxDia_1;
+	private JComboBox cbxMes_1;
+	private JComboBox cbxAnno_1;
+	private JComboBox cbxHora;
+	private JComboBox cbxMinuto;
 
 	/**
 	 * Launch the application.
@@ -66,7 +71,7 @@ public class CrearCita extends JFrame {
 		setTitle("Crear cita");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 666, 536);
+		setBounds(100, 100, 679, 546);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -293,7 +298,9 @@ public class CrearCita extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				Cita newCita = new Cita(Clinica.getInstance().GenerateCitaCode());
 				Calendar tempDate = Calendar.getInstance();
+				Calendar tempDate2 = Calendar.getInstance();
 				tempDate.set((int)cbxAnno.getSelectedItem(), cbxMes.getSelectedIndex()+1, (int)cbxDia.getSelectedItem());
+				tempDate2.set((int)cbxAnno_1.getSelectedItem(), cbxMes_1.getSelectedIndex()+1, (int)cbxDia_1.getSelectedItem(), cbxHora.getSelectedIndex(), cbxMinuto.getSelectedIndex()+1);
 				newCita.setNombre(txtName.getText());
 				newCita.setCedula(txtCedula.getText());
 				newCita.setGenero(cbxSexo.getSelectedItem().toString());
@@ -307,8 +314,12 @@ public class CrearCita extends JFrame {
 				JOptionPane.showMessageDialog(panel, "Se ha creado una cita correctamente", "Cita completada", JOptionPane.INFORMATION_MESSAGE);
 				
 				Clinica.getInstance().getMisCitas().add(newCita);
-				Clinica.getInstance().guardarClinica();
+				if(option == 1) {
+					Clinica.getInstance().getMisPacientes().get(Clinica.getInstance().buscarPacienteIndex(Clinica.getInstance().getSelectedPaciente())).getHistorial().getMisCitas().add(newCita);
+				}
 				Clinica.getInstance().setCitaCodeGenerator(Clinica.getInstance().getCitaCodeGenerator() + 1);
+				Clinica.getInstance().guardarClinica();
+
 
 				dispose();
 			}
@@ -322,11 +333,11 @@ public class CrearCita extends JFrame {
 		
 
 		
-		JComboBox cbxDia_1 = new JComboBox();
+		cbxDia_1 = new JComboBox();
 		cbxDia_1.setBounds(320, 120, 37, 25);
 		panel.add(cbxDia_1);
 		
-		JComboBox cbxMes_1 = new JComboBox();
+		cbxMes_1 = new JComboBox();
 		cbxMes_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -393,7 +404,7 @@ public class CrearCita extends JFrame {
 		cbxMes_1.setBounds(367, 120, 87, 25);
 		panel.add(cbxMes_1);
 		
-		JComboBox cbxAnno_1 = new JComboBox();
+		cbxAnno_1 = new JComboBox();
 		cbxAnno_1.setSelectedIndex(-1);
 		cbxAnno_1.setBounds(464, 120, 68, 25);
 		panel.add(cbxAnno_1);
@@ -426,11 +437,11 @@ public class CrearCita extends JFrame {
 		cbxAnno_1.setModel(annoModel_1);
 		cbxAnno_1.setSelectedIndex(0);
 		
-		JComboBox cbxHora = new JComboBox();
+		cbxHora = new JComboBox();
 		cbxHora.setBounds(542, 120, 44, 25);
 		panel.add(cbxHora);
 		
-		JComboBox cbxMinuto = new JComboBox();
+		cbxMinuto = new JComboBox();
 		cbxMinuto.setBounds(596, 120, 44, 25);
 		panel.add(cbxMinuto);
 		
@@ -448,7 +459,7 @@ public class CrearCita extends JFrame {
 			horaModel.addElement(temp);
 		}
 		
-		for(int i = 0; i <= 60; i++) {
+		for(int i = 0; i < 60; i++) {
 			if(i < 10) {
 				temp = "0"+i;
 			}else {

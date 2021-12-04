@@ -82,6 +82,7 @@ public class PacienteList extends JFrame {
 		panel.add(scrollPane);
 		
 		table = new JTable();
+		table.getTableHeader().setReorderingAllowed(false);
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -167,6 +168,7 @@ public class PacienteList extends JFrame {
 		btnRevisar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(option == 0) {
+					Clinica.getInstance().setSelectedPaciente(selected);
 					RevPaciente revpaciente = new RevPaciente(selected);
 					revpaciente.setVisible(true);
 				}

@@ -49,7 +49,7 @@ public class Principal extends JFrame {
 	private JTable table;
 	private JTable table_1;
 	private Dimension dim;
-	private JTextField textField;
+	private JTextField chatField;
 
 	/**
 	 * Launch the application.
@@ -77,6 +77,7 @@ public class Principal extends JFrame {
 			public void windowClosing(WindowEvent e) {
 				Clinica.getInstance().setLogedUser(null);
 				Clinica.getInstance().setSelectedCita(null);
+				Clinica.getInstance().setSelectedPaciente(null);
 				Clinica.getInstance().guardarClinica();
 			}
 		});
@@ -370,10 +371,37 @@ public class Principal extends JFrame {
 		panel_3.setLayout(null);
 		
 		JButton btnCrear1 = new JButton("<dynamic>");
+		btnCrear1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(Clinica.getInstance().getLogedUser() instanceof Medico || Clinica.getInstance().getLogedUser() instanceof Administrador) {
+					CrearConsulta nuevaConsulta = new CrearConsulta();
+					nuevaConsulta.setVisible(true);
+				}
+				
+				if(Clinica.getInstance().getLogedUser() instanceof Secretario) {
+					CrearCita nuevaCita =  new CrearCita(0);
+					nuevaCita.setVisible(true);
+				}
+				
+			}
+		});
 		btnCrear1.setBounds(10, 25, 170, 75);
 		panel_3.add(btnCrear1);
 		
 		JButton btnCrear2 = new JButton("<dynamic>");
+		btnCrear2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {				
+				if(Clinica.getInstance().getLogedUser() instanceof Medico || Clinica.getInstance().getLogedUser() instanceof Administrador) {
+					CrearVacuna nuevaVacuna = new CrearVacuna();
+					nuevaVacuna.setVisible(true);
+				}
+				
+				if(Clinica.getInstance().getLogedUser() instanceof Secretario) {
+					CrearCita nuevaCita = new CrearCita(1);
+					nuevaCita.setVisible(true);
+				}
+			}
+		});
 		btnCrear2.setBounds(190, 25, 170, 75);
 		panel_3.add(btnCrear2);
 		
@@ -408,10 +436,10 @@ public class Principal extends JFrame {
 		panel.add(panel_2);
 		panel_2.setLayout(null);
 		
-		textField = new JTextField();
-		textField.setBounds(10, 890, 477, 25);
-		panel_2.add(textField);
-		textField.setColumns(10);
+		chatField = new JTextField();
+		chatField.setBounds(10, 890, 477, 25);
+		panel_2.add(chatField);
+		chatField.setColumns(10);
 		
 		JButton btnNewButton = new JButton("Enviar");
 		btnNewButton.setBounds(497, 890, 89, 25);

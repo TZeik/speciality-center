@@ -21,6 +21,8 @@ import java.awt.event.ActionEvent;
 import java.awt.Window.Type;
 import javax.swing.JTextArea;
 import java.awt.Font;
+import javax.swing.JCheckBox;
+import java.awt.Dialog.ModalExclusionType;
 
 public class RegEnfermedad extends JFrame {
 
@@ -29,7 +31,6 @@ public class RegEnfermedad extends JFrame {
 	private JTextField txtTipo;
 	private JTextArea txtInfo;
 	private JLabel lblNewLabel_2;
-	private JPanel panel_1;
 	private JButton btnCancel;
 	private JButton btnRegistrar;
 	private Enfermedad update;
@@ -54,6 +55,9 @@ public class RegEnfermedad extends JFrame {
 	 * Create the frame.
 	 */
 	public RegEnfermedad(Enfermedad aux) {
+		setTitle("Registrar enfermedad");
+		setAlwaysOnTop(true);
+		setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
 		setResizable(false);
 		update = aux;
 		if (update== null) {
@@ -61,7 +65,6 @@ public class RegEnfermedad extends JFrame {
 			}else {
 				setTitle("Editar enfermedad");
 			}
-		setType(Type.UTILITY);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 457, 453);
 		contentPane = new JPanel();
@@ -76,39 +79,33 @@ public class RegEnfermedad extends JFrame {
 		panel.setLayout(null);
 		
 		txtName = new JTextField();
-		txtName.setBounds(10, 103, 411, 25);
+		txtName.setBounds(10, 36, 411, 25);
 		panel.add(txtName);
 		txtName.setColumns(10);
 		
 		JLabel lblNewLabel = new JLabel("Nombre: ");
-		lblNewLabel.setBounds(10, 78, 233, 14);
+		lblNewLabel.setBounds(10, 11, 233, 14);
 		panel.add(lblNewLabel);
 		
 		txtTipo = new JTextField();
-		txtTipo.setBounds(10, 177, 411, 25);
+		txtTipo.setBounds(10, 110, 411, 25);
 		panel.add(txtTipo);
 		txtTipo.setColumns(10);
 		
 		JLabel lblNewLabel_1 = new JLabel("Tipo: ");
-		lblNewLabel_1.setBounds(10, 152, 233, 14);
+		lblNewLabel_1.setBounds(10, 85, 233, 14);
 		panel.add(lblNewLabel_1);
 		
 		txtInfo = new JTextArea();
 		txtInfo.setLineWrap(true);
 		txtInfo.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		txtInfo.setBounds(10, 247, 411, 90);
+		txtInfo.setBounds(10, 180, 411, 90);
 		panel.add(txtInfo);
 		txtInfo.setColumns(10);
 		
 		lblNewLabel_2 = new JLabel("Descripci\u00F3n: ");
-		lblNewLabel_2.setBounds(10, 222, 233, 14);
+		lblNewLabel_2.setBounds(10, 155, 233, 14);
 		panel.add(lblNewLabel_2);
-		
-		panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_1.setBounds(10, 11, 411, 45);
-		panel.add(panel_1);
-		panel_1.setLayout(null);
 		
 		btnCancel = new JButton("Cancelar");
 		btnCancel.addActionListener(new ActionListener() {
@@ -118,6 +115,10 @@ public class RegEnfermedad extends JFrame {
 		});
 		btnCancel.setBounds(331, 361, 90, 25);
 		panel.add(btnCancel);
+		
+		JCheckBox checkbox = new JCheckBox("  Enfermedad bajo vigilancia");
+		checkbox.setBounds(10, 290, 411, 23);
+		panel.add(checkbox);
 		
 		btnRegistrar = new JButton("");
 		if (update== null) {
@@ -134,6 +135,7 @@ public class RegEnfermedad extends JFrame {
 				newEnfermedad.setNombre(txtName.getText());
 				newEnfermedad.setTipo(txtTipo.getText());
 				newEnfermedad.setDescipcion(txtInfo.getText());
+				newEnfermedad.setVigilancia(checkbox.isSelected());
 				
 				Clinica.getInstance().getMisEnfermedades().add(newEnfermedad);
 				Clinica.getInstance().setEnfermedadCodeGenerator(Clinica.getInstance().getEnfermedadCodeGenerator() + 1);
@@ -158,6 +160,8 @@ public class RegEnfermedad extends JFrame {
 		});
 		btnRegistrar.setBounds(231, 361, 90, 25);
 		panel.add(btnRegistrar);
+		
+
 		loadEnfer();
 	}
 	

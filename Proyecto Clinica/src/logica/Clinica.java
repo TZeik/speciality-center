@@ -539,11 +539,13 @@ public class Clinica implements Serializable{
 	public void nuevoPaciente(Cita cita, Consulta consulta, Vacuna vacuna) {
 		
 		Paciente newPaciente = new Paciente(Clinica.getInstance().GeneratePacienteCode(),cita.getNombre(),cita.getCedula(),cita.getGenero(),cita.getFechaNacimiento(),cita.getDireccion(),cita.getTelefono());
-		if(vacuna == null) {
-			newPaciente.getHistorial().getMisConsultas().add(consulta);
-		}
-		if(consulta == null) {
+		newPaciente.getHistorial().getMisCitas().add(cita);
+		if(vacuna != null) {
 			newPaciente.getHistorial().getMisVacunas().add(vacuna);
+
+		}
+		if(consulta != null) {
+			newPaciente.getHistorial().getMisConsultas().add(consulta);
 		}
 		Clinica.getInstance().getMisPacientes().add(newPaciente);
 		Clinica.getInstance().setPacienteCodeGenerator(Clinica.getInstance().getPacienteCodeGenerator() + 1);

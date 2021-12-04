@@ -24,6 +24,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
+import java.awt.Dialog.ModalExclusionType;
 
 public class RevPaciente extends JFrame {
 
@@ -63,9 +64,11 @@ public class RevPaciente extends JFrame {
 	 * Create the frame.
 	 */
 	public RevPaciente(Paciente pac) {
+		setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
+		setResizable(false);
 		miPaciente = pac;
 		setTitle("Revisar paciente");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 706, 538);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -81,12 +84,13 @@ public class RevPaciente extends JFrame {
 		panel.setLayout(null);
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(null, "Paciente, <dynamic>", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_1.setBorder(new TitledBorder(null, "Paciente, " + Clinica.getInstance().getSelectedPaciente().getNombre() , TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_1.setBounds(10, 11, 378, 467);
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 		
 		txtNombre = new JTextField();
+		txtNombre.setEditable(false);
 		txtNombre.setBounds(10, 50, 358, 25);
 		panel_1.add(txtNombre);
 		txtNombre.setColumns(10);
@@ -96,6 +100,7 @@ public class RevPaciente extends JFrame {
 		panel_1.add(lblNombre);
 		
 		txtCedula = new JTextField();
+		txtCedula.setEditable(false);
 		txtCedula.setBounds(10, 110, 358, 25);
 		panel_1.add(txtCedula);
 		txtCedula.setColumns(10);
@@ -105,8 +110,10 @@ public class RevPaciente extends JFrame {
 		panel_1.add(lblNewLabel);
 		
 		cbxDia = new JComboBox();
+		cbxDia.setEnabled(false);
 		
 		cbxMes = new JComboBox();
+		cbxMes.setEnabled(false);
 		cbxMes.setBounds(101, 180, 147, 25);
 		panel_1.add(cbxMes);
 		cbxMes.addActionListener(new ActionListener() {
@@ -204,6 +211,7 @@ public class RevPaciente extends JFrame {
 			index++;
 		}
 		cbxAnno = new JComboBox();
+		cbxAnno.setEnabled(false);
 		cbxAnno.setBounds(258, 180, 110, 25);
 		panel_1.add(cbxAnno);
 		cbxAnno.setModel(annoModel);
@@ -214,6 +222,7 @@ public class RevPaciente extends JFrame {
 		panel_1.add(lblNewLabel_1);
 		
 		cbxGenero = new JComboBox();
+		cbxGenero.setEnabled(false);
 		cbxGenero.setModel(new DefaultComboBoxModel(new String[] {"Masculino", "Femenino"}));
 		cbxGenero.setBounds(10, 250, 358, 25);
 		panel_1.add(cbxGenero);
@@ -223,10 +232,12 @@ public class RevPaciente extends JFrame {
 		panel_1.add(lblNewLabel_2);
 		
 		txaDireccion = new JTextArea();
+		txaDireccion.setEditable(false);
 		txaDireccion.setBounds(10, 380, 358, 67);
 		panel_1.add(txaDireccion);
 		
 		txtTelefono = new JTextField();
+		txtTelefono.setEditable(false);
 		txtTelefono.setBounds(10, 320, 358, 25);
 		panel_1.add(txtTelefono);
 		txtTelefono.setColumns(10);
@@ -261,6 +272,11 @@ public class RevPaciente extends JFrame {
 		scrollPane.setViewportView(table);
 		
 		btnSalir = new JButton("Salir");
+		btnSalir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 		btnSalir.setBounds(580, 453, 90, 25);
 		panel.add(btnSalir);
 		
@@ -271,6 +287,57 @@ public class RevPaciente extends JFrame {
 		});
 		btnGuardar.setBounds(480, 453, 90, 25);
 		panel.add(btnGuardar);
+		
+		loadPaciente();
+	}
+	
+	public String miMes(int index) {
+		String mes = null;
+		
+		switch(index) {
+		case 1:
+			mes = "Enero";
+			break;
+		case 2:
+			mes = "Febrero";
+			break;
+		case 3:
+			mes = "Marzo";
+			break;
+		case 4:
+			mes = "Abril";
+			break;
+		case 5:
+			mes = "Mayo";
+			break;
+		case 6:
+			mes = "Junio";
+			break;
+		case 7:
+			mes = "Julio";
+			break;
+		case 8:
+			mes = "Agosto";
+			break;
+		case 9:
+			mes = "Septiembre";
+			break;
+		case 10:
+			mes = "Octubre";
+			break;
+		case 11:
+			mes = "Noviembre";
+			break;
+		case 12:
+			mes = "Diciembre";
+			break;
+			
+		default:
+			
+			break;
+		}
+		
+		return mes;
 	}
 	
 	public void loadPaciente() {
@@ -278,10 +345,10 @@ public class RevPaciente extends JFrame {
 			int genero;
 			txtNombre.setText(miPaciente.getNombre());
 			txtCedula.setText(miPaciente.getCedula());
-			cbxDia.setSelectedIndex(miPaciente.getFechaNacimiento().get(Calendar.DAY_OF_MONTH) - 1);
-			cbxMes.setSelectedIndex(miPaciente.getFechaNacimiento().get(Calendar.MONTH) - 1);
-			cbxAnno.setSelectedIndex(miPaciente.getFechaNacimiento().get(Calendar.YEAR) - 1);
-			if(miPaciente.getGenero() == "Masculino") {
+			cbxDia.setSelectedItem(miPaciente.getFechaNacimiento().get(Calendar.DAY_OF_MONTH));
+			cbxMes.setSelectedItem(miMes(miPaciente.getFechaNacimiento().get(Calendar.MONTH)));
+			cbxAnno.setSelectedItem(miPaciente.getFechaNacimiento().get(Calendar.YEAR));
+			if(miPaciente.getGenero().equalsIgnoreCase("Masculino")) {
 				genero = 0;
 			}else {
 				genero = 1;

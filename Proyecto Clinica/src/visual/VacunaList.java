@@ -113,6 +113,7 @@ public class VacunaList extends JFrame {
 		panel.add(btnEditar);
 		
 		table = new JTable();
+		table.getTableHeader().setReorderingAllowed(false);
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {

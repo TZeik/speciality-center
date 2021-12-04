@@ -121,6 +121,7 @@ public class ConsultaList extends JFrame {
 		panel.add(scrollPane);
 		
 		table = new JTable();
+		table.getTableHeader().setReorderingAllowed(false);
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
