@@ -61,6 +61,7 @@ public class CitaSelect extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				CrearCita nuevaCita = new CrearCita(0);
 				nuevaCita.setVisible(true);
+				dispose();
 			}
 		});
 		btnNuevo.setBounds(48, 15, 150, 70);

@@ -18,11 +18,13 @@ import java.awt.Dimension;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 
 import logica.Administrador;
 import logica.Clinica;
 import logica.Medico;
 import logica.Secretario;
+import logica.Usuario;
 
 import javax.swing.border.BevelBorder;
 import java.awt.event.ActionListener;
@@ -46,10 +48,13 @@ import javax.swing.JTextArea;
 public class Principal extends JFrame {
 
 	private JPanel contentPane;
-	private JTable table;
-	private JTable table_1;
+	private JTable mailTable;
+	private JTable userTable;
 	private Dimension dim;
 	private JTextField chatField;
+	private static Object[] row;
+	public static DefaultTableModel mailModel;
+	public static DefaultTableModel userModel;
 
 	/**
 	 * Launch the application.
@@ -295,9 +300,16 @@ public class Principal extends JFrame {
 		scrollPane_1.setBounds(10, 198, 593, 676);
 		panel_1.add(scrollPane_1);
 		
-		table_1 = new JTable();
-		table_1.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		scrollPane_1.setViewportView(table_1);
+		String[] headers = {"Nombre","Estado"};
+		userModel = new DefaultTableModel();
+		userModel.setColumnIdentifiers(headers);
+		
+		userTable = new JTable();
+		userTable.setModel(userModel);
+		userTable.setRowHeight(20);
+		userTable.getTableHeader().setReorderingAllowed(false);
+		userTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		scrollPane_1.setViewportView(userTable);
 		
 		JPanel imagePanel = new JPanel();
 		imagePanel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -397,8 +409,8 @@ public class Principal extends JFrame {
 				}
 				
 				if(Clinica.getInstance().getLogedUser() instanceof Secretario) {
-					CrearCita nuevaCita = new CrearCita(1);
-					nuevaCita.setVisible(true);
+					PacienteList citaSelect = new PacienteList(1);
+					citaSelect.setVisible(true);
 				}
 			}
 		});
@@ -426,9 +438,14 @@ public class Principal extends JFrame {
 		scrollPane.setBounds(10, 23, 655, 761);
 		panel_4.add(scrollPane);
 		
-		table = new JTable();
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		scrollPane.setViewportView(table);
+		mailModel = new DefaultTableModel();
+		String[] mailHeaders = {"Emisor","Asunto","Fecha","Hora"};
+		mailModel.setColumnIdentifiers(mailHeaders);
+		mailTable = new JTable();
+		mailTable.setModel(mailModel);
+		mailTable.getTableHeader().setReorderingAllowed(false);
+		mailTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		scrollPane.setViewportView(mailTable);
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBorder(new TitledBorder(null, "Mensajer\u00EDa instant\u00E1nea", TitledBorder.LEADING, TitledBorder.TOP, null, null));
@@ -450,15 +467,15 @@ public class Principal extends JFrame {
 		chatArea.setBounds(10, 57, 576, 822);
 		panel_2.add(chatArea);
 		
-		JLabel lblNewLabel = new JLabel("Chat de: ");
-		lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblNewLabel.setBounds(10, 30, 65, 14);
-		panel_2.add(lblNewLabel);
+		JLabel lblInfoChat = new JLabel("Chat de: ");
+		lblInfoChat.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblInfoChat.setBounds(10, 30, 65, 14);
+		panel_2.add(lblInfoChat);
 		
-		JLabel lblNewLabel_1 = new JLabel("<dynamic>");
-		lblNewLabel_1.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblNewLabel_1.setBounds(78, 30, 508, 14);
-		panel_2.add(lblNewLabel_1);
+		JLabel DynamicName = new JLabel("<dynamic>");
+		DynamicName.setFont(new Font("Tahoma", Font.BOLD, 14));
+		DynamicName.setBounds(78, 30, 508, 14);
+		panel_2.add(DynamicName);
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseMoved(MouseEvent e) {
@@ -484,5 +501,20 @@ public class Principal extends JFrame {
 				popup.show(e.getComponent(), e.getX(), e.getY());
 			}
 		});
+	}
+	
+	public static void loadUserTable() {
+		
+		userModel.setRowCount(0);
+		row = new Object[userModel.getColumnCount()];
+		
+		for(Usuario user : Clinica.getInstance().getMisUsuarios()) {
+			
+			row[0] = user.getNombre();
+			row[1] = user.getEstado();
+			
+			userModel.addRow(row);
+		}
+		
 	}
 }

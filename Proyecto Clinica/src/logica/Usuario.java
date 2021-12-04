@@ -18,6 +18,7 @@ public class Usuario implements Serializable{
 	public Usuario(String codigo) {
 		super();
 		this.codigo = codigo;
+		this.estado = "Desconectado";
 	}
 
 	public String getCodigo() {
@@ -58,6 +59,14 @@ public class Usuario implements Serializable{
 
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
+	}
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
 	}
 	
 }
