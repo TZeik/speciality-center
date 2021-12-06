@@ -14,6 +14,7 @@ import java.awt.Panel;
 import java.awt.FlowLayout;
 import javax.swing.border.TitledBorder;
 
+import arrancar.Cliente;
 import logica.Clinica;
 
 import javax.swing.UIManager;
@@ -82,6 +83,7 @@ public class Login extends JFrame {
 					
 					if(Clinica.getInstance().confirmLogin(txtLogin.getText(), psw) == true) {
 						Principal window = new Principal();
+						Cliente.setLoged(true);
 						dispose();
 						window.setVisible(true);
 					}else {

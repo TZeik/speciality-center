@@ -20,6 +20,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.border.TitledBorder;
 import javax.swing.table.DefaultTableModel;
 
+import arrancar.Cliente;
 import logica.Administrador;
 import logica.Clinica;
 import logica.Medico;
@@ -265,7 +266,7 @@ public class Principal extends JFrame {
 		});
 		mnALista.add(mntmNewMenuItem_10);
 		
-		JMenuItem itemReporte = new JMenuItem("Solicitar reporte");
+		JMenuItem itemReporte = new JMenuItem("Configuraci\u00F3n");
 		mnAdministrar.add(itemReporte);
 		
 		JMenu mnAyuda = new JMenu("Ayuda");
@@ -351,9 +352,11 @@ public class Principal extends JFrame {
 				if (JOptionPane.showConfirmDialog(panel, "¿Está seguro de cerrar su sesión?", "Cerrar sesión", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					lblInfo.setText("Cerrando sesión...");
 					dispose();
+					Clinica.getInstance().Logout();
+					Cliente.setLoged(false);
 					Login newLogin = new Login();
 					newLogin.setVisible(true);
-					Clinica.getInstance().Logout();
+
 				}else {
 					
 				}

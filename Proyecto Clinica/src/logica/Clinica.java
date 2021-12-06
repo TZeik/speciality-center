@@ -35,6 +35,7 @@ public class Clinica implements Serializable{
 	private int citaCodeGenerator;
 	private int consultaCodeGenerator;
 	private int pacienteCodeGenerator;
+	private int saved;
 	
 	private Clinica() {
 		super();
@@ -50,6 +51,7 @@ public class Clinica implements Serializable{
 		this.citaCodeGenerator = 1;
 		this.consultaCodeGenerator = 1;
 		this.pacienteCodeGenerator = 1;
+		this.saved = 0;
 	}
 	
 	public static Clinica getInstance() {
@@ -203,6 +205,7 @@ public class Clinica implements Serializable{
 				archivo = new FileOutputStream("clinica.dat");
 				ObjectOutputStream oos = new  ObjectOutputStream(archivo);
 				oos.writeObject(Clinica.getInstance());
+				saved = 1;
 				oos.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -734,6 +737,14 @@ public class Clinica implements Serializable{
 			i++;
 		}
 		return index;
+	}
+
+	public int getSaved() {
+		return saved;
+	}
+
+	public void setSaved(int saved) {
+		this.saved = saved;
 	}
 
 

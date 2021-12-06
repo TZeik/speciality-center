@@ -30,6 +30,7 @@ public class RegVacuna extends JFrame {
 	private JTextField txtName;
 	private Vacuna update;
 	private JComboBox cbxFecha;
+	private JComboBox cbxTipo;
 
 	/**
 	 * Launch the application.
@@ -73,35 +74,29 @@ public class RegVacuna extends JFrame {
 		panel.setLayout(null);
 		
 		txtName = new JTextField();
-		txtName.setBounds(10, 108, 302, 25);
+		txtName.setBounds(10, 36, 302, 25);
 		panel.add(txtName);
 		txtName.setColumns(10);
 		
 		JLabel lblNewLabel = new JLabel("Nombre: ");
-		lblNewLabel.setBounds(10, 83, 302, 14);
+		lblNewLabel.setBounds(10, 11, 302, 14);
 		panel.add(lblNewLabel);
 		
 		JLabel lblNewLabel_1 = new JLabel("A\u00F1o de creaci\u00F3n: ");
-		lblNewLabel_1.setBounds(10, 152, 302, 14);
+		lblNewLabel_1.setBounds(10, 80, 302, 14);
 		panel.add(lblNewLabel_1);
-		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_1.setBounds(10, 11, 302, 61);
-		panel.add(panel_1);
-		panel_1.setLayout(null);
 		
 		int index = -1;
 		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 		DefaultComboBoxModel fechaModel = new DefaultComboBoxModel();
-		for(int i = 1950; i <= currentYear; i++) {
+		for(int i = 1796; i <= currentYear; i++) {
 			fechaModel.addElement(i);
 			index++;
 		}
 		cbxFecha = new JComboBox();
 		cbxFecha.setModel(fechaModel);
 		cbxFecha.setSelectedIndex(index);
-		cbxFecha.setBounds(10, 177, 302, 25);
+		cbxFecha.setBounds(10, 105, 302, 25);
 		panel.add(cbxFecha);
 		
 		JButton btnCancelar = new JButton("Cancelar");
@@ -126,6 +121,7 @@ public class RegVacuna extends JFrame {
 				Vacuna newVacuna = new Vacuna(Clinica.getInstance().GenerateVacCode());
 				newVacuna.setNombre(txtName.getText());
 				newVacuna.setAnnoCreacion((int)cbxFecha.getSelectedItem());
+				newVacuna.setTipo(cbxTipo.getSelectedItem().toString());
 				
 				Clinica.getInstance().getMisVacunas().add(newVacuna);
 				Clinica.getInstance().setVaccineCodeGenerator(Clinica.getInstance().getVaccineCodeGenerator() + 1);
@@ -136,6 +132,7 @@ public class RegVacuna extends JFrame {
 				}else {
 					update.setNombre(txtName.getText());
 					update.setAnnoCreacion((int)cbxFecha.getSelectedItem());
+					update.setTipo(cbxTipo.getSelectedItem().toString());
 					Clinica.getInstance().getMisVacunas().get(Clinica.getInstance().buscarVacunaIndex(update)).setNombre(update.getNombre());
 					Clinica.getInstance().getMisVacunas().get(Clinica.getInstance().buscarVacunaIndex(update)).setAnnoCreacion(update.getAnnoCreacion());
 					Clinica.getInstance().guardarClinica();
@@ -146,6 +143,23 @@ public class RegVacuna extends JFrame {
 		});
 		btnRegistrar.setBounds(122, 237, 90, 25);
 		panel.add(btnRegistrar);
+		
+		cbxTipo = new JComboBox();
+		DefaultComboBoxModel model = new DefaultComboBoxModel(new String[] {"<< Seleccione >>", "Viva atenuada", "Inactivada", "Toxoide", "Subunidad", "Vector recombinante", "De ADN", "De ARN"});
+		cbxTipo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(model.getSize() == 8) {
+					model.removeElementAt(0);
+				}
+			}
+		});
+		cbxTipo.setModel(model);
+		cbxTipo.setBounds(10, 181, 302, 25);
+		panel.add(cbxTipo);
+		
+		JLabel lblNewLabel_2 = new JLabel("Tipo de vacuna: ");
+		lblNewLabel_2.setBounds(10, 156, 302, 14);
+		panel.add(lblNewLabel_2);
 		loadVacuna();
 	}
 	
@@ -153,6 +167,7 @@ public class RegVacuna extends JFrame {
 		if (update != null) {
 			txtName.setText(update.getNombre());
 			cbxFecha.setSelectedItem(update.getAnnoCreacion());
+			cbxTipo.setSelectedItem(update.getTipo());
 		}
 	}
 }

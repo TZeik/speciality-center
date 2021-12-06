@@ -12,6 +12,7 @@ public class Vacuna implements Serializable{
 	private String codigo;
 	private String nombre;
 	private int AnnoCreacion;
+	private String tipo;
 	
 	public Vacuna(String codigo) {
 		super();
@@ -40,6 +41,14 @@ public class Vacuna implements Serializable{
 
 	public void setAnnoCreacion(int annoCreacion) {
 		AnnoCreacion = annoCreacion;
+	}
+
+	public String getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(String tipo) {
+		this.tipo = tipo;
 	}
 	
 }
