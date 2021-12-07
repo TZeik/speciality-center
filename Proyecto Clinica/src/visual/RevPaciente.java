@@ -23,6 +23,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import java.awt.Dialog.ModalExclusionType;
 
@@ -255,6 +256,24 @@ public class RevPaciente extends JFrame {
 		panel.add(btnHistorial);
 		
 		btnEditar = new JButton("Editar Paciente");
+		btnEditar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				txtNombre.setEditable(true);
+				txtCedula.setEditable(true);
+				cbxDia.setEnabled(true);
+				cbxMes.setEnabled(true);
+				cbxAnno.setEnabled(true);
+				cbxDia.setEditable(true);
+				cbxMes.setEditable(true);
+				cbxAnno.setEditable(true);
+				cbxGenero.setEnabled(true);
+				cbxGenero.setEditable(true);
+				txtTelefono.setEditable(true);
+				txaDireccion.setEditable(true);
+				btnGuardar.setEnabled(true);
+				
+			}
+		});
 		btnEditar.setBounds(538, 250, 120, 50);
 		panel.add(btnEditar);
 		
@@ -281,8 +300,30 @@ public class RevPaciente extends JFrame {
 		panel.add(btnSalir);
 		
 		btnGuardar = new JButton("Guardar");
+		btnGuardar.setEnabled(false);
 		btnGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				Calendar fechaNaci = Calendar.getInstance();
+				fechaNaci.set((int)cbxAnno.getSelectedItem(), cbxMes.getSelectedIndex()+1, (int)cbxDia.getSelectedItem());
+				miPaciente.setNombre(txtNombre.getText());
+				miPaciente.setCedula(txtCedula.getText());
+				miPaciente.setTelefono(txtTelefono.getText());
+				miPaciente.setDireccion(txaDireccion.getText());
+				miPaciente.setGenero(cbxGenero.getSelectedItem().toString());
+				miPaciente.setFechaNacimiento(fechaNaci);
+				
+
+				Clinica.getInstance().getMisPacientes().get(Clinica.getInstance().buscarPacienteIndex(miPaciente)).setNombre(miPaciente.getNombre());
+				Clinica.getInstance().getMisPacientes().get(Clinica.getInstance().buscarPacienteIndex(miPaciente)).setCedula(miPaciente.getCedula());
+				Clinica.getInstance().getMisPacientes().get(Clinica.getInstance().buscarPacienteIndex(miPaciente)).setTelefono(miPaciente.getTelefono());
+				Clinica.getInstance().getMisPacientes().get(Clinica.getInstance().buscarPacienteIndex(miPaciente)).setDireccion(miPaciente.getDireccion());
+				Clinica.getInstance().getMisPacientes().get(Clinica.getInstance().buscarPacienteIndex(miPaciente)).setGenero(miPaciente.getGenero());
+				Clinica.getInstance().getMisPacientes().get(Clinica.getInstance().buscarPacienteIndex(miPaciente)).setFechaNacimiento(miPaciente.getFechaNacimiento());
+				Clinica.getInstance().guardarClinica();
+				JOptionPane.showMessageDialog(panel, "El paciente ha sido editado con éxito", "Editar Paciente", JOptionPane.DEFAULT_OPTION);
+				
+				PacienteList.loadPacTable(0);
 			}
 		});
 		btnGuardar.setBounds(480, 453, 90, 25);

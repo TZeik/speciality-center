@@ -32,8 +32,8 @@ public class CrearCita extends JFrame {
 	private JPanel contentPane;
 	private JTextField txtName;
 	private JTextField txtCedula;
-	private JTextField txtDireccion;
 	private JTextField txtTelefono;
+	private JTextField txtDireccion;
 	private JTextField txtEspecialidad;
 	private JTextField txtFechaCita;
 	private JComboBox cbxSexo;
@@ -136,15 +136,15 @@ public class CrearCita extends JFrame {
 		txtCedula.setBounds(10, 120, 285, 25);
 		panel.add(txtCedula);
 		
-		txtDireccion = new JTextField();
-		txtDireccion.setColumns(10);
-		txtDireccion.setBounds(10, 260, 285, 25);
-		panel.add(txtDireccion);
-		
 		txtTelefono = new JTextField();
 		txtTelefono.setColumns(10);
-		txtTelefono.setBounds(10, 330, 285, 25);
+		txtTelefono.setBounds(10, 260, 285, 25);
 		panel.add(txtTelefono);
+		
+		txtDireccion = new JTextField();
+		txtDireccion.setColumns(10);
+		txtDireccion.setBounds(10, 330, 285, 25);
+		panel.add(txtDireccion);
 		
 		txtEspecialidad = new JTextField();
 		txtEspecialidad.setColumns(10);
@@ -304,8 +304,8 @@ public class CrearCita extends JFrame {
 				newCita.setNombre(txtName.getText());
 				newCita.setCedula(txtCedula.getText());
 				newCita.setGenero(cbxSexo.getSelectedItem().toString());
-				newCita.setTelefono(txtTelefono.getText());
-				newCita.setDireccion(txtDireccion.getText());
+				newCita.setTelefono(txtDireccion.getText());
+				newCita.setDireccion(txtTelefono.getText());
 				newCita.setFechaNacimiento(tempDate);
 				newCita.setFechaCita(Calendar.getInstance());
 				newCita.setEspecialidad(txtEspecialidad.getText());
@@ -491,8 +491,8 @@ public class CrearCita extends JFrame {
 			genderIndex = 1;
 		}
 		cbxSexo.setSelectedIndex(genderIndex);
-		txtTelefono.setText(Clinica.getInstance().getSelectedPaciente().getTelefono());
-		txtDireccion.setText(Clinica.getInstance().getSelectedPaciente().getDireccion());
+		txtDireccion.setText(Clinica.getInstance().getSelectedPaciente().getTelefono());
+		txtTelefono.setText(Clinica.getInstance().getSelectedPaciente().getDireccion());
 		cbxDia.setSelectedItem(Clinica.getInstance().getSelectedPaciente().getFechaNacimiento().get(Calendar.DAY_OF_MONTH));
 		cbxMes.setSelectedItem(Clinica.getInstance().getSelectedPaciente().getFechaNacimiento().get(Calendar.MONTH));
 		cbxAnno.setSelectedItem(Clinica.getInstance().getSelectedPaciente().getFechaNacimiento().get(Calendar.YEAR));
@@ -500,8 +500,8 @@ public class CrearCita extends JFrame {
 		txtName.setEnabled(false);
 		txtCedula.setEnabled(false);
 		cbxSexo.setEnabled(false);
-		txtTelefono.setEnabled(false);
 		txtDireccion.setEnabled(false);
+		txtTelefono.setEnabled(false);
 		cbxDia.setEnabled(false);
 		cbxMes.setEnabled(false);
 		cbxAnno.setEnabled(false);
