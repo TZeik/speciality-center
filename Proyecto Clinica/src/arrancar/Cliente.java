@@ -14,27 +14,12 @@ import visual.Login;
 
 public class Cliente {
 	
-	static Socket sfd = null;
-	static DataInputStream EntradaSocket;
-	static DataOutputStream SalidaSocket;
-	public static boolean loged = false;
+	  static Socket sfd = null;
+	  static DataInputStream EntradaSocket;
+	  static DataOutputStream SalidaSocket;
 
-// Arrancar el programa
 	
-	public static void main(String[] args) {
-		
-		try {
-			sfd = new Socket("127.0.0.1", 3000);
-		    EntradaSocket = new DataInputStream(new BufferedInputStream(sfd.getInputStream()));
-		    SalidaSocket = new DataOutputStream(new BufferedOutputStream(sfd.getOutputStream()));
-		    
-		} catch (UnknownHostException e1) {
-			
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			
-			e1.printStackTrace();
-		}
+	public Cliente() {
 		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -49,13 +34,11 @@ public class Cliente {
 		});
 	}
 
-	public static boolean isLoged() {
-		return loged;
+	// Arrancar el programa
+	
+	public static void main(String[] args) {
+		
+			Cliente cliente = new Cliente();
+			
 	}
-
-	public static void setLoged(boolean loged) {
-		Cliente.loged = loged;
-	}
-
-
 }

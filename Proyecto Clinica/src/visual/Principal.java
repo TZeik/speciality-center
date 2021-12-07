@@ -42,6 +42,18 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.awt.event.MouseMotionAdapter;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
@@ -56,6 +68,11 @@ public class Principal extends JFrame {
 	private static Object[] row;
 	public static DefaultTableModel mailModel;
 	public static DefaultTableModel userModel;
+	static Socket sfd = null;
+	static DataInputStream EntradaSocket;
+	static DataOutputStream SalidaSocket;
+	static FileOutputStream archivoSalida;
+	static ObjectOutputStream oos;
 
 	/**
 	 * Launch the application.
@@ -77,14 +94,18 @@ public class Principal extends JFrame {
 	 * Create the frame.
 	 */
 	public Principal() {
+
 		dim = getToolkit().getScreenSize();
 		addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				Clinica.getInstance().setLogedUser(null);
-				Clinica.getInstance().setSelectedCita(null);
-				Clinica.getInstance().setSelectedPaciente(null);
-				Clinica.getInstance().guardarClinica();
+				Clinica.getInstance().Logout();
+				try {
+					sfd.close();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		});
 
@@ -94,7 +115,15 @@ public class Principal extends JFrame {
 		//setBounds(100, 100, 745, 516);
 		setLocationRelativeTo(null);
 		setBounds(-12, 0, (int)dim.getWidth()+24, (int)dim.getHeight()-34);
-
+		try {
+			sfd = new Socket("192.168.0.3", 6000);
+		} catch (UnknownHostException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		} catch (IOException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 		
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -266,8 +295,67 @@ public class Principal extends JFrame {
 		});
 		mnALista.add(mntmNewMenuItem_10);
 		
-		JMenuItem itemReporte = new JMenuItem("Configuraci\u00F3n");
-		mnAdministrar.add(itemReporte);
+		JMenuItem itemRespaldo = new JMenuItem("Hacer respaldo");
+		itemRespaldo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+				    SalidaSocket = new DataOutputStream(new BufferedOutputStream(sfd.getOutputStream()));
+				    
+				    File archivoEntrada = new File("clinica.dat");
+				    int unByte;
+				    FileInputStream lector = new FileInputStream(archivoEntrada);
+				    
+				    while((unByte = lector.read()) != -1) {
+				    	SalidaSocket.write(unByte);
+				    }
+				    lector.close();
+				    SalidaSocket.flush();
+				    
+				} catch (UnknownHostException e1) {
+					
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					
+					e1.printStackTrace();
+				}
+				JOptionPane.showMessageDialog(null, "Se ha realizado el respaldo", "Información", JOptionPane.INFORMATION_MESSAGE);
+			}
+		});
+		mnAdministrar.add(itemRespaldo);
+		
+		JMenuItem itemCRespaldo = new JMenuItem("Cargar respaldo");
+		itemCRespaldo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					EntradaSocket = new DataInputStream(new  BufferedInputStream(sfd.getInputStream()));
+					FileInputStream archivo;
+					ObjectInputStream ois;
+					try {
+						archivo = new FileInputStream("C:\\\\Users\\\\The Mask Power\\\\git\\\\proyecto_clinica\\\\Proyecto Clinica\\\\respaldo\\\\respaldo.dat");
+						ois = new ObjectInputStream(archivo);
+						if(JOptionPane.showConfirmDialog(null, "Se ha encontrado un respaldo, ¿Desea continuar? (Se reiniciará la aplicación)", "Cargar respaldo", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+							Clinica.setSoul((Clinica)ois.readObject());
+						}
+						Clinica.getInstance().Logout();
+						Clinica.getInstance().guardarClinica();
+						dispose();
+						Login refresh = new Login();
+						refresh.setVisible(true);
+						ois.close();
+					} catch (IOException | ClassNotFoundException e1) {
+						Clinica.getInstance().guardarClinica();
+					}
+				} catch (UnknownHostException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+			}
+		});
+		mnAdministrar.add(itemCRespaldo);
 		
 		JMenu mnAyuda = new JMenu("Ayuda");
 		menuBar.add(mnAyuda);
@@ -353,7 +441,12 @@ public class Principal extends JFrame {
 					lblInfo.setText("Cerrando sesión...");
 					dispose();
 					Clinica.getInstance().Logout();
-					Cliente.setLoged(false);
+					try {
+						sfd.close();
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 					Login newLogin = new Login();
 					newLogin.setVisible(true);
 

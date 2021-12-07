@@ -1,5 +1,9 @@
 package logica;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -11,14 +15,19 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Random;
+
+import arrancar.Servidor;
 
 public class Clinica implements Serializable{
 
 	/**
 	 * 
 	 */
+	
 	private static final long serialVersionUID = -1863189289817691555L;
 	public static Clinica soul = null;
 	private ArrayList<Paciente> misPacientes;
@@ -35,7 +44,9 @@ public class Clinica implements Serializable{
 	private int citaCodeGenerator;
 	private int consultaCodeGenerator;
 	private int pacienteCodeGenerator;
-	private int saved;
+	static Socket sfd = null;
+	static DataInputStream EntradaSocket;
+	static DataOutputStream SalidaSocket;
 	
 	private Clinica() {
 		super();
@@ -51,7 +62,6 @@ public class Clinica implements Serializable{
 		this.citaCodeGenerator = 1;
 		this.consultaCodeGenerator = 1;
 		this.pacienteCodeGenerator = 1;
-		this.saved = 0;
 	}
 	
 	public static Clinica getInstance() {
@@ -205,7 +215,6 @@ public class Clinica implements Serializable{
 				archivo = new FileOutputStream("clinica.dat");
 				ObjectOutputStream oos = new  ObjectOutputStream(archivo);
 				oos.writeObject(Clinica.getInstance());
-				saved = 1;
 				oos.close();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -287,12 +296,36 @@ public class Clinica implements Serializable{
 		for (Usuario user : Clinica.getInstance().getMisUsuarios()) {
 			
 			if(user.getId().equals(id) && user.getPassword().equals(password)) {
-				logedUser = user;
+				Clinica.getInstance().setLogedUser(user);
+				/*try {
+					sfd = new Socket("192.168.0.3", 6000);
+				    SalidaSocket = new DataOutputStream(new BufferedOutputStream(sfd.getOutputStream()));
+				    SalidaSocket.writeUTF(Clinica.getInstance().getLogedUser().getCodigo());
+				    
+				} catch (UnknownHostException e1) {
+					
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					
+					e1.printStackTrace();
+				}*/
+				
+				
 				login = true;
 			}
 		}
 		return login;
 	}
+	
+	public void Logout() {
+		Clinica.getInstance().setLogedUser(null);
+		Clinica.getInstance().setSelectedCita(null);
+		Clinica.getInstance().setSelectedPaciente(null);
+		Clinica.getInstance().guardarClinica();
+		
+	}
+	
+	
 	
 	public boolean isFirst() {
 		
@@ -469,12 +502,6 @@ public class Clinica implements Serializable{
 		}
 		
 		return index;
-	}
-
-	public void Logout() {
-		Clinica.getInstance().logedUser = null;
-		Clinica.getInstance().guardarClinica();
-		
 	}
 	
 	public ArrayList<Usuario> misMedicos(){
@@ -738,16 +765,5 @@ public class Clinica implements Serializable{
 		}
 		return index;
 	}
-
-	public int getSaved() {
-		return saved;
-	}
-
-	public void setSaved(int saved) {
-		this.saved = saved;
-	}
-
-
-
 	
 }

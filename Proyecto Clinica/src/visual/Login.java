@@ -15,6 +15,7 @@ import java.awt.FlowLayout;
 import javax.swing.border.TitledBorder;
 
 import arrancar.Cliente;
+import arrancar.Servidor;
 import logica.Clinica;
 
 import javax.swing.UIManager;
@@ -27,6 +28,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 public class Login extends JFrame {
 
@@ -34,6 +42,9 @@ public class Login extends JFrame {
 	private JPasswordField pswLogin;
 	private JTextField txtLogin;
 	private JButton btnIngresar;
+	static Socket sfd = null;
+	static DataInputStream EntradaSocket;
+	static DataOutputStream SalidaSocket;
 
 	/**
 	 * Launch the application.
@@ -83,7 +94,6 @@ public class Login extends JFrame {
 					
 					if(Clinica.getInstance().confirmLogin(txtLogin.getText(), psw) == true) {
 						Principal window = new Principal();
-						Cliente.setLoged(true);
 						dispose();
 						window.setVisible(true);
 					}else {
@@ -100,6 +110,7 @@ public class Login extends JFrame {
 				String psw = new String(pswLogin.getPassword());
 				
 				if(Clinica.getInstance().confirmLogin(txtLogin.getText(), psw) == true) {
+					
 					Principal window = new Principal();
 					dispose();
 					window.setVisible(true);
