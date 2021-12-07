@@ -334,7 +334,7 @@ public class CrearCita extends JFrame {
 
 		
 		cbxDia_1 = new JComboBox();
-		cbxDia_1.setBounds(320, 120, 37, 25);
+		cbxDia_1.setBounds(320, 120, 50, 25);
 		panel.add(cbxDia_1);
 		
 		cbxMes_1 = new JComboBox();
@@ -401,12 +401,12 @@ public class CrearCita extends JFrame {
 			}
 		});
 		cbxMes_1.setModel(new DefaultComboBoxModel(new String[] {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"}));
-		cbxMes_1.setBounds(367, 120, 87, 25);
+		cbxMes_1.setBounds(380, 120, 87, 25);
 		panel.add(cbxMes_1);
 		
 		cbxAnno_1 = new JComboBox();
 		cbxAnno_1.setSelectedIndex(-1);
-		cbxAnno_1.setBounds(464, 120, 68, 25);
+		cbxAnno_1.setBounds(470, 120, 68, 25);
 		panel.add(cbxAnno_1);
 		
 		if(cbxMes_1.getSelectedIndex() == 0 || cbxMes_1.getSelectedIndex() == 2 || cbxMes_1.getSelectedIndex() == 4 || cbxMes_1.getSelectedIndex() == 6 || cbxMes_1.getSelectedIndex() == 7 || cbxMes_1.getSelectedIndex() == 9 || cbxMes_1.getSelectedIndex() == 11) {
