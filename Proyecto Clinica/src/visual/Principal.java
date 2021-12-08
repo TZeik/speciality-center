@@ -58,6 +58,7 @@ import java.util.ArrayList;
 import java.awt.event.MouseMotionAdapter;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
+import javax.swing.ImageIcon;
 
 public class Principal extends JFrame {
 
@@ -419,10 +420,16 @@ public class Principal extends JFrame {
 		DynamicName.setVisible(false);
 		
 		String[] headers = {"Nombre","Estado"};
-		userModel = new DefaultTableModel();
+		userModel = new DefaultTableModel(){
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		       //all cells false
+		       return false;
+		    }
+		};
 		userModel.setColumnIdentifiers(headers);
 		
-		
+
 		userTable = new JTable();
 		userTable.addMouseListener(new MouseAdapter() {
 			@Override
@@ -436,6 +443,7 @@ public class Principal extends JFrame {
 				}
 			}
 		});
+		userTable.getTableHeader().setReorderingAllowed(false);
 		userTable.setModel(userModel);
 		userTable.setRowHeight(20);
 		userTable.getTableHeader().setReorderingAllowed(false);
@@ -446,7 +454,13 @@ public class Principal extends JFrame {
 		imagePanel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		imagePanel.setBounds(10, 11, 180, 180);
 		panel_1.add(imagePanel);
-		imagePanel.setLayout(new BorderLayout(0, 0));
+		imagePanel.setLayout(null);
+		
+		JLabel profilePhoto = new JLabel("");
+		
+		profilePhoto.setIcon(new ImageIcon(Principal.class.getResource("/images/default.png")));
+		profilePhoto.setBounds(0, 0, 180, 180);
+		imagePanel.add(profilePhoto);
 		
 		JLabel lblNombre = new JLabel(Clinica.getInstance().getLogedUser().getNombre());
 		lblNombre.setFont(new Font("Arial", Font.BOLD, 12));

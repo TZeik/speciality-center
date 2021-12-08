@@ -29,6 +29,19 @@ import java.awt.event.ActionEvent;
 import java.awt.Dialog.ModalExclusionType;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.ImageIcon;
+import java.awt.SystemColor;
+import java.awt.Font;
+import java.awt.Frame;
+
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.BevelBorder;
+import javax.swing.SwingConstants;
+import javax.swing.JSeparator;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.Cursor;
 
 public class regUser extends JFrame {
 
@@ -39,7 +52,23 @@ public class regUser extends JFrame {
 	private JTextField txtName;
 	private Usuario update;
 	private JComboBox cbxUserType;
-	private JButton btnRegister;
+	private JPanel btnDynamic;
+	private JPanel btnCancelar;
+	private JPanel headers;
+	private JPanel body;
+	private JLabel background;
+	private JLabel Logo;
+	private JLabel lblNewLabel_1;
+	private JSeparator separator;
+	private JSeparator separator_1;
+	private JSeparator separator_2;
+	private JSeparator separator_3;
+	private JPanel exitPanel;
+	private JPanel minimizePanel;
+	private JLabel exitLogo;
+	private JLabel minimizeLogo;
+	private JLabel lblCancelar;
+	private JLabel lblDynamic;
 
 	/**
 	 * Launch the application.
@@ -62,6 +91,7 @@ public class regUser extends JFrame {
 	 * @param selected 
 	 */
 	public regUser(Usuario aux) {
+		setUndecorated(true);
 
 		setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
 		update = aux;
@@ -71,78 +101,240 @@ public class regUser extends JFrame {
 			setTitle("Editar usuario");
 		}
 		setAlwaysOnTop(true);
-		setType(Type.POPUP);
 		setTitle("Registrar usuario");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 540, 334);
+		setBounds(100, 100, 761, 452);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		setLocationRelativeTo(null);
+		contentPane.setLayout(null);
 		
 		JPanel panel = new JPanel();
+		panel.setBounds(0, 0, 779, 452);
+		panel.setBackground(Color.WHITE);
 		panel.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		contentPane.add(panel, BorderLayout.CENTER);
+		contentPane.add(panel);
 		panel.setLayout(null);
 		
-		cbxUserType = new JComboBox();
-		cbxUserType.setModel(new DefaultComboBoxModel(new String[] {"Administrador", "M\u00E9dico", "Secretario"}));
-		cbxUserType.setBounds(10, 162, 234, 25);
-		panel.add(cbxUserType);
+		lblNewLabel_1 = new JLabel("LAS ORTENCIAS");
+		lblNewLabel_1.setForeground(SystemColor.text);
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblNewLabel_1.setFont(new Font("Roboto", Font.BOLD, 24));
+		lblNewLabel_1.setBounds(527, 213, 214, 52);
+		panel.add(lblNewLabel_1);
 		
-		txtUser = new JTextField();
-		txtUser.setBounds(10, 102, 234, 25);
-		panel.add(txtUser);
-		txtUser.setColumns(10);
+		Logo = new JLabel("");
+		Logo.setIcon(new ImageIcon(regUser.class.getResource("/images/logo.png")));
+		Logo.setBounds(571, 77, 125, 125);
+		panel.add(Logo);
 		
-		JLabel lblUser = new JLabel("Usuario: ");
-		lblUser.setBounds(10, 77, 203, 14);
-		panel.add(lblUser);
+		headers = new JPanel();
+		headers.setBackground(Color.WHITE);
+		headers.setBounds(0, 0, 769, 40);
+		panel.add(headers);
+		headers.setLayout(null);
 		
-		JLabel lblPassword = new JLabel("Contrase\u00F1a: ");
-		lblPassword.setBounds(265, 11, 229, 14);
-		panel.add(lblPassword);
+		exitPanel = new JPanel();
 		
-		pswRegister = new JPasswordField();
-		pswRegister.setBounds(265, 102, 240, 25);
-		panel.add(pswRegister);
-		
-		JLabel lblNewLabel_1_1 = new JLabel("Confirmar contrase\u00F1a: ");
-		lblNewLabel_1_1.setBounds(265, 77, 229, 14);
-		panel.add(lblNewLabel_1_1);
-		
-		pswConfirm = new JPasswordField();
-		pswConfirm.setBounds(265, 36, 240, 25);
-		panel.add(pswConfirm);
-		
-		JLabel lblNewLabel_2 = new JLabel("Tipo de usuario: ");
-		lblNewLabel_2.setBounds(10, 142, 234, 14);
-		panel.add(lblNewLabel_2);
-		
-		JButton btnCancel = new JButton("Cancelar");
-		btnCancel.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		exitPanel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				exitPanel.setBackground(Color.RED);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				exitPanel.setBackground(Color.WHITE);
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
 				dispose();
 			}
 		});
-		btnCancel.setBounds(405, 227, 100, 30);
-		panel.add(btnCancel);
 		
-		btnRegister = new JButton("");
-		if (update == null ) {
-			btnRegister.setText("Registrar");
-		} else {
-			btnRegister.setText("Editar");
-		}
-		btnRegister.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
+		exitPanel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				System.exit(1);
+			}
+		});
+		exitPanel.setBorder(null);
+		exitPanel.setBackground(Color.WHITE);
+		exitPanel.setBounds(701, 0, 60, 40);
+		headers.add(exitPanel);
+		exitPanel.setLayout(null);
+		
+		exitLogo = new JLabel("X");
+
+		exitLogo.setFont(new Font("Roboto", Font.BOLD, 18));
+		exitLogo.setHorizontalAlignment(SwingConstants.CENTER);
+		exitLogo.setBounds(0, 0, 60, 40);
+		exitPanel.add(exitLogo);
+		
+		minimizePanel = new JPanel();
+		minimizePanel.setBorder(null);
+		minimizePanel.setBackground(Color.WHITE);
+		minimizePanel.setBounds(641, 0, 60, 40);
+		headers.add(minimizePanel);
+		minimizePanel.setLayout(null);
+		
+		minimizeLogo = new JLabel("\u2014");
+		minimizePanel.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				minimizePanel.setBackground(Color.GRAY);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				minimizePanel.setBackground(Color.WHITE);
+			}
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				setState(Frame.ICONIFIED);
+			}
+		});
+		minimizeLogo.setFont(new Font("Roboto", Font.BOLD, 18));
+		minimizeLogo.setHorizontalAlignment(SwingConstants.CENTER);
+		minimizeLogo.setBounds(0, 0, 60, 40);
+		minimizePanel.add(minimizeLogo);
+		
+		body = new JPanel();
+		body.setBackground(SystemColor.control);
+		body.setBounds(0, 0, 506, 452);
+		panel.add(body);
+		body.setLayout(null);
+		
+		cbxUserType = new JComboBox();
+		cbxUserType.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(64, 64, 64)));
+		cbxUserType.setFont(new Font("Roboto", Font.PLAIN, 14));
+		cbxUserType.setBackground(Color.WHITE);
+		cbxUserType.setBounds(24, 361, 461, 30);
+		body.add(cbxUserType);
+		cbxUserType.setModel(new DefaultComboBoxModel(new String[] {"Administrador", "M\u00E9dico", "Secretario"}));
+		
+		JLabel lblNewLabel_2 = new JLabel("TIPO DE USUARIO");
+		lblNewLabel_2.setFont(new Font("Roboto", Font.PLAIN, 14));
+		lblNewLabel_2.setBounds(24, 336, 234, 14);
+		body.add(lblNewLabel_2);
+		
+		txtUser = new JTextField();
+		txtUser.setBackground(SystemColor.control);
+		txtUser.setFont(new Font("Roboto", Font.PLAIN, 14));
+		txtUser.setBorder(null);
+		txtUser.setBounds(24, 79, 461, 30);
+		body.add(txtUser);
+		txtUser.setColumns(10);
+		
+		separator_3 = new JSeparator();
+		separator_3.setBackground(Color.BLACK);
+		separator_3.setBounds(24, 319, 461, 1);
+		body.add(separator_3);
+		
+		JLabel lblUser = new JLabel("NOMBRE DE USUARIO");
+		lblUser.setFont(new Font("Roboto", Font.PLAIN, 14));
+		lblUser.setBounds(24, 54, 203, 14);
+		body.add(lblUser);
+		
+		pswRegister = new JPasswordField();
+		pswRegister.setBackground(SystemColor.control);
+		pswRegister.setBorder(null);
+		pswRegister.setBounds(24, 225, 461, 30);
+		body.add(pswRegister);
+		
+		separator_2 = new JSeparator();
+		separator_2.setBackground(Color.BLACK);
+		separator_2.setBounds(24, 255, 461, 1);
+		body.add(separator_2);
+		
+		JLabel lblNewLabel_1_1 = new JLabel("CONFIRMAR CONTRASE\u00D1A");
+		lblNewLabel_1_1.setFont(new Font("Roboto", Font.PLAIN, 14));
+		lblNewLabel_1_1.setBounds(24, 200, 229, 14);
+		body.add(lblNewLabel_1_1);
+		
+		pswConfirm = new JPasswordField();
+		pswConfirm.setBackground(SystemColor.control);
+		pswConfirm.setBorder(null);
+		pswConfirm.setBounds(24, 150, 461, 30);
+		body.add(pswConfirm);
+		
+		separator_1 = new JSeparator();
+		separator_1.setBackground(Color.BLACK);
+		separator_1.setBounds(24, 180, 461, 1);
+		body.add(separator_1);
+		
+		JLabel lblPassword = new JLabel("CONTRASE\u00D1A");
+		lblPassword.setFont(new Font("Roboto", Font.PLAIN, 14));
+		lblPassword.setBounds(24, 125, 229, 14);
+		body.add(lblPassword);
+		
+		txtName = new JTextField();
+		txtName.setFont(new Font("Roboto", Font.PLAIN, 14));
+		txtName.setBackground(SystemColor.control);
+		txtName.setBorder(null);
+		txtName.setBounds(24, 289, 461, 30);
+		body.add(txtName);
+		txtName.setColumns(10);
+		
+		separator = new JSeparator();
+		separator.setBackground(new Color(0, 0, 0));
+		separator.setBounds(24, 109, 461, 1);
+		body.add(separator);
+		
+		JLabel lblNewLabel = new JLabel("NOMBRE VISIBLE");
+		lblNewLabel.setFont(new Font("Roboto", Font.PLAIN, 14));
+		lblNewLabel.setBounds(24, 264, 203, 14);
+		body.add(lblNewLabel);
+		
+		btnCancelar = new JPanel();
+		btnCancelar.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				dispose();
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnCancelar.setBackground(SystemColor.activeCaption);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnCancelar.setBackground(SystemColor.textHighlight);
+			}
+			
+		});
+		btnCancelar.setBackground(SystemColor.textHighlight);
+		btnCancelar.setBounds(364, 411, 120, 30);
+		body.add(btnCancelar);
+		btnCancelar.setLayout(null);
+		
+		lblCancelar = new JLabel("Cancelar");
+		lblCancelar.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblCancelar.setForeground(SystemColor.text);
+		lblCancelar.setFont(new Font("Roboto", Font.PLAIN, 14));
+		lblCancelar.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCancelar.setBounds(0, 0, 120, 30);
+		btnCancelar.add(lblCancelar);
+		
+		btnDynamic = new JPanel();
+		btnDynamic.addMouseListener(new MouseAdapter() {
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				btnDynamic.setBackground(SystemColor.activeCaption);
+			}
+			@Override
+			public void mouseExited(MouseEvent e) {
+				btnDynamic.setBackground(SystemColor.textHighlight);
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+
 				String psw1 = new String(pswRegister.getPassword());
 				String psw2 = new String(pswConfirm.getPassword());
 				
-				if(txtName.getText().isEmpty() == true || txtUser.getText().isEmpty() == true || psw1.isEmpty() == true|| psw2.isEmpty() == true) {
+				if(txtName.getText().isEmpty() || txtUser.getText().isEmpty() || psw1.isEmpty() || psw2.isEmpty() ) {
 					JOptionPane.showMessageDialog(panel, "No puede dejar casillas vacias", "Error", JOptionPane.ERROR_MESSAGE);
 				}else if(psw1.equals(psw2)) {
 					if(update == null) {
@@ -229,22 +421,25 @@ public class regUser extends JFrame {
 					pswRegister.setText("");
 					pswConfirm.setText("");
 				}
-				
-				
-
 			}
 		});
-		btnRegister.setBounds(285, 227, 100, 30);
-		panel.add(btnRegister);
+		btnDynamic.setBackground(SystemColor.textHighlight);
+		btnDynamic.setBounds(224, 411, 120, 30);
+		body.add(btnDynamic);
+		btnDynamic.setLayout(null);
 		
-		txtName = new JTextField();
-		txtName.setBounds(10, 36, 234, 25);
-		panel.add(txtName);
-		txtName.setColumns(10);
+		lblDynamic = new JLabel("<dynamic>");
+		lblDynamic.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblDynamic.setForeground(SystemColor.text);
+		lblDynamic.setFont(new Font("Roboto", Font.PLAIN, 14));
+		lblDynamic.setHorizontalAlignment(SwingConstants.CENTER);
+		lblDynamic.setBounds(0, 0, 120, 30);
+		btnDynamic.add(lblDynamic);
 		
-		JLabel lblNewLabel = new JLabel("Nombre visible: ");
-		lblNewLabel.setBounds(10, 11, 203, 14);
-		panel.add(lblNewLabel);
+		background = new JLabel("");
+		background.setIcon(new ImageIcon(regUser.class.getResource("/images/bkg.jpg")));
+		background.setBounds(507, 0, 262, 452);
+		panel.add(background);
 		
 		if(Clinica.getInstance().isFirst() == true) {
 			cbxUserType.setSelectedIndex(0);
@@ -255,6 +450,12 @@ public class regUser extends JFrame {
 			txtUser.setText("");
 		}
 		loadUser();
+		
+		if(update == null) {
+			lblDynamic.setText("Registrar");
+		}else {
+			lblDynamic.setText("Editar");
+		}
 	}
 	
 	private void loadUser(){
