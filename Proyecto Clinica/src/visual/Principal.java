@@ -71,8 +71,6 @@ public class Principal extends JFrame {
 	static Socket sfd = null;
 	static DataInputStream EntradaSocket;
 	static DataOutputStream SalidaSocket;
-	static FileOutputStream archivoSalida;
-	static ObjectOutputStream oos;
 
 	/**
 	 * Launch the application.
@@ -100,12 +98,6 @@ public class Principal extends JFrame {
 			@Override
 			public void windowClosing(WindowEvent e) {
 				Clinica.getInstance().Logout();
-				try {
-					sfd.close();
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
 			}
 		});
 
@@ -115,14 +107,15 @@ public class Principal extends JFrame {
 		//setBounds(100, 100, 745, 516);
 		setLocationRelativeTo(null);
 		setBounds(-12, 0, (int)dim.getWidth()+24, (int)dim.getHeight()-34);
+		
 		try {
 			sfd = new Socket("192.168.0.3", 6000);
+			SalidaSocket = new DataOutputStream(sfd.getOutputStream());
+			EntradaSocket = new DataInputStream(sfd.getInputStream());
 		} catch (UnknownHostException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
+			System.out.println("Host no existe o inválido");
 		} catch (IOException e2) {
-			// TODO Auto-generated catch block
-			e2.printStackTrace();
+			System.out.println("Se ha perdido la conexión con el servidor");
 		}
 		
 		
@@ -299,17 +292,17 @@ public class Principal extends JFrame {
 		itemRespaldo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-				    SalidaSocket = new DataOutputStream(new BufferedOutputStream(sfd.getOutputStream()));
-				    
-				    File archivoEntrada = new File("clinica.dat");
+					SalidaSocket.write(1);
+					
 				    int unByte;
-				    FileInputStream lector = new FileInputStream(archivoEntrada);
-				    
-				    while((unByte = lector.read()) != -1) {
+				    int fin = -1;
+				    FileInputStream r = new FileInputStream("clinica.dat");
+				    int available = r.available();
+				    SalidaSocket.writeInt(available);
+				    while((unByte = r.read()) != -1) {
 				    	SalidaSocket.write(unByte);
 				    }
-				    lector.close();
-				    SalidaSocket.flush();
+				    r.close();
 				    
 				} catch (UnknownHostException e1) {
 					
@@ -326,32 +319,37 @@ public class Principal extends JFrame {
 		JMenuItem itemCRespaldo = new JMenuItem("Cargar respaldo");
 		itemCRespaldo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				try {
-					EntradaSocket = new DataInputStream(new  BufferedInputStream(sfd.getInputStream()));
-					FileInputStream archivo;
-					ObjectInputStream ois;
-					try {
-						archivo = new FileInputStream("C:\\\\Users\\\\The Mask Power\\\\git\\\\proyecto_clinica\\\\Proyecto Clinica\\\\respaldo\\\\respaldo.dat");
-						ois = new ObjectInputStream(archivo);
+					SalidaSocket.write(2);
+
+					int unByte;
+					FileOutputStream w = new FileOutputStream("clinica.dat");
+					if(EntradaSocket.read() == 0) {
 						if(JOptionPane.showConfirmDialog(null, "Se ha encontrado un respaldo, ¿Desea continuar? (Se reiniciará la aplicación)", "Cargar respaldo", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-							Clinica.setSoul((Clinica)ois.readObject());
+							SalidaSocket.write(0);
+							int avaiable = EntradaSocket.readInt();
+							for(int i = 0; i < avaiable; i++) {
+								unByte = EntradaSocket.read();
+								w.write(unByte);
+							}
+							w.close();
+							Clinica.getInstance().setLogedUser(null);
+							Clinica.getInstance().setSelectedCita(null);
+							Clinica.getInstance().setSelectedPaciente(null);
+							System.exit(1);
+						}else {
+							SalidaSocket.write(1);
 						}
-						Clinica.getInstance().Logout();
-						Clinica.getInstance().guardarClinica();
-						dispose();
-						Login refresh = new Login();
-						refresh.setVisible(true);
-						ois.close();
-					} catch (IOException | ClassNotFoundException e1) {
-						Clinica.getInstance().guardarClinica();
+						
+					}else {
+						JOptionPane.showMessageDialog(null, "No se ha encontrado un respaldo", "Error", JOptionPane.ERROR_MESSAGE);
 					}
-				} catch (UnknownHostException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					System.out.println("Ha ocurrido un error con el servidor");
 				}
+				
+
 
 			}
 		});
@@ -441,12 +439,6 @@ public class Principal extends JFrame {
 					lblInfo.setText("Cerrando sesión...");
 					dispose();
 					Clinica.getInstance().Logout();
-					try {
-						sfd.close();
-					} catch (IOException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
 					Login newLogin = new Login();
 					newLogin.setVisible(true);
 

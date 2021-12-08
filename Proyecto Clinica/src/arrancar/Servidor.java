@@ -1,7 +1,9 @@
 package arrancar;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -26,6 +28,8 @@ public class Servidor extends Thread {
 		
 		try {
 			sfd = new ServerSocket(6000);
+			System.out.println("Se ha iniciado el servidor");
+			System.out.println("---------------------------------------------------------------------------------");
 			
 		}catch(IOException ioe) {
 			JOptionPane.showMessageDialog(null, "Comunicación rechazada "+ioe, "Error de conexión", JOptionPane.ERROR_MESSAGE);
@@ -36,28 +40,18 @@ public class Servidor extends Thread {
 			
 			try {
 				Socket nsfd = sfd.accept();
-		        System.out.println("Conexion aceptada de: "+nsfd.getInetAddress());
-		        DataInputStream flujoLectura = new DataInputStream(new BufferedInputStream(nsfd.getInputStream()));
-		        int unByte;
-		        File archivoSalida = new File("C:\\Users\\The Mask Power\\git\\proyecto_clinica\\Proyecto Clinica\\respaldo\\respaldo.dat");
-		        FileOutputStream escritor = new FileOutputStream(archivoSalida);
-		        
-		        while((unByte = flujoLectura.read()) != -1) {
-		        	escritor.write(unByte);
-		        }
-		        escritor.close();
-		        
+		        System.out.println("Se ha conectado: "+nsfd.getInetAddress());
+		        Flow flow = new Flow(nsfd);
+		        Thread t = new Thread(flow);
+		        t.start();
 			} catch (IOException e) {
 				//JOptionPane.showMessageDialog(null, "Se ha producido un error de conexión", "Error de conexión", JOptionPane.ERROR_MESSAGE);
-				System.out.println("Se ha desconectado: ");
+				System.out.println("Error de conexión");
 			}
+			
+			
 		}
 		
 	}
-	
-	public void hacerRespaldo() {
-		
-	}
-
 
 }

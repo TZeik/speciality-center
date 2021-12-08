@@ -14,11 +14,6 @@ import visual.Login;
 
 public class Cliente {
 	
-	  static Socket sfd = null;
-	  static DataInputStream EntradaSocket;
-	  static DataOutputStream SalidaSocket;
-
-	
 	public Cliente() {
 		
 		EventQueue.invokeLater(new Runnable() {

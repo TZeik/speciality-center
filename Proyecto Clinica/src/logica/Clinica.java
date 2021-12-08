@@ -195,7 +195,7 @@ public class Clinica implements Serializable{
 	public void cargarClinica() {
 		FileInputStream archivo;
 		ObjectInputStream oos;
-		
+
 		try {
 			archivo = new FileInputStream("clinica.dat");
 			oos = new ObjectInputStream(archivo);
@@ -297,19 +297,6 @@ public class Clinica implements Serializable{
 			
 			if(user.getId().equals(id) && user.getPassword().equals(password)) {
 				Clinica.getInstance().setLogedUser(user);
-				/*try {
-					sfd = new Socket("192.168.0.3", 6000);
-				    SalidaSocket = new DataOutputStream(new BufferedOutputStream(sfd.getOutputStream()));
-				    SalidaSocket.writeUTF(Clinica.getInstance().getLogedUser().getCodigo());
-				    
-				} catch (UnknownHostException e1) {
-					
-					e1.printStackTrace();
-				} catch (IOException e1) {
-					
-					e1.printStackTrace();
-				}*/
-				
 				
 				login = true;
 			}
