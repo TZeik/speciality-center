@@ -496,6 +496,11 @@ public class Principal extends JFrame {
 				if (JOptionPane.showConfirmDialog(panel, "¿Está seguro de cerrar su sesión?", "Cerrar sesión", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					lblInfo.setText("Cerrando sesión...");
 					dispose();
+					try {
+						SalidaSocket.write(0);
+						sfd.close();
+					} catch (IOException e1) {
+					}
 					Clinica.getInstance().Logout();
 					Login newLogin = new Login();
 					newLogin.setVisible(true);

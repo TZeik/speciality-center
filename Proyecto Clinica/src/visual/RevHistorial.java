@@ -22,6 +22,7 @@ import javax.swing.ListSelectionModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Calendar;
+import java.awt.Dialog.ModalExclusionType;
 
 public class RevHistorial extends JFrame {
 
@@ -54,9 +55,9 @@ public class RevHistorial extends JFrame {
 	 * Create the frame.
 	 */
 	public RevHistorial(Paciente pac) {
+		setAlwaysOnTop(true);
 		miPaciente = pac;
 		setResizable(false);
-		setEnabled(false);
 		setTitle("Revisar historial");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 702, 555);

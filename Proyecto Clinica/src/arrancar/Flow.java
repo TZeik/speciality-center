@@ -51,7 +51,7 @@ public class Flow extends Thread {
 				
 				switch (opcion) {
 				case 0:
-					
+					nsfd.close();
 					break;
 				case 1:
 					guardarRespaldo();

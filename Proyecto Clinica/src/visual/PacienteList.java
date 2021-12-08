@@ -81,6 +81,8 @@ public class PacienteList extends JFrame {
 		scrollPane.setBounds(10, 138, 704, 257);
 		panel.add(scrollPane);
 		
+		JButton btnRevisar = new JButton("<dynamic>");
+		
 		table = new JTable();
 		table.getTableHeader().setReorderingAllowed(false);
 		table.addMouseListener(new MouseAdapter() {
@@ -89,6 +91,7 @@ public class PacienteList extends JFrame {
 				int select = table.getSelectedRow();
 				if(select != -1) {
 					selected = Clinica.getInstance().SearchPaciente(table.getValueAt(select, 0).toString());
+					btnRevisar.setEnabled(true);
 				}
 			}
 		});
@@ -158,7 +161,7 @@ public class PacienteList extends JFrame {
 		btnSalir.setBounds(624, 410, 90, 25);
 		panel.add(btnSalir);
 		
-		JButton btnRevisar = new JButton("<dynamic>");
+
 		if(option == 0) {
 			btnRevisar.setText("Revisar");
 		}
@@ -168,6 +171,7 @@ public class PacienteList extends JFrame {
 		btnRevisar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(option == 0) {
+					btnRevisar.setEnabled(false);
 					Clinica.getInstance().setSelectedPaciente(selected);
 					RevPaciente revpaciente = new RevPaciente(selected);
 					revpaciente.setVisible(true);
@@ -185,6 +189,7 @@ public class PacienteList extends JFrame {
 		panel.add(btnRevisar);
 		
 		loadPacTable(0);
+		btnRevisar.setEnabled(false);
 	}
 	
 	public static void loadPacTable(int index) {

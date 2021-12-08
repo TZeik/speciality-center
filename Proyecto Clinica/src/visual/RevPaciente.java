@@ -74,9 +74,7 @@ public class RevPaciente extends JFrame {
 	 */
 	public RevPaciente(Paciente pac) {
 		miPaciente = pac;
-		setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
 		setResizable(false);
-		miPaciente = pac;
 		setTitle("Revisar paciente");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 706, 538);
@@ -94,7 +92,7 @@ public class RevPaciente extends JFrame {
 		panel.setLayout(null);
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(null, "Paciente, " + Clinica.getInstance().getSelectedPaciente().getNombre() , TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_1.setBorder(new TitledBorder(null, "Paciente, " + miPaciente.getNombre() , TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_1.setBounds(10, 11, 378, 467);
 		panel.add(panel_1);
 		panel_1.setLayout(null);
@@ -312,8 +310,9 @@ public class RevPaciente extends JFrame {
 		
 		String[] headers = {"Medico" , "Fecha de Cita"};
 		model.setColumnIdentifiers(headers);
-		table.setModel(model);
+
 		table = new JTable();
+		table.setModel(model);
 		table.getTableHeader().setReorderingAllowed(false);
 		table.addMouseListener(new MouseAdapter() {
 			@Override
@@ -442,11 +441,12 @@ public class RevPaciente extends JFrame {
 	public void loadCitaTable() {
 		model.setRowCount(0);
 		row = new Object[model.getColumnCount()];
-		String fecha = new String();
+		String fecha;
+
 		
 		for(Cita cit : miPaciente.getHistorial().getMisCitas()) {
 			row[0] = cit.getMedico().getNombre();
-			fecha = "" + cit.getFechaProgramada().get(Calendar.DAY_OF_MONTH) + " / " + cit.getFechaProgramada().get(Calendar.MONTH) + " / " + cit.getFechaProgramada().get(Calendar.YEAR) + " - " + cit.getFechaProgramada().get(Calendar.HOUR_OF_DAY) + ":" + cit.getFechaProgramada().get(Calendar.MINUTE);
+			fecha = cit.getFechaProgramada().get(Calendar.DAY_OF_MONTH) + "/" + cit.getFechaProgramada().get(Calendar.MONTH) + "/" + cit.getFechaProgramada().get(Calendar.YEAR) + " - " + cit.getFechaProgramada().get(Calendar.HOUR_OF_DAY) + ":" + cit.getFechaProgramada().get(Calendar.MINUTE);
 			row[1] = fecha;
 			model.addRow(row);
 		}

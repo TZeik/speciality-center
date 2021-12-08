@@ -556,9 +556,9 @@ public class Clinica implements Serializable{
 		
 		Paciente newPaciente = new Paciente(Clinica.getInstance().GeneratePacienteCode(),cita.getNombre(),cita.getCedula(),cita.getGenero(),cita.getFechaNacimiento(),cita.getDireccion(),cita.getTelefono());
 		newPaciente.getHistorial().getMisCitas().add(cita);
+		
 		if(vacuna != null) {
 			newPaciente.getHistorial().getMisVacunas().add(vacuna);
-
 		}
 		if(consulta != null) {
 			newPaciente.getHistorial().getMisConsultas().add(consulta);

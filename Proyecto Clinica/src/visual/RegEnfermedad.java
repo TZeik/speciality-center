@@ -156,6 +156,7 @@ public class RegEnfermedad extends JFrame {
 				txtName.setText("");
 				txtTipo.setText("");
 				txtInfo.setText("");
+				checkbox.setSelected(false);
 			}
 		});
 		btnRegistrar.setBounds(231, 361, 90, 25);

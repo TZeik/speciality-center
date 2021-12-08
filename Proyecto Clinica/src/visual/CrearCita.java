@@ -308,6 +308,7 @@ public class CrearCita extends JFrame {
 				newCita.setDireccion(txtTelefono.getText());
 				newCita.setFechaNacimiento(tempDate);
 				newCita.setFechaCita(Calendar.getInstance());
+				newCita.setFechaProgramada(tempDate2);
 				newCita.setEspecialidad(txtEspecialidad.getText());
 				newCita.setFinalidad(txaFinalidad.getText());
 				newCita.setMedico(Clinica.getInstance().SearchMedicoByName(cbxMedico.getSelectedItem().toString()));
