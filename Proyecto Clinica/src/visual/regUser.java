@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 import java.awt.Window.Type;
 import javax.swing.border.TitledBorder;
 
+import exceptions.UserRegistrationException;
 import logica.Administrador;
 import logica.Clinica;
 import logica.Medico;
@@ -346,33 +347,49 @@ public class regUser extends JFrame {
 						newAdmin.setId(txtUser.getText());
 						newAdmin.setPassword(psw1);
 						newAdmin.setNombre(txtName.getText());
-						Clinica.getInstance().getMisUsuarios().add(newAdmin);
-						Clinica.getInstance().setUserCodeGenerator(Clinica.getInstance().getUserCodeGenerator() + 1);
-						JOptionPane.showMessageDialog(panel , "El usuario se ha creado exitosamente", "Registro completo", JOptionPane.INFORMATION_MESSAGE);
-						Clinica.getInstance().guardarClinica();
-						dispose();
+						try {
+							Clinica.getInstance().confirmRegistration(newAdmin);
+							Clinica.getInstance().getMisUsuarios().add(newAdmin);
+							Clinica.getInstance().setUserCodeGenerator(Clinica.getInstance().getUserCodeGenerator() + 1);
+							JOptionPane.showMessageDialog(panel , "El usuario se ha creado exitosamente", "Registro completo", JOptionPane.INFORMATION_MESSAGE);
+							Clinica.getInstance().guardarClinica();
+							dispose();
+						} catch (UserRegistrationException e1) {
+							JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+						}
+
 						break;
 					case 1:
 						Medico newMedic = new Medico(Clinica.getInstance().GenerateUserCode());
 						newMedic.setId(txtUser.getText());
 						newMedic.setPassword(psw1);
 						newMedic.setNombre(txtName.getText());
-						Clinica.getInstance().getMisUsuarios().add(newMedic);
-						Clinica.getInstance().setUserCodeGenerator(Clinica.getInstance().getUserCodeGenerator() + 1);
-						JOptionPane.showMessageDialog(panel, "El usuario se ha creado exitosamente", "Registro completo", JOptionPane.INFORMATION_MESSAGE);
-						Clinica.getInstance().guardarClinica();
-						dispose();
+						try {
+							Clinica.getInstance().confirmRegistration(newMedic);
+							Clinica.getInstance().getMisUsuarios().add(newMedic);
+							Clinica.getInstance().setUserCodeGenerator(Clinica.getInstance().getUserCodeGenerator() + 1);
+							JOptionPane.showMessageDialog(panel, "El usuario se ha creado exitosamente", "Registro completo", JOptionPane.INFORMATION_MESSAGE);
+							Clinica.getInstance().guardarClinica();
+							dispose();
+						} catch (UserRegistrationException e1) {
+							JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+						}
 						break;
 					case 2:
 						Secretario newSecretary = new Secretario(Clinica.getInstance().GenerateUserCode());
 						newSecretary.setId(txtUser.getText());
 						newSecretary.setPassword(psw1);
 						newSecretary.setNombre(txtName.getText());
-						Clinica.getInstance().getMisUsuarios().add(newSecretary);
-						Clinica.getInstance().setUserCodeGenerator(Clinica.getInstance().getUserCodeGenerator() + 1);
-						JOptionPane.showMessageDialog(panel, "El usuario se ha creado exitosamente", "Registro completo", JOptionPane.INFORMATION_MESSAGE);
-						Clinica.getInstance().guardarClinica();
-						dispose();
+						try {
+							Clinica.getInstance().confirmRegistration(newSecretary);
+							Clinica.getInstance().getMisUsuarios().add(newSecretary);
+							Clinica.getInstance().setUserCodeGenerator(Clinica.getInstance().getUserCodeGenerator() + 1);
+							JOptionPane.showMessageDialog(panel, "El usuario se ha creado exitosamente", "Registro completo", JOptionPane.INFORMATION_MESSAGE);
+							Clinica.getInstance().guardarClinica();
+							dispose();
+						} catch (UserRegistrationException e1) {
+							JOptionPane.showMessageDialog(null, e1.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+						}
 						break;
 
 					}

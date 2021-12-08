@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import arrancar.Servidor;
+import exceptions.AuthenticationException;
+import exceptions.UserRegistrationException;
 
 public class Clinica implements Serializable{
 
@@ -761,6 +763,20 @@ public class Clinica implements Serializable{
 		}
 		
 		return aux;
+		
+	}
+
+	public void confirmRegistration(Usuario nuevoUsuario) throws UserRegistrationException {
+		
+		for(Usuario user : Clinica.getInstance().getMisUsuarios()) {
+			
+			if(nuevoUsuario.getId().equalsIgnoreCase(user.getId())) {
+				throw new UserRegistrationException("Este nombre de usuario ya existe");
+			}
+			
+			
+			
+		}
 		
 	}
 

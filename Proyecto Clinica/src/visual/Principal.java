@@ -661,7 +661,9 @@ public class Principal extends JFrame {
 			}
 			
 		} catch (IOException e) {
-			e.printStackTrace();
+			JOptionPane.showMessageDialog(null, "Se ha perdido la conexión con el servidor", "Conexión perdida", JOptionPane.ERROR_MESSAGE);
+			Clinica.getInstance().Logout();
+			System.exit(1);
 		}
 		
 		userModel.setRowCount(0);
