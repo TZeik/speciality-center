@@ -21,6 +21,7 @@ import javax.swing.JOptionPane;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.util.Calendar;
 import java.util.ConcurrentModificationException;
 import java.awt.event.ActionEvent;
 
@@ -120,7 +121,7 @@ public class CrearVacuna extends JFrame {
 				Paciente paciente = null;
 				Cita cita = Clinica.getInstance().SearchCitaByName(cbxCita.getSelectedItem().toString());
 				Vacuna vacuna = Clinica.getInstance().SearchVacunaByName(cbxVacuna.getSelectedItem().toString());
-				
+				vacuna.setFechaVacunacion(Calendar.getInstance());
 				paciente = Clinica.getInstance().buscarPacienteByCed(cita.getCedula());
 				if(paciente == null) {
 					if(JOptionPane.showConfirmDialog(panel, "Se creará un nuevo paciente de nombre: " + cita.getNombre(), "Nuevo paciente", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {

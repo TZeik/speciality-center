@@ -10,9 +10,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 
+import logica.Cita;
 import logica.Clinica;
 import logica.Paciente;
+import logica.Usuario;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -26,6 +29,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import java.awt.Dialog.ModalExclusionType;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class RevPaciente extends JFrame {
 
@@ -34,7 +39,7 @@ public class RevPaciente extends JFrame {
 	private JTextField txtNombre;
 	private JTextField txtCedula;
 	private JTextField txtTelefono;
-	private Paciente miPaciente;
+	public Paciente miPaciente;
 	private JComboBox cbxDia;
 	private JComboBox cbxMes;
 	private JComboBox cbxAnno;
@@ -44,6 +49,9 @@ public class RevPaciente extends JFrame {
 	private JButton btnEditar;
 	private JButton btnGuardar;
 	private JButton btnSalir;
+	public static DefaultTableModel model;
+	private static Object[] row;
+	private Cita selected = null;
 
 	/**
 	 * Launch the application.
@@ -65,6 +73,7 @@ public class RevPaciente extends JFrame {
 	 * Create the frame.
 	 */
 	public RevPaciente(Paciente pac) {
+		miPaciente = pac;
 		setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
 		setResizable(false);
 		miPaciente = pac;
@@ -252,6 +261,12 @@ public class RevPaciente extends JFrame {
 		panel_1.add(lblNewLabel_4);
 		
 		btnHistorial = new JButton("Ver Historial");
+		btnHistorial.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				RevHistorial rev = new RevHistorial(miPaciente);
+				rev.setVisible(true);
+			}
+		});
 		btnHistorial.setBounds(408, 250, 120, 50);
 		panel.add(btnHistorial);
 		
@@ -287,7 +302,29 @@ public class RevPaciente extends JFrame {
 		scrollPane.setBounds(10, 23, 230, 188);
 		panel_2.add(scrollPane);
 		
+		model = new DefaultTableModel() {
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		       //all cells false
+		       return false;
+		    }
+		};
+		
+		String[] headers = {"Medico" , "Fecha de Cita"};
+		model.setColumnIdentifiers(headers);
+		table.setModel(model);
 		table = new JTable();
+		table.getTableHeader().setReorderingAllowed(false);
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int select = table.getSelectedRow();
+				
+				if(select != -1) {
+					selected = pac.getHistorial().getMisCitas().get(select);
+				}
+			}
+		});
 		scrollPane.setViewportView(table);
 		
 		btnSalir = new JButton("Salir");
@@ -330,6 +367,7 @@ public class RevPaciente extends JFrame {
 		panel.add(btnGuardar);
 		
 		loadPaciente();
+		loadCitaTable();
 	}
 	
 	public String miMes(int index) {
@@ -398,6 +436,19 @@ public class RevPaciente extends JFrame {
 			txtTelefono.setText(miPaciente.getTelefono());
 			txaDireccion.setText(miPaciente.getDireccion());
 			
+		}
+	}
+	
+	public void loadCitaTable() {
+		model.setRowCount(0);
+		row = new Object[model.getColumnCount()];
+		String fecha = new String();
+		
+		for(Cita cit : miPaciente.getHistorial().getMisCitas()) {
+			row[0] = cit.getMedico().getNombre();
+			fecha = "" + cit.getFechaProgramada().get(Calendar.DAY_OF_MONTH) + " / " + cit.getFechaProgramada().get(Calendar.MONTH) + " / " + cit.getFechaProgramada().get(Calendar.YEAR) + " - " + cit.getFechaProgramada().get(Calendar.HOUR_OF_DAY) + ":" + cit.getFechaProgramada().get(Calendar.MINUTE);
+			row[1] = fecha;
+			model.addRow(row);
 		}
 	}
 }

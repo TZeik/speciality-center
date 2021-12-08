@@ -1,6 +1,7 @@
 package logica;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
 public class Vacuna implements Serializable{
@@ -13,6 +14,7 @@ public class Vacuna implements Serializable{
 	private String nombre;
 	private int AnnoCreacion;
 	private String tipo;
+	private Calendar fechaVacunacion;
 	
 	public Vacuna(String codigo) {
 		super();
@@ -49,6 +51,14 @@ public class Vacuna implements Serializable{
 
 	public void setTipo(String tipo) {
 		this.tipo = tipo;
+	}
+
+	public Calendar getFechaVacunacion() {
+		return fechaVacunacion;
+	}
+
+	public void setFechaVacunacion(Calendar fechaVacunacion) {
+		this.fechaVacunacion = fechaVacunacion;
 	}
 	
 }
