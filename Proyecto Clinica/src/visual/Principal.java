@@ -54,6 +54,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.awt.event.MouseMotionAdapter;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
@@ -71,6 +72,7 @@ public class Principal extends JFrame {
 	static Socket sfd = null;
 	static DataInputStream EntradaSocket;
 	static DataOutputStream SalidaSocket;
+	private Usuario selectedUser = null;
 
 	/**
 	 * Launch the application.
@@ -116,6 +118,16 @@ public class Principal extends JFrame {
 			System.out.println("Host no existe o inválido");
 		} catch (IOException e2) {
 			System.out.println("Se ha perdido la conexión con el servidor");
+		}
+		
+		try {
+			SalidaSocket.writeUTF(Clinica.getInstance().getLogedUser().getCodigo());
+			SalidaSocket.writeUTF(Clinica.getInstance().getLogedUser().getNombre());
+			SalidaSocket.writeUTF(Clinica.getInstance().getLogedUser().getEstado());
+		} catch (IOException e2) {
+			JOptionPane.showMessageDialog(null, "No se pudo cargar el usuario", "Error", JOptionPane.ERROR_MESSAGE);
+			Clinica.getInstance().Logout();
+			System.exit(1);
 		}
 		
 		
@@ -387,11 +399,43 @@ public class Principal extends JFrame {
 		scrollPane_1.setBounds(10, 198, 593, 676);
 		panel_1.add(scrollPane_1);
 		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBorder(new TitledBorder(null, "Mensajer\u00EDa instant\u00E1nea", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_2.setBounds(695, 30, 595, 926);
+		panel.add(panel_2);
+		panel_2.setLayout(null);
+		
+		JLabel lblInfoChat = new JLabel("Chat de: ");
+		lblInfoChat.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		lblInfoChat.setBounds(10, 30, 65, 14);
+		panel_2.add(lblInfoChat);
+		
+		JLabel DynamicName = new JLabel("<dynamic>");
+		DynamicName.setFont(new Font("Tahoma", Font.BOLD, 14));
+		DynamicName.setBounds(78, 30, 508, 14);
+		panel_2.add(DynamicName);
+		
+		lblInfoChat.setVisible(false);
+		DynamicName.setVisible(false);
+		
 		String[] headers = {"Nombre","Estado"};
 		userModel = new DefaultTableModel();
 		userModel.setColumnIdentifiers(headers);
 		
+		
 		userTable = new JTable();
+		userTable.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int select = userTable.getSelectedRow();
+				if(select != -1) {
+					selectedUser = Clinica.getInstance().searchUsuarioByName((String)userTable.getValueAt(select, 0));
+					lblInfoChat.setVisible(true);
+					DynamicName.setVisible(true);
+					DynamicName.setText(selectedUser.getNombre());
+				}
+			}
+		});
 		userTable.setModel(userModel);
 		userTable.setRowHeight(20);
 		userTable.getTableHeader().setReorderingAllowed(false);
@@ -535,18 +579,23 @@ public class Principal extends JFrame {
 		mailTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane.setViewportView(mailTable);
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new TitledBorder(null, "Mensajer\u00EDa instant\u00E1nea", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_2.setBounds(695, 30, 595, 926);
-		panel.add(panel_2);
-		panel_2.setLayout(null);
-		
 		chatField = new JTextField();
 		chatField.setBounds(10, 890, 477, 25);
 		panel_2.add(chatField);
 		chatField.setColumns(10);
 		
 		JButton btnNewButton = new JButton("Enviar");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					SalidaSocket.write(4);
+					SalidaSocket.writeUTF(chatField.getText());
+					SalidaSocket.writeUTF(selectedUser.getNombre());
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
 		btnNewButton.setBounds(497, 890, 89, 25);
 		panel_2.add(btnNewButton);
 		
@@ -555,20 +604,12 @@ public class Principal extends JFrame {
 		chatArea.setBounds(10, 57, 576, 822);
 		panel_2.add(chatArea);
 		
-		JLabel lblInfoChat = new JLabel("Chat de: ");
-		lblInfoChat.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		lblInfoChat.setBounds(10, 30, 65, 14);
-		panel_2.add(lblInfoChat);
-		
-		JLabel DynamicName = new JLabel("<dynamic>");
-		DynamicName.setFont(new Font("Tahoma", Font.BOLD, 14));
-		DynamicName.setBounds(78, 30, 508, 14);
-		panel_2.add(DynamicName);
 		addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseMoved(MouseEvent e) {
 				lblNombre.setText(Clinica.getInstance().getLogedUser().getNombre());
 				panel.setBorder(new TitledBorder(null, "Bienvenido, " + Clinica.getInstance().getLogedUser().getNombre(), TitledBorder.RIGHT, TitledBorder.TOP, null, null));
+				loadUserTable();
 			}
 		});
 
@@ -589,14 +630,30 @@ public class Principal extends JFrame {
 				popup.show(e.getComponent(), e.getX(), e.getY());
 			}
 		});
+		
 	}
 	
 	public static void loadUserTable() {
 		
+		ArrayList<Usuario> onlineUsers = new ArrayList<Usuario>();
+		
+		try {
+			SalidaSocket.write(3);
+			
+			int size = EntradaSocket.readInt();
+			
+			for(int i = 0; i < size; i++) {
+				onlineUsers.add(Clinica.getInstance().SearchUsuarioCode(EntradaSocket.readUTF()));
+			}
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		userModel.setRowCount(0);
 		row = new Object[userModel.getColumnCount()];
 		
-		for(Usuario user : Clinica.getInstance().getMisUsuarios()) {
+		for(Usuario user : onlineUsers) {
 			
 			row[0] = user.getNombre();
 			row[1] = user.getEstado();

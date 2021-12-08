@@ -44,9 +44,6 @@ public class Clinica implements Serializable{
 	private int citaCodeGenerator;
 	private int consultaCodeGenerator;
 	private int pacienteCodeGenerator;
-	static Socket sfd = null;
-	static DataInputStream EntradaSocket;
-	static DataOutputStream SalidaSocket;
 	
 	private Clinica() {
 		super();
@@ -753,4 +750,18 @@ public class Clinica implements Serializable{
 		return index;
 	}
 	
+	public Usuario searchUsuarioByName(String name) {
+		
+		Usuario aux = null;
+		
+		for(Usuario user : Clinica.getInstance().getMisUsuarios()) {
+			if(user.getNombre().equalsIgnoreCase(name)) {
+				aux = user;
+			}
+		}
+		
+		return aux;
+		
+	}
+
 }

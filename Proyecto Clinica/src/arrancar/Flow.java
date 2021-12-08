@@ -10,12 +10,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+import logica.Usuario;
+
 public class Flow extends Thread {
 	
 	Socket nsfd = null;
 	DataInputStream in;
 	DataOutputStream out;
 	int opcion;
+	Usuario logedUser;
 	
 	public Flow(Socket sfd) {
 		
@@ -23,6 +26,7 @@ public class Flow extends Thread {
 		try {
 			in = new DataInputStream(nsfd.getInputStream());
 			out = new DataOutputStream(nsfd.getOutputStream());
+			logedUser = new Usuario(in.readUTF());
 		} catch (IOException e) {
 			System.out.println("Ha ocurrido un error al tratar de conectar con el cliente");
 		}
@@ -30,7 +34,15 @@ public class Flow extends Thread {
 	
 	public void run() {
 		
-		System.out.println("Ejecutando servicios para: " + nsfd.getInetAddress());
+		try {
+			logedUser.setNombre(in.readUTF());
+			logedUser.setEstado(in.readUTF());
+			System.out.println("Ejecutando servicios para: " + logedUser.getNombre());
+			Servidor.onlineUsers.add(logedUser);
+			
+		} catch (IOException e1) {
+			System.out.println("No se ha podido cargar el usuario");
+		}
 		
 		while(true) {
 			
@@ -41,7 +53,6 @@ public class Flow extends Thread {
 				case 0:
 					
 					break;
-					
 				case 1:
 					guardarRespaldo();
 					break;
@@ -49,10 +60,16 @@ public class Flow extends Thread {
 				case 2:
 					cargarRespaldo();
 					break;
-
+				case 3:
+					cargarTablaUsuarios();
+					break;
+				case 4:
+					enviarChat();
+					break;
 				}
 			} catch (IOException e) {
-				System.out.println("Se ha desconectado: " + nsfd.getInetAddress());
+				System.out.println("Se ha desconectado: " + logedUser.getNombre() + " | IP: " + nsfd.getInetAddress());
+				Servidor.onlineUsers.remove(logedUser);
 				break;
 			}
 			
@@ -111,5 +128,37 @@ public class Flow extends Thread {
 		} catch (IOException e) {
 			System.out.println("Desconexión forzada del servidor");
 		}
+	}
+	
+	private void cargarTablaUsuarios() {
+	
+		int size = Servidor.onlineUsers.size();
+		
+		try {
+			out.writeInt(size);
+			
+			for(Usuario user : Servidor.onlineUsers) {
+				out.writeUTF(user.getCodigo());
+			}
+		} catch (IOException e) {
+			System.out.println("Desconexión forzada del servidor");
+
+		}
+		
+
+		
+	}
+	
+	private void enviarChat() {
+		
+		try {
+			String userName = in.readUTF();
+			
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
 	}
 }

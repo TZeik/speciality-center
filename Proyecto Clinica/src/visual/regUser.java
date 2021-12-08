@@ -26,6 +26,9 @@ import javax.swing.border.MatteBorder;
 import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Dialog.ModalExclusionType;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class regUser extends JFrame {
 
@@ -59,6 +62,8 @@ public class regUser extends JFrame {
 	 * @param selected 
 	 */
 	public regUser(Usuario aux) {
+
+		setModalExclusionType(ModalExclusionType.APPLICATION_EXCLUDE);
 		update = aux;
 		if (update == null ) {
 			setTitle("Registrar usuario");
@@ -66,11 +71,11 @@ public class regUser extends JFrame {
 			setTitle("Editar usuario");
 		}
 		setAlwaysOnTop(true);
-		setType(Type.UTILITY);
+		setType(Type.POPUP);
 		setTitle("Registrar usuario");
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 540, 376);
+		setBounds(100, 100, 540, 334);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -82,43 +87,38 @@ public class regUser extends JFrame {
 		contentPane.add(panel, BorderLayout.CENTER);
 		panel.setLayout(null);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new TitledBorder(null, "", TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_1.setBounds(10, 11, 495, 47);
-		panel.add(panel_1);
-		
 		cbxUserType = new JComboBox();
 		cbxUserType.setModel(new DefaultComboBoxModel(new String[] {"Administrador", "M\u00E9dico", "Secretario"}));
-		cbxUserType.setBounds(10, 220, 234, 25);
+		cbxUserType.setBounds(10, 162, 234, 25);
 		panel.add(cbxUserType);
 		
 		txtUser = new JTextField();
-		txtUser.setBounds(10, 160, 234, 25);
+		txtUser.setBounds(10, 102, 234, 25);
 		panel.add(txtUser);
 		txtUser.setColumns(10);
 		
 		JLabel lblUser = new JLabel("Usuario: ");
-		lblUser.setBounds(10, 135, 203, 14);
+		lblUser.setBounds(10, 77, 203, 14);
 		panel.add(lblUser);
 		
 		JLabel lblPassword = new JLabel("Contrase\u00F1a: ");
-		lblPassword.setBounds(265, 69, 229, 14);
+		lblPassword.setBounds(265, 11, 229, 14);
 		panel.add(lblPassword);
 		
 		pswRegister = new JPasswordField();
-		pswRegister.setBounds(265, 160, 240, 25);
+		pswRegister.setBounds(265, 102, 240, 25);
 		panel.add(pswRegister);
 		
 		JLabel lblNewLabel_1_1 = new JLabel("Confirmar contrase\u00F1a: ");
-		lblNewLabel_1_1.setBounds(265, 135, 229, 14);
+		lblNewLabel_1_1.setBounds(265, 77, 229, 14);
 		panel.add(lblNewLabel_1_1);
 		
 		pswConfirm = new JPasswordField();
-		pswConfirm.setBounds(265, 94, 240, 25);
+		pswConfirm.setBounds(265, 36, 240, 25);
 		panel.add(pswConfirm);
 		
 		JLabel lblNewLabel_2 = new JLabel("Tipo de usuario: ");
-		lblNewLabel_2.setBounds(10, 200, 234, 14);
+		lblNewLabel_2.setBounds(10, 142, 234, 14);
 		panel.add(lblNewLabel_2);
 		
 		JButton btnCancel = new JButton("Cancelar");
@@ -127,7 +127,7 @@ public class regUser extends JFrame {
 				dispose();
 			}
 		});
-		btnCancel.setBounds(405, 283, 100, 30);
+		btnCancel.setBounds(405, 227, 100, 30);
 		panel.add(btnCancel);
 		
 		btnRegister = new JButton("");
@@ -234,16 +234,16 @@ public class regUser extends JFrame {
 
 			}
 		});
-		btnRegister.setBounds(285, 283, 100, 30);
+		btnRegister.setBounds(285, 227, 100, 30);
 		panel.add(btnRegister);
 		
 		txtName = new JTextField();
-		txtName.setBounds(10, 94, 234, 25);
+		txtName.setBounds(10, 36, 234, 25);
 		panel.add(txtName);
 		txtName.setColumns(10);
 		
 		JLabel lblNewLabel = new JLabel("Nombre visible: ");
-		lblNewLabel.setBounds(10, 69, 203, 14);
+		lblNewLabel.setBounds(10, 11, 203, 14);
 		panel.add(lblNewLabel);
 		
 		if(Clinica.getInstance().isFirst() == true) {
