@@ -128,7 +128,7 @@ public class UserList extends JFrame {
 		       return false;
 		    }
 		};
-		String[] headers = {"Codigo","Nombre","ID","Contraseña","Tipo de usuario"};
+		String[] headers = {"Codigo","Nombre","ID","ContraseÃ±a","Tipo de usuario"};
 		model.setColumnIdentifiers(headers);
 		table.setModel(model);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -147,7 +147,7 @@ public class UserList extends JFrame {
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(table.getSelectedRow()>=0) {
-					if (JOptionPane.showConfirmDialog(null, "¿Está seguro de eliminar a " + selected.getNombre() + "?", "Eliminar usuario", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					if (JOptionPane.showConfirmDialog(null, "Â¿EstÃ¡ seguro de eliminar a " + selected.getNombre() + "?", "Eliminar usuario", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 						Clinica.getInstance().getMisUsuarios().remove(selected);
 						Clinica.getInstance().guardarClinica();
 						loadUserTable(0);

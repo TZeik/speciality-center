@@ -57,7 +57,6 @@ public class Cliente extends Thread{
 		
 			Cliente cliente = new Cliente();
 			
-
 	}
 }
 

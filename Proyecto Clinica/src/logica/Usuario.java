@@ -18,7 +18,7 @@ public class Usuario implements Serializable{
 	public Usuario(String codigo) {
 		super();
 		this.codigo = codigo;
-		this.estado = "En línea";
+		this.estado = "En lÃ­nea";
 	}
 
 	public String getCodigo() {

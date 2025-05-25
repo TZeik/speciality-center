@@ -61,7 +61,7 @@ public class Servidor extends JFrame implements Runnable {
 			System.out.println("-------------------------------------------------------------------------------------------------------------------");
 			
 		}catch(IOException ioe) {
-			JOptionPane.showMessageDialog(null, "Comunicaci髇 rechazada "+ioe, "Error de conexi髇", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Comunicaci贸n rechazada "+ioe, "Error de conexi贸n", JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}
 		
@@ -74,8 +74,8 @@ public class Servidor extends JFrame implements Runnable {
 		        Thread t = new Thread(flow);
 		        t.start();
 			} catch (IOException e) {
-				//JOptionPane.showMessageDialog(null, "Se ha producido un error de conexi髇", "Error de conexi髇", JOptionPane.ERROR_MESSAGE);
-				System.out.println("Error de conexi髇");
+				//JOptionPane.showMessageDialog(null, "Se ha producido un error de conexi贸n", "Error de conexi贸n", JOptionPane.ERROR_MESSAGE);
+				System.out.println("Error de conexi贸n");
 			}
 			
 			

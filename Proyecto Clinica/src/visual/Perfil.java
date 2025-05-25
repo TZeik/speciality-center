@@ -119,7 +119,7 @@ public class Perfil extends JFrame {
 					Clinica.getInstance().EditUsuario(newAdmin);
 					Clinica.getInstance().EditLogedUser(newAdmin);
 					Clinica.getInstance().guardarClinica();
-					JOptionPane.showMessageDialog(panel, "Se ha guardado con éxito", "Guardar usuario", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(panel, "Se ha guardado con Ã©xito", "Guardar usuario", JOptionPane.INFORMATION_MESSAGE);
 				}
 				if(Clinica.getInstance().getLogedUser() instanceof  Medico) {
 					Medico newMed = new Medico(Clinica.getInstance().getLogedUser().getCodigo());
@@ -131,7 +131,7 @@ public class Perfil extends JFrame {
 					Clinica.getInstance().EditUsuario(newMed);
 					Clinica.getInstance().EditLogedUser(newMed);
 					Clinica.getInstance().guardarClinica();
-					JOptionPane.showMessageDialog(panel, "Se ha guardado con éxito", "Guardar usuario", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(panel, "Se ha guardado con Ã©xito", "Guardar usuario", JOptionPane.INFORMATION_MESSAGE);
 				}
 				if(Clinica.getInstance().getLogedUser() instanceof  Secretario) {
 					Secretario newSec = new Secretario(Clinica.getInstance().getLogedUser().getCodigo());
@@ -142,7 +142,7 @@ public class Perfil extends JFrame {
 					Clinica.getInstance().EditUsuario(newSec);
 					Clinica.getInstance().EditLogedUser(newSec);
 					Clinica.getInstance().guardarClinica();
-					JOptionPane.showMessageDialog(panel, "Se ha guardado con éxito", "Guardar usuario", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(panel, "Se ha guardado con Ã©xito", "Guardar usuario", JOptionPane.INFORMATION_MESSAGE);
 				}
 				
 				

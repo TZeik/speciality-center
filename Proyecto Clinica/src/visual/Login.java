@@ -108,7 +108,7 @@ public class Login extends JFrame {
 						dispose();
 						window.setVisible(true);
 					}else {
-						JOptionPane.showMessageDialog(panel, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(panel, "Usuario o contraseÃ±a incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
 					}
 				}
 			}
@@ -258,7 +258,7 @@ public class Login extends JFrame {
 					dispose();
 					window.setVisible(true);
 				}else {
-					JOptionPane.showMessageDialog(panel, "Usuario o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(panel, "Usuario o contraseÃ±a incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 				
 			}

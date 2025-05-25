@@ -107,7 +107,7 @@ public class EnfermedadList extends JFrame {
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(table.getSelectedRow()>=0) {
-					if(JOptionPane.showConfirmDialog(null, "¿Esta seguro de eliminar " + selected.getNombre() + "?", "Enfermedades", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					if(JOptionPane.showConfirmDialog(null, "Â¿Esta seguro de eliminar " + selected.getNombre() + "?", "Enfermedades", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 						Clinica.getInstance().getMisEnfermedades().remove(selected);
 						Clinica.getInstance().guardarClinica();
 						loadEnfTable("");

@@ -141,7 +141,7 @@ public class RegEnfermedad extends JFrame {
 				Clinica.getInstance().setEnfermedadCodeGenerator(Clinica.getInstance().getEnfermedadCodeGenerator() + 1);
 				Clinica.getInstance().guardarClinica();
 				
-				JOptionPane.showMessageDialog(panel, "La enfermedad se ha registrado con éxito", "Registro de enfermedad", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(panel, "La enfermedad se ha registrado con Ã©xito", "Registro de enfermedad", JOptionPane.INFORMATION_MESSAGE);
 				}else {
 					update.setNombre(txtName.getText());
 					update.setTipo(txtTipo.getText());
@@ -150,7 +150,7 @@ public class RegEnfermedad extends JFrame {
 					Clinica.getInstance().getMisEnfermedades().get(Clinica.getInstance().buscarEnfermedadIndex(update)).setTipo(update.getTipo());
 					Clinica.getInstance().getMisEnfermedades().get(Clinica.getInstance().buscarEnfermedadIndex(update)).setDescipcion(update.getDescipcion());
 					Clinica.getInstance().guardarClinica();
-					JOptionPane.showMessageDialog(panel, "La enfermedad se ha editado con éxito", "Editar Enfermedad", JOptionPane.DEFAULT_OPTION);
+					JOptionPane.showMessageDialog(panel, "La enfermedad se ha editado con Ã©xito", "Editar Enfermedad", JOptionPane.DEFAULT_OPTION);
 					dispose();
 				}
 				txtName.setText("");

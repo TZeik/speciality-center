@@ -169,7 +169,7 @@ public class ConsultaList extends JFrame {
 		JButton btnEliminar = new JButton("Eliminar");
 		btnEliminar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(JOptionPane.showConfirmDialog(panel, "¿Está seguro que desea eliminar la consulta " + selected.getCodigo() + "?", "Eliminar consulta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+				if(JOptionPane.showConfirmDialog(panel, "Â¿EstÃ¡ seguro que desea eliminar la consulta " + selected.getCodigo() + "?", "Eliminar consulta", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 					
 					try {
 						Clinica.getInstance().EliminarConsulta(selected.getCodigo());

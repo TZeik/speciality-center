@@ -127,7 +127,7 @@ public class RegVacuna extends JFrame {
 				Clinica.getInstance().setVaccineCodeGenerator(Clinica.getInstance().getVaccineCodeGenerator() + 1);
 				Clinica.getInstance().guardarClinica();
 				
-				JOptionPane.showMessageDialog(panel, "La vacuna se ha registrado con éxito", "Registro de vacuna", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(panel, "La vacuna se ha registrado con Ã©xito", "Registro de vacuna", JOptionPane.INFORMATION_MESSAGE);
 				txtName.setText("");
 				}else {
 					update.setNombre(txtName.getText());
@@ -136,7 +136,7 @@ public class RegVacuna extends JFrame {
 					Clinica.getInstance().getMisVacunas().get(Clinica.getInstance().buscarVacunaIndex(update)).setNombre(update.getNombre());
 					Clinica.getInstance().getMisVacunas().get(Clinica.getInstance().buscarVacunaIndex(update)).setAnnoCreacion(update.getAnnoCreacion());
 					Clinica.getInstance().guardarClinica();
-					JOptionPane.showMessageDialog(panel, "La vacuna se ha editado con éxito", "Editar vacuna", JOptionPane.DEFAULT_OPTION);
+					JOptionPane.showMessageDialog(panel, "La vacuna se ha editado con Ã©xito", "Editar vacuna", JOptionPane.DEFAULT_OPTION);
 					dispose();
 				}
 			}

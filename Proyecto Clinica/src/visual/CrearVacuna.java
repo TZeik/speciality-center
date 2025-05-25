@@ -124,10 +124,10 @@ public class CrearVacuna extends JFrame {
 				vacuna.setFechaVacunacion(Calendar.getInstance());
 				paciente = Clinica.getInstance().buscarPacienteByCed(cita.getCedula());
 				if(paciente == null) {
-					if(JOptionPane.showConfirmDialog(panel, "Se crear· un nuevo paciente de nombre: " + cita.getNombre(), "Nuevo paciente", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					if(JOptionPane.showConfirmDialog(panel, "Se crear√° un nuevo paciente de nombre: " + cita.getNombre(), "Nuevo paciente", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 						Clinica.getInstance().nuevoPaciente(cita, null, vacuna);
 					}else {
-						JOptionPane.showMessageDialog(panel, "No se ha podido crear la vacunaciÛn", "Crear vacunaciÛn", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(panel, "No se ha podido crear la vacunaci√≥n", "Crear vacunaci√≥n", JOptionPane.ERROR_MESSAGE);
 						cancel = true;
 					}
 					
@@ -137,7 +137,7 @@ public class CrearVacuna extends JFrame {
 				}
 				
 				if(cancel == false) {
-					JOptionPane.showMessageDialog(panel, "Se ha creado la vacunaciÛn correctamente", "Crear vacunaciÛn", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(panel, "Se ha creado la vacunaci√≥n correctamente", "Crear vacunaci√≥n", JOptionPane.INFORMATION_MESSAGE);
 					try {
 						Clinica.getInstance().EliminarCita(cita.getCodigo());
 					}catch(ConcurrentModificationException e1) {

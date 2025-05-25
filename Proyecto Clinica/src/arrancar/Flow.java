@@ -97,7 +97,7 @@ public class Flow extends Thread {
 		} catch (FileNotFoundException e) {
 			System.out.println("No se encuentra el archivo");
 		} catch (IOException e) {
-			System.out.println("Desconexi髇 forzada del servidor");
+			System.out.println("Desconexi贸n forzada del servidor");
 		}
 	}
 	
@@ -123,10 +123,10 @@ public class Flow extends Thread {
 			try {
 				out.write(1);
 			} catch (IOException e1) {
-				System.out.println("Desconexi髇 forzada del servidor");
+				System.out.println("Desconexi贸n forzada del servidor");
 			}
 		} catch (IOException e) {
-			System.out.println("Desconexi髇 forzada del servidor");
+			System.out.println("Desconexi贸n forzada del servidor");
 		}
 	}
 	
@@ -141,7 +141,7 @@ public class Flow extends Thread {
 				out.writeUTF(user.getCodigo());
 			}
 		} catch (IOException e) {
-			System.out.println("Desconexi髇 forzada del servidor");
+			System.out.println("Desconexi贸n forzada del servidor");
 
 		}
 		

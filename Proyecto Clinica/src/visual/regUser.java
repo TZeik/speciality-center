@@ -405,7 +405,7 @@ public class regUser extends JFrame {
 							Clinica.getInstance().getMisUsuarios().get(Clinica.getInstance().buscarUsuarioIndex(update)).setId(update.getId());
 							Clinica.getInstance().getMisUsuarios().get(Clinica.getInstance().buscarUsuarioIndex(update)).setPassword(update.getPassword());
 							Clinica.getInstance().guardarClinica();
-							JOptionPane.showMessageDialog(panel , "El usuario se ha editado exitosamente", "Edición completada", JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(panel , "El usuario se ha editado exitosamente", "EdiciÃ³n completada", JOptionPane.INFORMATION_MESSAGE);
 							dispose();
 							break;
 						case 1:
@@ -416,7 +416,7 @@ public class regUser extends JFrame {
 							Clinica.getInstance().getMisUsuarios().get(Clinica.getInstance().buscarUsuarioIndex(update)).setId(update.getId());
 							Clinica.getInstance().getMisUsuarios().get(Clinica.getInstance().buscarUsuarioIndex(update)).setPassword(update.getPassword());
 							Clinica.getInstance().guardarClinica();
-							JOptionPane.showMessageDialog(panel, "El usuario se ha editado exitosamente", "Edición completada", JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(panel, "El usuario se ha editado exitosamente", "EdiciÃ³n completada", JOptionPane.INFORMATION_MESSAGE);
 							dispose();
 							break;
 						case 2:
@@ -427,14 +427,14 @@ public class regUser extends JFrame {
 							Clinica.getInstance().getMisUsuarios().get(Clinica.getInstance().buscarUsuarioIndex(update)).setId(update.getId());
 							Clinica.getInstance().getMisUsuarios().get(Clinica.getInstance().buscarUsuarioIndex(update)).setPassword(update.getPassword());
 							Clinica.getInstance().guardarClinica();
-							JOptionPane.showMessageDialog(panel, "El usuario se ha editado exitosamente", "Edición completada", JOptionPane.INFORMATION_MESSAGE);
+							JOptionPane.showMessageDialog(panel, "El usuario se ha editado exitosamente", "EdiciÃ³n completada", JOptionPane.INFORMATION_MESSAGE);
 							dispose();
 							break;
 
 						}
 				   }
 				}else if(psw1 != psw2){
-					JOptionPane.showMessageDialog(panel, "Las contraseñas no coinciden", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(panel, "Las contraseÃ±as no coinciden", "Error", JOptionPane.ERROR_MESSAGE);
 					pswRegister.setText("");
 					pswConfirm.setText("");
 				}

@@ -112,13 +112,13 @@ public class Principal extends JFrame {
 		setBounds(-12, 0, (int)dim.getWidth()+24, (int)dim.getHeight()-34);
 		
 		try {
-			sfd = new Socket("192.168.0.3", 6000);
+			sfd = new Socket("localhost", 6000);
 			SalidaSocket = new DataOutputStream(sfd.getOutputStream());
 			EntradaSocket = new DataInputStream(sfd.getInputStream());
 		} catch (UnknownHostException e2) {
-			System.out.println("Host no existe o inválido");
+			System.out.println("Host no existe o invÃ¡lido");
 		} catch (IOException e2) {
-			System.out.println("Se ha perdido la conexión con el servidor");
+			System.out.println("Se ha perdido la conexiÃ³n con el servidor");
 		}
 		
 		try {
@@ -169,7 +169,7 @@ public class Principal extends JFrame {
 			mnNueva.add(itemConsulta);
 		}	
 		if(Clinica.getInstance().getLogedUser() instanceof Medico || Clinica.getInstance().getLogedUser() instanceof Administrador) {
-			JMenuItem itemVacuna = new JMenuItem("Vacunación");
+			JMenuItem itemVacuna = new JMenuItem("VacunaciÃ³n");
 			itemVacuna.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					CrearVacuna crearVacuna = new CrearVacuna();
@@ -324,7 +324,7 @@ public class Principal extends JFrame {
 					
 					e1.printStackTrace();
 				}
-				JOptionPane.showMessageDialog(null, "Se ha realizado el respaldo", "Información", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Se ha realizado el respaldo", "InformaciÃ³n", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});
 		mnAdministrar.add(itemRespaldo);
@@ -339,7 +339,7 @@ public class Principal extends JFrame {
 					int unByte;
 					FileOutputStream w = new FileOutputStream("clinica.dat");
 					if(EntradaSocket.read() == 0) {
-						if(JOptionPane.showConfirmDialog(null, "Se ha encontrado un respaldo, ¿Desea continuar? (Se reiniciará la aplicación)", "Cargar respaldo", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+						if(JOptionPane.showConfirmDialog(null, "Se ha encontrado un respaldo, Â¿Desea continuar? (Se reiniciarÃ¡ la aplicaciÃ³n)", "Cargar respaldo", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 							SalidaSocket.write(0);
 							int avaiable = EntradaSocket.readInt();
 							for(int i = 0; i < avaiable; i++) {
@@ -493,8 +493,8 @@ public class Principal extends JFrame {
 		panel_1.add(btnNewButton_3);
 		btnLogout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (JOptionPane.showConfirmDialog(panel, "¿Está seguro de cerrar su sesión?", "Cerrar sesión", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-					lblInfo.setText("Cerrando sesión...");
+				if (JOptionPane.showConfirmDialog(panel, "Â¿EstÃ¡ seguro de cerrar su sesiÃ³n?", "Cerrar sesiÃ³n", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					lblInfo.setText("Cerrando sesiÃ³n...");
 					dispose();
 					try {
 						SalidaSocket.write(0);
@@ -517,7 +517,7 @@ public class Principal extends JFrame {
 			lblUserType.setText("Administrador");
 			break;
 		case 1:
-			lblUserType.setText("Médico");
+			lblUserType.setText("MÃ©dico");
 			break;
 		case 2:
 			lblUserType.setText("Secretario");
@@ -570,7 +570,7 @@ public class Principal extends JFrame {
 		
 		if(Clinica.getInstance().getLogedUser() instanceof Medico || Clinica.getInstance().getLogedUser() instanceof Administrador) {
 			btnCrear1.setText("Consulta");
-			btnCrear2.setText("Vacunación");
+			btnCrear2.setText("VacunaciÃ³n");
 		}
 		
 		if(Clinica.getInstance().getLogedUser() instanceof Secretario) {
@@ -666,7 +666,7 @@ public class Principal extends JFrame {
 			}
 			
 		} catch (IOException e) {
-			JOptionPane.showMessageDialog(null, "Se ha perdido la conexión con el servidor", "Conexión perdida", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "Se ha perdido la conexiÃ³n con el servidor", "ConexiÃ³n perdida", JOptionPane.ERROR_MESSAGE);
 			Clinica.getInstance().Logout();
 			System.exit(1);
 		}

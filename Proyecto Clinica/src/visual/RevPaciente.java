@@ -357,7 +357,7 @@ public class RevPaciente extends JFrame {
 				Clinica.getInstance().getMisPacientes().get(Clinica.getInstance().buscarPacienteIndex(miPaciente)).setGenero(miPaciente.getGenero());
 				Clinica.getInstance().getMisPacientes().get(Clinica.getInstance().buscarPacienteIndex(miPaciente)).setFechaNacimiento(miPaciente.getFechaNacimiento());
 				Clinica.getInstance().guardarClinica();
-				JOptionPane.showMessageDialog(panel, "El paciente ha sido editado con éxito", "Editar Paciente", JOptionPane.DEFAULT_OPTION);
+				JOptionPane.showMessageDialog(panel, "El paciente ha sido editado con Ã©xito", "Editar Paciente", JOptionPane.DEFAULT_OPTION);
 				
 				PacienteList.loadPacTable(0);
 			}

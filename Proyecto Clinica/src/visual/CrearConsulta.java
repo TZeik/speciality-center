@@ -193,7 +193,7 @@ public class CrearConsulta extends JFrame {
 
 				paciente = Clinica.getInstance().buscarPacienteByCed(Clinica.getInstance().getSelectedCita().getCedula());
 				if(paciente == null) {
-					if(JOptionPane.showConfirmDialog(panel, "Se crear· un nuevo paciente de nombre: " + Clinica.getInstance().getSelectedCita().getNombre(), "Nuevo paciente", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+					if(JOptionPane.showConfirmDialog(panel, "Se crear√° un nuevo paciente de nombre: " + Clinica.getInstance().getSelectedCita().getNombre(), "Nuevo paciente", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
 						
 						if(newConsulta.getEnfermedad().isVigilancia() == true) {
 							Clinica.getInstance().nuevoPaciente(Clinica.getInstance().getSelectedCita(), newConsulta, null);
@@ -245,7 +245,7 @@ public class CrearConsulta extends JFrame {
 				txaFinalidad.setText(Clinica.getInstance().getSelectedCita().getFinalidad());
 				} catch(NullPointerException e1) {
 					if(Clinica.getInstance().SoloCitasMedico().size() == 0) {
-						JOptionPane.showMessageDialog(panel, "No hay citas para realizar consultas", "InformaciÛn", JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(panel, "No hay citas para realizar consultas", "Informaci√≥n", JOptionPane.INFORMATION_MESSAGE);
 						dispose();
 					}else {
 						Clinica.getInstance().setSelectedCita(Clinica.getInstance().SoloCitasMedico().get(0));
